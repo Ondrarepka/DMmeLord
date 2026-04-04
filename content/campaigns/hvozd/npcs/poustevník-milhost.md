@@ -4,7 +4,7 @@ disposition: unknown
 faction: Starověrci (Kruh Volchvů)
 last_meeting: ''
 last_meeting_summary: ''
-location: Silva Nigra
+location: Černý hvozd
 name: Poustevník Milhost
 role: Poustevník u mohyl — Černý hvozd
 tags:

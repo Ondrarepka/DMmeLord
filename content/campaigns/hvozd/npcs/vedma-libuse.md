@@ -4,7 +4,7 @@ disposition: neutral
 faction: Starověrci (Kruh Volchvů)
 last_meeting: ''
 last_meeting_summary: ''
-location: Silva Nigra
+location: Černý hvozd
 name: Baba Jaga / Vědma Libuše
 role: Strážkyně rovnováhy — Kruh Volchvů
 tags:
