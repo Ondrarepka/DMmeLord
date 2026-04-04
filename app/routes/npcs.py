@@ -15,9 +15,12 @@ def require_campaign():
 def index():
     all_npcs = list_entities(campaign(), 'npcs')
     factions = sorted(set(n.get('faction', '') for n in all_npcs if n.get('faction')))
-    locations = sorted(set(n.get('location', '') for n in all_npcs if n.get('location')))
+    # Source of truth: actual location files, not NPC metadata
+    all_locs = list_entities(campaign(), 'locations')
+    location_names = sorted(l['name'] for l in all_locs)
     return render_template('npcs.html', npcs=all_npcs, campaign=campaign(),
-                           dispositions=DISPOSITIONS, factions=factions, locations=locations)
+                           dispositions=DISPOSITIONS, factions=factions,
+                           location_names=location_names)
 
 @npcs.route('/new', methods=['POST'])
 def new():

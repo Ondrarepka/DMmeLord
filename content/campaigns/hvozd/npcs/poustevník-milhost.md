@@ -6,7 +6,7 @@ last_meeting: ''
 last_meeting_summary: ''
 location: Silva Nigra
 name: Poustevník Milhost
-role: Poustevník u mohyl — Silva Nigra
+role: Poustevník u mohyl — Černý hvozd
 tags:
 - Silva Nigra
 - duchové

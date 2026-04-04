@@ -1,8 +1,13 @@
 ---
-name: Černý hvozd (Silva Nigra)
-type: Prales
+name: Černý hvozd
 region: Východ
-tags: [les, nebezpečí, Psoglavi, mohyly, Krvavý Dub]
+tags:
+- les
+- nebezpečí
+- Psoglavi
+- mohyly
+- Krvavý Dub
+type: Prales
 ---
 
 Neprostupný prales na východě. Stromy jsou tak staré a husté, že na zem dopadá jen málo světla. Tady končí lidské zákony a začínají pravidla predátorů a starých duchů.

@@ -22,10 +22,12 @@
       </div>
       <div class="field-group">
         <label>Location</label>
-        <input type="text" name="location" list="location-suggestions">
-        <datalist id="location-suggestions">
-          {% for l in locations %}<option value="{{ l }}">{% endfor %}
-        </datalist>
+        <select name="location">
+          <option value="">— select —</option>
+          {% for l in location_names %}
+          <option value="{{ l }}">{{ l }}</option>
+          {% endfor %}
+        </select>
       </div>
       <div class="field-group">
         <label>Faction</label>
@@ -59,7 +61,7 @@
   <input type="text" id="searchInput" placeholder="Search by name…" oninput="applyFilters()">
   <select id="locationFilter" onchange="applyFilters()">
     <option value="">All locations</option>
-    {% for l in locations %}
+    {% for l in location_names %}
     <option value="{{ l }}">{{ l }}</option>
     {% endfor %}
   </select>
@@ -136,6 +138,16 @@
   <!-- Relationship section -->
   <div class="npc-relation">
     <div class="relation-row">
+      <div class="relation-field">
+        <label>Location</label>
+        <select class="relation-select"
+                onchange="updateField('{{ npc._slug }}', 'location', this.value); this.closest('.npc-card').dataset.location=this.value; applyFilters();">
+          <option value="">—</option>
+          {% for l in location_names %}
+          <option value="{{ l }}" {% if npc.location == l %}selected{% endif %}>{{ l }}</option>
+          {% endfor %}
+        </select>
+      </div>
       <div class="relation-field">
         <label>Disposition</label>
         <select class="relation-select"
