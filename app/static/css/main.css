@@ -144,7 +144,7 @@ body {
 .main-content {
   margin-top: var(--topbar-h);
   padding: 28px 32px;
-  max-width: 1100px;
+  width: 100%;
 }
 
 /* ── TYPOGRAPHY ── */
@@ -535,3 +535,93 @@ p  { color: var(--subtext1); margin-bottom: 8px; }
 
 /* ── EMPTY STATE ── */
 .empty-state { color: var(--overlay0); font-style: italic; font-size: 14px; padding: 16px 0; }
+
+/* ── NPC GRID ── */
+.npc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+.npc-grid .npc-card { margin-bottom: 0; }
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  background: var(--mantle);
+  border: 1px solid var(--surface0);
+  border-radius: var(--r);
+}
+.filter-bar input,
+.filter-bar select {
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: var(--r);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.filter-bar input { flex: 1; min-width: 160px; }
+.filter-bar input:focus,
+.filter-bar select:focus { border-color: var(--mauve); }
+.filter-bar select { min-width: 140px; }
+.filter-count { font-size: 12px; color: var(--overlay1); margin-left: auto; white-space: nowrap; }
+
+/* ── LOCATION CARD ── */
+.loc-card { margin-bottom: 0; }
+.loc-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.loc-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  flex: 1;
+}
+.loc-name:hover { color: var(--mauve); }
+.loc-meta { display: flex; align-items: center; gap: 6px; color: var(--subtext0); font-size: 13px; }
+.loc-actions { display: flex; gap: 6px; margin-left: auto; }
+.type-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  background: rgba(148,226,213,0.08);
+}
+.loc-body { margin-top: 4px; }
+
+/* ── LOCATION GRID ── */
+.loc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 10px;
+  align-items: start;
+}
+
+/* ── FACTION GROUP HEADERS ── */
+.faction-group-header {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--overlay1);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 8px 2px 4px;
+  border-bottom: 1px solid var(--surface0);
+  margin-top: 8px;
+}
+.faction-group-header:first-child { margin-top: 0; }

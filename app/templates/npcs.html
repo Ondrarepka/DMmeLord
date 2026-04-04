@@ -8,7 +8,7 @@
 </div>
 
 <!-- New NPC form -->
-<div class="inline-form card" id="newNpcForm" style="display:none; margin-bottom:20px;">
+<div class="inline-form card" id="newNpcForm" style="display:none; margin-bottom:16px;">
   <h3 style="margin-bottom:14px;">New NPC</h3>
   <form method="POST" action="{{ url_for('npcs.new') }}">
     <div class="field-row">
@@ -22,7 +22,10 @@
       </div>
       <div class="field-group">
         <label>Faction</label>
-        <input type="text" name="faction">
+        <input type="text" name="faction" list="faction-suggestions">
+        <datalist id="faction-suggestions">
+          {% for f in factions %}<option value="{{ f }}">{% endfor %}
+        </datalist>
       </div>
       <div class="field-group">
         <label>Disposition</label>
@@ -44,13 +47,41 @@
   </form>
 </div>
 
-<!-- NPC list -->
+<!-- Filter bar -->
+<div class="filter-bar">
+  <input type="text" id="searchInput" placeholder="Search by name…" oninput="applyFilters()">
+  <select id="factionFilter" onchange="applyFilters()">
+    <option value="">All factions</option>
+    {% for f in factions %}
+    <option value="{{ f }}">{{ f }}</option>
+    {% endfor %}
+  </select>
+  <select id="dispositionFilter" onchange="applyFilters()">
+    <option value="">All dispositions</option>
+    {% for d in dispositions %}
+    <option value="{{ d }}">{{ d|capitalize }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn-ghost btn-sm" onclick="clearFilters()">✕ Clear</button>
+  <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--subtext0);cursor:pointer;margin-left:8px;">
+    <input type="checkbox" id="groupByFaction" onchange="applyFilters()" checked style="accent-color:var(--mauve);">
+    Group by faction
+  </label>
+  <span class="filter-count" id="filterCount">{{ npcs|length }} NPCs</span>
+</div>
+
+<!-- NPC grid -->
 {% if not npcs %}
 <p class="empty-state">No NPCs yet. Create one above.</p>
 {% endif %}
 
+<div class="npc-grid" id="npcGrid">
 {% for npc in npcs %}
-<div class="npc-card card" id="npc-{{ npc._slug }}">
+<div class="npc-card card"
+     id="npc-{{ npc._slug }}"
+     data-name="{{ npc.name|lower }}"
+     data-faction="{{ npc.faction or '' }}"
+     data-disposition="{{ npc.disposition or '' }}">
 
   <!-- Card header -->
   <div class="npc-header">
@@ -96,9 +127,7 @@
         <select class="relation-select"
                 onchange="updateField('{{ npc._slug }}', 'disposition', this.value)">
           {% for d in dispositions %}
-          <option value="{{ d }}" {% if npc.disposition == d %}selected{% endif %}>
-            {{ d|capitalize }}
-          </option>
+          <option value="{{ d }}" {% if npc.disposition == d %}selected{% endif %}>{{ d|capitalize }}</option>
           {% endfor %}
         </select>
       </div>
@@ -111,9 +140,7 @@
     </div>
     <div class="relation-field" style="margin-top:8px;">
       <label>Last meeting summary</label>
-      <div class="editable-block"
-           data-slug="{{ npc._slug }}"
-           data-field="last_meeting_summary">
+      <div class="editable-block" data-slug="{{ npc._slug }}" data-field="last_meeting_summary">
         <div class="editable-view">{{ npc.last_meeting_summary or '<em class="empty">Nothing recorded yet. Click to add.</em>' }}</div>
         <textarea class="editable-edit" style="display:none;">{{ npc.last_meeting_summary or '' }}</textarea>
         <div class="editable-controls" style="display:none;">
@@ -167,15 +194,10 @@
   <!-- Lore/notes body (collapsible) -->
   <div class="npc-body" id="body-{{ npc._slug }}" style="display:none;">
     <div class="section-divider"></div>
-    <div class="editable-block"
-         data-slug="{{ npc._slug }}"
-         data-field="body">
+    <div class="editable-block" data-slug="{{ npc._slug }}" data-field="body">
       <div class="editable-view prose">
-        {% if npc._body %}
-          {{ npc._body_html | safe }}
-        {% else %}
-          <em class="empty">No notes yet. Click to add.</em>
-        {% endif %}
+        {% if npc._body %}{{ npc._body_html | safe }}
+        {% else %}<em class="empty">No notes yet. Click to add.</em>{% endif %}
       </div>
       <textarea class="editable-edit" style="display:none;">{{ npc._body or '' }}</textarea>
       <div class="editable-controls" style="display:none;">
@@ -187,8 +209,9 @@
 
 </div>
 {% endfor %}
+</div>
 
-<!-- Delete confirm modal -->
+<!-- Delete modal -->
 <div class="modal-overlay" id="deleteModal" style="display:none;">
   <div class="modal-box">
     <p>Delete <strong id="deleteNpcName"></strong>?</p>
@@ -204,6 +227,8 @@
 
 {% block scripts %}
 <script>
+const totalNpcs = {{ npcs|length }};
+
 function toggleNewForm() {
   const f = document.getElementById('newNpcForm');
   f.style.display = f.style.display === 'none' ? 'block' : 'none';
@@ -219,6 +244,60 @@ function toggleAgreementForm(slug) {
   f.style.display = f.style.display === 'none' ? 'block' : 'none';
 }
 
+// ── Filtering + Grouping ──
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const faction = document.getElementById('factionFilter').value;
+  const disposition = document.getElementById('dispositionFilter').value;
+  const grouped = document.getElementById('groupByFaction').checked;
+  const grid = document.getElementById('npcGrid');
+
+  // Remove existing group headers
+  grid.querySelectorAll('.faction-group-header').forEach(h => h.remove());
+
+  let visible = 0;
+  const cards = Array.from(document.querySelectorAll('.npc-card'));
+
+  cards.forEach(card => {
+    const nameMatch = !search || card.dataset.name.includes(search);
+    const factionMatch = !faction || card.dataset.faction === faction;
+    const dispMatch = !disposition || card.dataset.disposition === disposition;
+    const show = nameMatch && factionMatch && dispMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  if (grouped) {
+    // Collect visible factions in order
+    const seen = new Set();
+    cards.forEach(card => {
+      if (card.style.display === 'none') return;
+      const f = card.dataset.faction || 'Ostatní';
+      if (!seen.has(f)) {
+        seen.add(f);
+        const header = document.createElement('div');
+        header.className = 'faction-group-header';
+        header.textContent = f;
+        grid.insertBefore(header, card);
+      }
+    });
+  }
+
+  document.getElementById('filterCount').textContent =
+    visible === totalNpcs ? `${totalNpcs} NPCs` : `${visible} / ${totalNpcs} NPCs`;
+}
+
+function clearFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('factionFilter').value = '';
+  document.getElementById('dispositionFilter').value = '';
+  applyFilters();
+}
+
+// Run grouping on load
+document.addEventListener('DOMContentLoaded', applyFilters);
+
+// ── Field update ──
 function updateField(slug, field, value) {
   fetch(`/c/npcs/${slug}/update`, {
     method: 'POST',
@@ -227,9 +306,9 @@ function updateField(slug, field, value) {
   });
 }
 
-// Click-to-edit single line fields
+// ── Click-to-edit single line ──
 document.querySelectorAll('.editable-text').forEach(el => {
-  el.addEventListener('click', function handler() {
+  el.addEventListener('click', function() {
     const slug = el.dataset.slug;
     const field = el.dataset.field;
     const current = el.textContent.trim() === '—' ? '' : el.textContent.trim();
@@ -250,7 +329,7 @@ document.querySelectorAll('.editable-text').forEach(el => {
   });
 });
 
-// Click-to-edit multiline blocks
+// ── Click-to-edit multiline ──
 document.querySelectorAll('.editable-block').forEach(block => {
   const view = block.querySelector('.editable-view');
   const edit = block.querySelector('.editable-edit');
@@ -271,20 +350,16 @@ function saveBlock(btn) {
   const controls = btn.closest('.editable-controls');
   const slug = block.dataset.slug;
   const field = block.dataset.field;
-  const value = edit.value;
   fetch(`/c/npcs/${slug}/update`, {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`
+    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(edit.value)}`
   }).then(() => {
-    if (field === 'body') {
-      window.location.reload();
-    } else {
-      view.textContent = value || '';
-      view.style.display = 'block';
-      edit.style.display = 'none';
-      controls.style.display = 'none';
-    }
+    if (field === 'body') { window.location.reload(); return; }
+    view.textContent = edit.value || '';
+    view.style.display = 'block';
+    edit.style.display = 'none';
+    controls.style.display = 'none';
   });
 }
 

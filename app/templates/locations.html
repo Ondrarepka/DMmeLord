@@ -1,4 +1,234 @@
 {% extends "base.html" %}
+{% block title %}Locations — {{ campaign }}{% endblock %}
+
 {% block content %}
-<h1>Coming soon.</h1>
+<div class="page-header">
+  <h1>Locations</h1>
+  <button class="btn-primary" onclick="toggleNewForm()">+ New Location</button>
+</div>
+
+<!-- New location form -->
+<div class="inline-form card" id="newLocForm" style="display:none; margin-bottom:16px;">
+  <h3 style="margin-bottom:14px;">New Location</h3>
+  <form method="POST" action="{{ url_for('locations.new') }}">
+    <div class="field-row">
+      <div class="field-group">
+        <label>Name</label>
+        <input type="text" name="name" required autofocus>
+      </div>
+      <div class="field-group">
+        <label>Type</label>
+        <input type="text" name="type" placeholder="Hradiště, Vesnice, Ruina…" list="type-suggestions">
+        <datalist id="type-suggestions">
+          {% for t in types %}<option value="{{ t }}">{% endfor %}
+        </datalist>
+      </div>
+      <div class="field-group">
+        <label>Region</label>
+        <input type="text" name="region" placeholder="Centrum, Sever…" list="region-suggestions">
+        <datalist id="region-suggestions">
+          {% for r in regions %}<option value="{{ r }}">{% endfor %}
+        </datalist>
+      </div>
+    </div>
+    <div class="field-group" style="margin-top:8px;">
+      <label>Tags (comma separated)</label>
+      <input type="text" name="tags">
+    </div>
+    <div class="form-actions" style="margin-top:12px;">
+      <button type="submit" class="btn-primary">Create</button>
+      <button type="button" class="btn-ghost" onclick="toggleNewForm()">Cancel</button>
+    </div>
+  </form>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+  <input type="text" id="searchInput" placeholder="Search locations…" oninput="applyFilters()">
+  <select id="typeFilter" onchange="applyFilters()">
+    <option value="">All types</option>
+    {% for t in types %}
+    <option value="{{ t }}">{{ t }}</option>
+    {% endfor %}
+  </select>
+  <select id="regionFilter" onchange="applyFilters()">
+    <option value="">All regions</option>
+    {% for r in regions %}
+    <option value="{{ r }}">{{ r }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn-ghost btn-sm" onclick="clearFilters()">✕ Clear</button>
+  <span class="filter-count" id="filterCount">{{ locations|length }} locations</span>
+</div>
+
+{% if not locations %}
+<p class="empty-state">No locations yet.</p>
+{% endif %}
+
+<div class="loc-grid" id="locGrid">
+{% for loc in locations %}
+<div class="card loc-card"
+     id="loc-{{ loc._slug }}"
+     data-name="{{ loc.name|lower }}"
+     data-type="{{ loc.type or '' }}"
+     data-region="{{ loc.region or '' }}">
+
+  <div class="loc-header">
+    <span class="loc-name editable-text"
+          data-slug="{{ loc._slug }}"
+          data-field="name">{{ loc.name }}</span>
+    {% if loc.type %}
+    <span class="type-badge">{{ loc.type }}</span>
+    {% endif %}
+    <div class="loc-meta">
+      <span class="meta-item editable-text"
+            data-slug="{{ loc._slug }}"
+            data-field="region"
+            data-placeholder="Region">{{ loc.region or '—' }}</span>
+    </div>
+    <div class="loc-actions">
+      <button class="btn-ghost btn-sm btn-danger"
+              onclick="confirmDelete('{{ loc._slug }}', '{{ loc.name }}')">✕</button>
+    </div>
+  </div>
+
+  {% if loc.tags %}
+  <div class="tag-row" style="margin-top:8px;">
+    {% for tag in loc.tags %}
+    <span class="tag">{{ tag }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Body (always visible, click to edit) -->
+  <div class="loc-body" style="margin-top:12px; padding-top:10px; border-top:1px solid var(--surface0);">
+    <div class="editable-block" data-slug="{{ loc._slug }}" data-field="body">
+      <div class="editable-view prose">
+        {% if loc._body %}{{ loc._body_html | safe }}
+        {% else %}<em class="empty">No notes yet. Click to add.</em>{% endif %}
+      </div>
+      <textarea class="editable-edit" style="display:none; min-height:120px;">{{ loc._body or '' }}</textarea>
+      <div class="editable-controls" style="display:none;">
+        <button class="btn-primary btn-sm" onclick="saveLocBlock(this)">Save</button>
+        <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endfor %}
+</div>
+
+<!-- Delete modal -->
+<div class="modal-overlay" id="deleteModal" style="display:none;">
+  <div class="modal-box">
+    <p>Delete <strong id="deleteLocName"></strong>?</p>
+    <form method="POST" id="deleteForm">
+      <div class="form-actions" style="margin-top:12px;">
+        <button type="submit" class="btn-primary btn-danger">Delete</button>
+        <button type="button" class="btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const totalLocs = {{ locations|length }};
+
+function toggleNewForm() {
+  const f = document.getElementById('newLocForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const type = document.getElementById('typeFilter').value;
+  const region = document.getElementById('regionFilter').value;
+  let visible = 0;
+  document.querySelectorAll('.loc-card').forEach(card => {
+    const show = (!search || card.dataset.name.includes(search))
+              && (!type   || card.dataset.type === type)
+              && (!region || card.dataset.region === region);
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('filterCount').textContent =
+    visible === totalLocs ? `${totalLocs} locations` : `${visible} / ${totalLocs} locations`;
+}
+
+function clearFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('typeFilter').value = '';
+  document.getElementById('regionFilter').value = '';
+  applyFilters();
+}
+
+// click-to-edit single line
+document.querySelectorAll('.editable-text').forEach(el => {
+  el.addEventListener('click', function() {
+    const slug = el.dataset.slug;
+    const field = el.dataset.field;
+    const current = el.textContent.trim() === '—' ? '' : el.textContent.trim();
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = current;
+    input.className = 'inline-input';
+    input.placeholder = el.dataset.placeholder || '';
+    el.replaceWith(input);
+    input.focus();
+    const save = () => {
+      fetch(`/c/locations/${slug}/update`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(input.value.trim())}`
+      });
+      el.textContent = input.value.trim() || '—';
+      input.replaceWith(el);
+    };
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
+  });
+});
+
+// click-to-edit body
+document.querySelectorAll('.editable-block').forEach(block => {
+  const view = block.querySelector('.editable-view');
+  view.style.cursor = 'pointer';
+  view.addEventListener('click', () => {
+    view.style.display = 'none';
+    block.querySelector('.editable-edit').style.display = 'block';
+    block.querySelector('.editable-controls').style.display = 'flex';
+    block.querySelector('.editable-edit').focus();
+  });
+});
+
+function saveLocBlock(btn) {
+  const block = btn.closest('.editable-block');
+  const slug = block.dataset.slug;
+  const edit = block.querySelector('.editable-edit');
+  fetch(`/c/locations/${slug}/update`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `field=body&value=${encodeURIComponent(edit.value)}`
+  }).then(() => window.location.reload());
+}
+
+function cancelBlock(btn) {
+  const block = btn.closest('.editable-block');
+  block.querySelector('.editable-view').style.display = 'block';
+  block.querySelector('.editable-edit').style.display = 'none';
+  btn.closest('.editable-controls').style.display = 'none';
+}
+
+function confirmDelete(slug, name) {
+  document.getElementById('deleteLocName').textContent = name;
+  document.getElementById('deleteForm').action = `/c/locations/${slug}/delete`;
+  document.getElementById('deleteModal').style.display = 'flex';
+}
+function closeModal() {
+  document.getElementById('deleteModal').style.display = 'none';
+}
+</script>
 {% endblock %}

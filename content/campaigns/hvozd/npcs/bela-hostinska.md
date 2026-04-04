@@ -1,12 +1,15 @@
 ---
+agreements: []
+disposition: neutral
+faction: Cech Kupců a Řemeslníků
+last_meeting: ''
+last_meeting_summary: ''
 name: Běla
 role: Hostinská U Zlámané lopaty — Vlčí Důl
-faction: Cech Kupců a Řemeslníků
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [Vlčí Důl, hostinská, informátor]
+tags:
+- Vlčí Důl
+- hostinská
+- informátor
 ---
 
 Chybí jí horní řezáky, ale má svaly jako chlap. Pod pultem drží okovanou hůl na srovnání opilých horníků.

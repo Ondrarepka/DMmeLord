@@ -14,8 +14,9 @@ def require_campaign():
 @npcs.route('/')
 def index():
     all_npcs = list_entities(campaign(), 'npcs')
+    factions = sorted(set(n.get('faction', '') for n in all_npcs if n.get('faction')))
     return render_template('npcs.html', npcs=all_npcs, campaign=campaign(),
-                           dispositions=DISPOSITIONS)
+                           dispositions=DISPOSITIONS, factions=factions)
 
 @npcs.route('/new', methods=['POST'])
 def new():

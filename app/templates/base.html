@@ -19,7 +19,7 @@
   <nav class="topbar-nav">
     <a href="{{ url_for('main.dashboard') }}" class="nav-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}">Dashboard</a>
     <a href="{{ url_for('npcs.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('npcs.') %}active{% endif %}">NPCs</a>
-    <a href="{{ url_for('campaigns.locations') }}" class="nav-link {% if request.endpoint == 'campaigns.locations' %}active{% endif %}">Locations</a>
+    <a href="{{ url_for('locations.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('locations.') %}active{% endif %}">Locations</a>
     <a href="{{ url_for('campaigns.sessions') }}" class="nav-link {% if request.endpoint == 'campaigns.sessions' %}active{% endif %}">Sessions</a>
     <a href="{{ url_for('campaigns.economy') }}" class="nav-link {% if request.endpoint == 'campaigns.economy' %}active{% endif %}">Economy</a>
   </nav>
