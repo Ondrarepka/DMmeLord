@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: hostile
+faction: Církevní misie
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Otec Gorazd
 role: Kněz — Církvení misie
-faction: Církevní misie
-disposition: hostile
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [kněz, fanatik, antagonista, inteligentní]
+tags:
+- kněz
+- fanatik
+- antagonista
+- inteligentní
 ---
 
 **Věk:** 30 | **Tělo:** 2 | **Duše:** 6 | **Vliv:** 5

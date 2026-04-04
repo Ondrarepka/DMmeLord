@@ -1,12 +1,16 @@
 ---
+agreements: []
+disposition: complicated
+faction: Vladykův dvůr
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Mlada
 role: Služebná — Trnový Újezd
-faction: Vladykův dvůr
-disposition: complicated
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [Trnový Újezd, v nebezpečí, Radim]
+tags:
+- Trnový Újezd
+- v nebezpečí
+- Radim
 ---
 
 Mladá dívka s věčně vyděšeným pohledem. Má modřiny na zápěstích (od Radima) a hledá způsob, jak z hradiště utéct.

@@ -21,6 +21,13 @@
         <input type="text" name="role" placeholder="e.g. Warlord, Innkeeper">
       </div>
       <div class="field-group">
+        <label>Location</label>
+        <input type="text" name="location" list="location-suggestions">
+        <datalist id="location-suggestions">
+          {% for l in locations %}<option value="{{ l }}">{% endfor %}
+        </datalist>
+      </div>
+      <div class="field-group">
         <label>Faction</label>
         <input type="text" name="faction" list="faction-suggestions">
         <datalist id="faction-suggestions">
@@ -50,6 +57,12 @@
 <!-- Filter bar -->
 <div class="filter-bar">
   <input type="text" id="searchInput" placeholder="Search by name…" oninput="applyFilters()">
+  <select id="locationFilter" onchange="applyFilters()">
+    <option value="">All locations</option>
+    {% for l in locations %}
+    <option value="{{ l }}">{{ l }}</option>
+    {% endfor %}
+  </select>
   <select id="factionFilter" onchange="applyFilters()">
     <option value="">All factions</option>
     {% for f in factions %}
@@ -64,8 +77,8 @@
   </select>
   <button class="btn-ghost btn-sm" onclick="clearFilters()">✕ Clear</button>
   <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--subtext0);cursor:pointer;margin-left:8px;">
-    <input type="checkbox" id="groupByFaction" onchange="applyFilters()" checked style="accent-color:var(--mauve);">
-    Group by faction
+    <input type="checkbox" id="groupByLocation" onchange="applyFilters()" checked style="accent-color:var(--mauve);">
+    Group by location
   </label>
   <span class="filter-count" id="filterCount">{{ npcs|length }} NPCs</span>
 </div>
@@ -81,7 +94,8 @@
      id="npc-{{ npc._slug }}"
      data-name="{{ npc.name|lower }}"
      data-faction="{{ npc.faction or '' }}"
-     data-disposition="{{ npc.disposition or '' }}">
+     data-disposition="{{ npc.disposition or '' }}"
+     data-location="{{ npc.location or '' }}">
 
   <!-- Card header -->
   <div class="npc-header">
@@ -246,38 +260,45 @@ function toggleAgreementForm(slug) {
 
 // ── Filtering + Grouping ──
 function applyFilters() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const faction = document.getElementById('factionFilter').value;
-  const disposition = document.getElementById('dispositionFilter').value;
-  const grouped = document.getElementById('groupByFaction').checked;
-  const grid = document.getElementById('npcGrid');
+  const search     = document.getElementById('searchInput').value.toLowerCase();
+  const locFilter  = document.getElementById('locationFilter').value;
+  const faction    = document.getElementById('factionFilter').value;
+  const disposition= document.getElementById('dispositionFilter').value;
+  const grouped    = document.getElementById('groupByLocation').checked;
+  const grid       = document.getElementById('npcGrid');
 
-  // Remove existing group headers
+  // Remove old group headers
   grid.querySelectorAll('.faction-group-header').forEach(h => h.remove());
 
   let visible = 0;
   const cards = Array.from(document.querySelectorAll('.npc-card'));
 
+  // Sort cards by location when grouping is on
+  if (grouped) {
+    cards.sort((a, b) => (a.dataset.location || '').localeCompare(b.dataset.location || '', 'cs'));
+    cards.forEach(c => grid.appendChild(c));
+  }
+
   cards.forEach(card => {
-    const nameMatch = !search || card.dataset.name.includes(search);
-    const factionMatch = !faction || card.dataset.faction === faction;
-    const dispMatch = !disposition || card.dataset.disposition === disposition;
-    const show = nameMatch && factionMatch && dispMatch;
+    const nameMatch = !search     || card.dataset.name.includes(search);
+    const locMatch  = !locFilter  || card.dataset.location === locFilter;
+    const facMatch  = !faction    || card.dataset.faction === faction;
+    const dispMatch = !disposition|| card.dataset.disposition === disposition;
+    const show = nameMatch && locMatch && facMatch && dispMatch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
 
   if (grouped) {
-    // Collect visible factions in order
     const seen = new Set();
     cards.forEach(card => {
       if (card.style.display === 'none') return;
-      const f = card.dataset.faction || 'Ostatní';
-      if (!seen.has(f)) {
-        seen.add(f);
+      const loc = card.dataset.location || 'Ostatní';
+      if (!seen.has(loc)) {
+        seen.add(loc);
         const header = document.createElement('div');
         header.className = 'faction-group-header';
-        header.textContent = f;
+        header.textContent = loc;
         grid.insertBefore(header, card);
       }
     });
@@ -289,12 +310,12 @@ function applyFilters() {
 
 function clearFilters() {
   document.getElementById('searchInput').value = '';
+  document.getElementById('locationFilter').value = '';
   document.getElementById('factionFilter').value = '';
   document.getElementById('dispositionFilter').value = '';
   applyFilters();
 }
 
-// Run grouping on load
 document.addEventListener('DOMContentLoaded', applyFilters);
 
 // ── Field update ──

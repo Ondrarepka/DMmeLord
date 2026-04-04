@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Cech Kupců a Řemeslníků
+last_meeting: ''
+last_meeting_summary: ''
+location: Bojanův habr
 name: Kovář Bojan
 role: Mistr kovář — Bojanův habr
-faction: Cech Kupců a Řemeslníků
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [kovář, obchodník, neutrální, zbraně]
+tags:
+- kovář
+- obchodník
+- neutrální
+- zbraně
 ---
 
 **Věk:** 40 | **Tělo:** 7 | **Duše:** 4 | **Vliv:** 3

@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Cech Kupců a Řemeslníků
+last_meeting: ''
+last_meeting_summary: ''
+location: Vlčí Důl
 name: Dozorce Horymír
 role: Dozorce těžby — Vlčí Důl
-faction: Cech Kupců a Řemeslníků
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [dozorce, doly, korupce, železo]
+tags:
+- dozorce
+- doly
+- korupce
+- železo
 ---
 
 Vede těžbu bahenního železa a zajišťuje, aby surovina proudila do Bojanovy kovárny. Pod tlakem Mstislava na dodávky. Podplácí Uhlíře, aby mlčeli o nálezech v dolech.

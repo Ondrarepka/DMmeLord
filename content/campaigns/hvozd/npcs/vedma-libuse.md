@@ -1,12 +1,18 @@
 ---
+agreements: []
+disposition: neutral
+faction: Starověrci (Kruh Volchvů)
+last_meeting: ''
+last_meeting_summary: ''
+location: Silva Nigra
 name: Baba Jaga / Vědma Libuše
 role: Strážkyně rovnováhy — Kruh Volchvů
-faction: Starověrci (Kruh Volchvů)
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [vědma, klíčová postava, magie, morálně šedá, nebezpečná]
+tags:
+- vědma
+- klíčová postava
+- magie
+- morálně šedá
+- nebezpečná
 ---
 
 **Věk:** neznámý (vypadá na 80) | **Tělo:** 2 | **Duše:** 8 | **Vliv:** 7

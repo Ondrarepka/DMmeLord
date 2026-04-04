@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: hostile
+faction: Říše
+last_meeting: ''
+last_meeting_summary: ''
+location: Severní brána
 name: Kastelán Bernard z Auerspergu
 role: Správce Severní brány — zástupce Říše
-faction: Říše
-disposition: hostile
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [Říše, cizinec, politika, antagonista]
+tags:
+- Říše
+- cizinec
+- politika
+- antagonista
 ---
 
 Cizinec, vyslaný Říší, aby dohlížel na výběr daní a šíření víry. Pohrdá Mstislavem jako "zpola pohanským barbarem v blátě". Mstislav ho vnímá jako nafoukaného úředníka, který nezná cenu Psoglavů.

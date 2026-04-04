@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Vladykův dvůr
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Stopař Stříž
 role: Lovec a stopař vladyky
-faction: Vladykův dvůr
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [lovec, průzkumník, les, informátor]
+tags:
+- lovec
+- průzkumník
+- les
+- informátor
 ---
 
 Zkušený lovec vladyky, který mapuje pohyb "Vlčích hlav" a nebezpečné zvěře. Pohybuje se na okraji Hvozdu lépe než kdokoli jiný z hradiště.

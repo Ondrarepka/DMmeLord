@@ -1,12 +1,18 @@
 ---
+agreements: []
+disposition: neutral
+faction: Opatství
+last_meeting: ''
+last_meeting_summary: ''
+location: Opatství Svatá Maří
 name: Opat Silvestr
 role: Opat kláštera Svatá Maří v lesích
-faction: Opatství
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [opat, učenec, alchymie, tajemství, knihovna]
+tags:
+- opat
+- učenec
+- alchymie
+- tajemství
+- knihovna
 ---
 
 Učený muž, který se více než o modlitby zajímá o alchymii a pěstování vzácných bylin. Formální spojenec Gorazda, ale ve skutečnosti hledá magické vědění, které církev zakazuje.

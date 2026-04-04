@@ -1,8 +1,13 @@
 ---
 name: Trhová osada "Bělicí"
-type: Trhová osada
 region: Jih (cca 2 dny jízdy po proudu Běsice)
-tags: [obchod, sůl, len, neutrální, kupci]
+tags:
+- obchod
+- sůl
+- len
+- neutrální
+- kupci
+type: Trhová osada
 ---
 
 Bohaté nezávislé městečko na soutoku řek, proslulé bělením lnu a obchodem se solí.

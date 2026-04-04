@@ -1,12 +1,16 @@
 ---
+agreements: []
+disposition: neutral
+faction: Vladykův dvůr
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Živa
 role: Kuchařka v paláci — Trnový Újezd
-faction: Vladykův dvůr
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [Trnový Újezd, informátor, palác]
+tags:
+- Trnový Újezd
+- informátor
+- palác
 ---
 
 Neustále má ruce od mouky. Ví o každém šustnutí v ložnicích vladykovy rodiny. Ráda za kousek medu pustí informace.

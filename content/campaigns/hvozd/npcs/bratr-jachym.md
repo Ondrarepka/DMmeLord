@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Církevní misie
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Bratr Jáchym
 role: Mnich v rotundě
-faction: Církevní misie
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [mnich, učenec, tajemství, dvojí loajalita]
+tags:
+- mnich
+- učenec
+- tajemství
+- dvojí loajalita
 ---
 
 Mladý mnich, který v rotundě přepisuje latinské texty a studuje historii regionu, včetně věku Avarů. Tajně si dopisuje s Opatem Silvestrem — zajímá se o avarské ruiny, v rozporu s Gorazdovým dogmatem.

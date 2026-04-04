@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Vladykův dvůr
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Vladyka Mstislav "Železný"
 role: Vladyka Trnového Újezdu
-faction: Vladykův dvůr
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [vladyka, klíčová postava, dvojtvářnost, pragmatik]
+tags:
+- vladyka
+- klíčová postava
+- dvojtvářnost
+- pragmatik
 ---
 
 **Věk:** 55 | **Tělo:** 5 | **Duše:** 4 | **Vliv:** 6

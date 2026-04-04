@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Církevní misie
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Sestra Anežka
 role: Bylinkářka — hranice civilizace
-faction: Církevní misie
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [léčitelka, milosrdná, byliny, most mezi světy]
+tags:
+- léčitelka
+- milosrdná
+- byliny
+- most mezi světy
 ---
 
 Bylinkářka, která v kapli na okraji osady léčí nemocné ne-magickými způsoby. Je milosrdnější než Gorazd — skutečně chce pomáhat lidem, ne jen obrátit pohany.

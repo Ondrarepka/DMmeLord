@@ -4,6 +4,7 @@ disposition: neutral
 faction: Cech Kupců a Řemeslníků
 last_meeting: ''
 last_meeting_summary: ''
+location: Vlčí Důl
 name: Běla
 role: Hostinská U Zlámané lopaty — Vlčí Důl
 tags:

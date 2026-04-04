@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: unknown
+faction: Starověrci (Kruh Volchvů)
+last_meeting: ''
+last_meeting_summary: ''
+location: Silva Nigra
 name: Poustevník Milhost
 role: Poustevník u mohyl — Silva Nigra
-faction: Starověrci (Kruh Volchvů)
-disposition: unknown
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [Silva Nigra, duchové, šílený, mohyly]
+tags:
+- Silva Nigra
+- duchové
+- šílený
+- mohyly
 ---
 
 Bývalý válečník, který zešílel a nyní „mluví" s duchy avarských jezdců střežících nerezavějící zbraně. Izolovaný hluboko v Silva Nigra.

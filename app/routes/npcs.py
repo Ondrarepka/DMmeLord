@@ -15,8 +15,9 @@ def require_campaign():
 def index():
     all_npcs = list_entities(campaign(), 'npcs')
     factions = sorted(set(n.get('faction', '') for n in all_npcs if n.get('faction')))
+    locations = sorted(set(n.get('location', '') for n in all_npcs if n.get('location')))
     return render_template('npcs.html', npcs=all_npcs, campaign=campaign(),
-                           dispositions=DISPOSITIONS, factions=factions)
+                           dispositions=DISPOSITIONS, factions=factions, locations=locations)
 
 @npcs.route('/new', methods=['POST'])
 def new():
@@ -27,6 +28,7 @@ def new():
     metadata = {
         'name': name,
         'role': request.form.get('role', ''),
+        'location': request.form.get('location', ''),
         'faction': request.form.get('faction', ''),
         'disposition': request.form.get('disposition', 'unknown'),
         'last_meeting': request.form.get('last_meeting', ''),

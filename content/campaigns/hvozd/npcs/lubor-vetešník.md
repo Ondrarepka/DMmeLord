@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Cech Kupců a Řemeslníků
+last_meeting: ''
+last_meeting_summary: ''
+location: Bělicí
 name: Lubor
 role: Vetešník — Bělicí
-faction: Cech Kupců a Řemeslníků
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [Bělicí, obchodník, informace, podezřelý]
+tags:
+- Bělicí
+- obchodník
+- informace
+- podezřelý
 ---
 
 Nosí prošívaný kabátec, který už viděl lepší časy. Prodá ti cokoliv od zlomeného šípu po „zaručeně pravý" avarský prsten.

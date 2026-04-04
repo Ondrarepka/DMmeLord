@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: complicated
+faction: Vladykův dvůr
+last_meeting: ''
+last_meeting_summary: ''
+location: Trnový Újezd
 name: Radim — syn Vladyky
 role: Dědic vladykovství
-faction: Vladykův dvůr
-disposition: complicated
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [dědic, arogantní, nebezpečný, mladý]
+tags:
+- dědic
+- arogantní
+- nebezpečný
+- mladý
 ---
 
 **Věk:** 20 | **Tělo:** 6 | **Duše:** 2 | **Vliv:** 4

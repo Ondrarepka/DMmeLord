@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Starověrci (Kruh Volchvů)
+last_meeting: ''
+last_meeting_summary: ''
+location: Silva Nigra
 name: Učedník Lesan
 role: Správce Krvavého Dubu
-faction: Starověrci (Kruh Volchvů)
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [volchv, mladý, fanatický, les]
+tags:
+- volchv
+- mladý
+- fanatický
+- les
 ---
 
 Mladík, který pečuje o posvátné obětiště s lebkami zvířat. Varuje volchy před příchodem Gorazda. Nenávidí biřice z Újezdu, uctívá Libuši.

@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Starověrci (Kruh Volchvů)
+last_meeting: ''
+last_meeting_summary: ''
+location: Vlčí Důl
 name: Stařena Doubravka
 role: Kořenářka — Vlčí Důl
-faction: Starověrci (Kruh Volchvů)
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [kořenářka, léčitelka, Vlčí Důl, Veles]
+tags:
+- kořenářka
+- léčitelka
+- Vlčí Důl
+- Veles
 ---
 
 Vesnická kořenářka, která potají vede rituály k Velesovi, aby zajistila zdraví dobytka během moru. Tajná spojka mezi horníky a Kruhem Volchvů.

@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: neutral
+faction: Cech Kupců a Řemeslníků
+last_meeting: ''
+last_meeting_summary: ''
+location: Mrtvé močály
 name: Bezuch
 role: Rybář a převozník — Delta Běsice / Mrtvé močály
-faction: Cech Kupců a Řemeslníků
-disposition: neutral
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [Mrtvé močály, převozník, vidí pod hladinu, Jantarový Jan]
+tags:
+- Mrtvé močály
+- převozník
+- vidí pod hladinu
+- Jantarový Jan
 ---
 
 Hluchoněmý převozník u brodu. Není hluchoněmý — nebo to aspoň předstírá — ale vidí věci pod hladinou, které jiní ne. Komunikuje posunky a kreslením do písku.

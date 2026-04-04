@@ -1,12 +1,17 @@
 ---
+agreements: []
+disposition: hostile
+faction: Havraní skála
+last_meeting: ''
+last_meeting_summary: ''
+location: Havraní skála
 name: Vladyka Bořuta "Starokrev"
 role: Vladyka Havraní skály
-faction: Havraní skála
-disposition: hostile
-last_meeting: ""
-last_meeting_summary: ""
-agreements: []
-tags: [vladyka, rival, pohan, západ]
+tags:
+- vladyka
+- rival
+- pohan
+- západ
 ---
 
 Mohutný muž, který si zakládá na tom, že na jeho území žádná rotunda stát nikdy nebude. Nenávidí Mstislava za zradu víry (přijal křest). Podporuje Vlčí hlavy, aby škodily Újezdu.
