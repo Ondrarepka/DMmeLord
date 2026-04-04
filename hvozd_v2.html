@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hvozd Železné přísahy — Průvodce Vypravěče v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080c05;--bg2:#0e1409;--bg3:#141c0d;--bg4:#1a2412;--border:rgba(180,150,70,.22);--border2:rgba(180,150,70,.45);--text:#d4c07a;--text-dim:#8a7a50;--text-faint:#5a4e30;--red:#922020;--red2:#c03030;--gold:#c9a84c;--gold2:#e8c96a;--iron:#6b7a8d;--iron2:#8a9aad;--green:#3a5a20;--green2:#5a8a30;--sidebar:185px;--r:4px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'IM Fell English',Georgia,serif;font-size:15px;line-height:1.7;min-height:100vh;display:flex}
+/* SIDEBAR */
+#sidebar{width:var(--sidebar);min-height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+#sidebar-title{padding:18px 12px 14px;text-align:center;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0a1206 0%,var(--bg2) 100%)}
+#sidebar-title h1{font-family:'Cinzel Decorative',serif;font-size:9.5px;color:var(--gold);letter-spacing:1px;line-height:1.4;text-transform:uppercase}
+#sidebar-title .rune{font-size:22px;color:var(--red);display:block;margin-bottom:6px;filter:drop-shadow(0 0 6px rgba(150,30,30,.6))}
+nav{flex:1;padding:8px 0}
+nav button{display:block;width:100%;background:none;border:none;border-left:3px solid transparent;color:var(--text-dim);font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;padding:9px 14px;cursor:pointer;text-align:left;transition:all .2s}
+nav button:hover{color:var(--text);background:rgba(180,150,70,.07)}
+nav button.active{color:var(--gold);border-left-color:var(--gold);background:rgba(180,150,70,.1)}
+nav .nav-sep{height:1px;background:var(--border);margin:6px 12px}
+nav .nav-group{font-family:'Cinzel',serif;font-size:8px;color:var(--text-faint);letter-spacing:2px;text-transform:uppercase;padding:10px 14px 3px}
+/* MAIN */
+#main{margin-left:var(--sidebar);flex:1;min-height:100vh}
+.page{display:none;padding:28px 36px;max-width:980px}
+.page.active{display:block}
+/* TYPOGRAPHY */
+h2.page-title{font-family:'Cinzel Decorative',serif;font-size:19px;color:var(--gold2);border-bottom:1px solid var(--border2);padding-bottom:10px;margin-bottom:24px;letter-spacing:1px}
+h3.st{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+h4.sub{font-family:'Cinzel',serif;font-size:10.5px;color:var(--iron2);text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px}
+p{margin-bottom:10px}
+em{color:var(--text-dim);font-style:italic}
+strong{color:var(--gold2);font-style:normal;font-weight:normal}
+ul{margin-left:18px;margin-bottom:10px}
+li{margin-bottom:4px;font-size:14px}
+/* CARDS */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:15px 17px;margin-bottom:13px}
+.card:hover{border-color:var(--border2)}
+.ch{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.ch .cn{font-family:'Cinzel',serif;font-size:12.5px;color:var(--gold);flex:1}
+.ch .cr{font-size:12px;color:var(--text-dim);font-style:italic}
+.ch .ct{color:var(--text-faint);font-size:11px;transition:transform .2s}
+.ch.open .ct{transform:rotate(180deg)}
+.cb{display:none;margin-top:11px;padding-top:11px;border-top:1px solid var(--border)}
+.cb.open{display:block}
+/* BLANK NPC SECTION */
+.blank-npc-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.blank-npc{background:var(--bg4);border:1px dashed var(--text-faint);border-radius:var(--r);padding:5px 10px;font-size:12px;cursor:pointer;transition:all .2s;position:relative}
+.blank-npc:hover{border-color:var(--gold);color:var(--gold2)}
+.blank-npc .bn-name{font-family:'Cinzel',serif;color:var(--text)}
+.blank-npc .bn-arch{color:var(--text-faint);font-size:10px;display:block;font-style:italic}
+/* TAGS */
+.tag{display:inline-block;background:var(--bg4);border:1px solid var(--border);border-radius:2px;padding:1px 7px;font-size:10px;font-family:'Cinzel',serif;letter-spacing:.5px;color:var(--text-dim);margin-right:4px;margin-bottom:4px}
+.tag.red{border-color:var(--red);color:var(--red2)}
+.tag.gold{border-color:var(--gold);color:var(--gold)}
+.tag.iron{border-color:var(--iron);color:var(--iron2)}
+.tag.green{border-color:var(--green);color:var(--green2)}
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+@media(max-width:800px){.g2,.g3,.g4{grid-template-columns:1fr}}
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:11px 0;font-size:13px}
+th{font-family:'Cinzel',serif;font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);padding:7px 10px;border-bottom:1px solid var(--border2);text-align:left;background:var(--bg2)}
+td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(180,150,70,.05)}
+/* CALLOUTS */
+.callout{border-left:3px solid var(--red);background:rgba(100,20,20,.15);padding:11px 15px;margin:11px 0;font-style:italic;color:var(--text-dim);font-size:14px}
+.callout.gold{border-color:var(--gold);background:rgba(150,120,40,.12)}
+.callout.iron{border-color:var(--iron);background:rgba(80,90,110,.12)}
+.callout.green{border-color:var(--green);background:rgba(40,80,20,.12)}
+/* STAT BLOCK */
+.stat-block{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:11px 15px;font-size:13px}
+.stat-row{display:flex;gap:14px;flex-wrap:wrap;margin:5px 0}
+.stat{text-align:center}
+.stat .val{font-family:'Cinzel',serif;font-size:17px;color:var(--gold2);display:block}
+.stat .lbl{font-size:9px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.5px}
+/* MAP */
+#map-frame{width:100%;height:calc(100vh - 140px);border:1px solid var(--border);border-radius:var(--r);background:var(--bg3)}
+.map-notice{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:13px;font-size:13px}
+/* SESSIONS */
+.se{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.sh{display:flex;align-items:center;padding:11px 15px;cursor:pointer;gap:10px}
+.sn{font-family:'Cinzel',serif;font-size:11px;color:var(--red2);min-width:28px}
+.sd{font-size:11px;color:var(--text-dim)}
+.st2{flex:1;font-family:'Cinzel',serif;font-size:12px;color:var(--gold)}
+.sdel{background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:13px;padding:2px 6px}
+.sdel:hover{color:var(--red2)}
+.sb{display:none;padding:11px 15px;border-top:1px solid var(--border);white-space:pre-wrap;font-size:13.5px}
+.sb.open{display:block}
+/* FORMS */
+.fg{margin-bottom:13px}
+.fg label{display:block;font-family:'Cinzel',serif;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:5px}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'IM Fell English',Georgia,serif;font-size:13.5px;padding:7px 11px;resize:vertical;transition:border-color .2s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{outline:none;border-color:var(--gold)}
+.fg textarea{min-height:100px}
+.btn{font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 18px;border-radius:var(--r);cursor:pointer;border:1px solid;transition:all .2s}
+.btn-p{background:var(--red);border-color:var(--red2);color:#f0d090}
+.btn-p:hover{background:var(--red2)}
+.btn-s{background:transparent;border-color:var(--border2);color:var(--gold)}
+.btn-s:hover{background:rgba(180,150,70,.1)}
+.add-panel{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-top:20px}
+.fr{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.f1{flex:1;min-width:130px}
+/* DEITY */
+.deity{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;margin-bottom:10px}
+.dn{font-family:'Cinzel',serif;font-size:13px;color:var(--gold2);margin-bottom:2px}
+.de{font-style:italic;color:var(--text-dim);font-size:11px;margin-bottom:7px}
+/* IMPROV */
+.improv-name-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px 13px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.improv-name-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.improv-name-card .iname{font-family:'Cinzel',serif;font-size:13px;color:var(--gold2)}
+.improv-name-card .iarch{font-size:10px;color:var(--text-dim);font-style:italic;margin-top:2px}
+.improv-name-card .iused{position:absolute;top:4px;right:6px;font-size:9px;color:var(--red2);display:none}
+.improv-name-card.used{opacity:.5;border-style:dashed}
+.improv-name-card.used .iused{display:block}
+/* REGION MAP VIZ */
+.region-map{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:14px 0;font-size:11px}
+.hex-region{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:8px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.hex-region:hover{border-color:var(--gold);background:var(--bg4)}
+.hex-region .hr-icon{font-size:16px;display:block}
+.hex-region .hr-name{font-family:'Cinzel',serif;font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.3px;margin-top:3px;line-height:1.2}
+.hex-region .hr-diff{font-size:9px;color:var(--text-faint);margin-top:2px}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+/* NPC QUICK PANEL */
+#npc-quick-panel{position:fixed;bottom:20px;right:20px;width:340px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:16px;z-index:200;display:none;box-shadow:0 8px 32px rgba(0,0,0,.6)}
+#npc-quick-panel h4{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:7px}
+#npc-quick-panel .close-panel{position:absolute;top:10px;right:12px;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px}
+.npc-result{font-size:13px;line-height:1.8}
+.npc-result strong{color:var(--gold2)}
+/* SEASON BARS */
+.weather-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.season{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 11px;text-align:center;font-size:11px}
+.season .s-icon{font-size:19px;display:block;margin-bottom:3px}
+.season .s-name{font-family:'Cinzel',serif;font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.5px}
+.season .s-desc{font-size:10px;color:var(--text-dim);margin-top:3px}
+.conflict-box{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:var(--r);padding:13px 15px;margin-bottom:9px}
+.conflict-box h4{font-family:'Cinzel',serif;font-size:10.5px;color:var(--red2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.rumour-roll{background:var(--bg4);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;margin:4px 0;font-size:13px;display:flex;gap:10px}
+.rumour-roll .rnum{font-family:'Cinzel',serif;color:var(--gold);min-width:22px}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ SIDEBAR ════ -->
+<div id="sidebar">
+  <div id="sidebar-title">
+    <span class="rune">᛭</span>
+    <h1>Hvozd<br>Železné<br>přísahy</h1>
+    <div style="font-size:9px;color:var(--text-faint);margin-top:6px;font-family:'Cinzel',serif;letter-spacing:.5px;">v2 · Rozšířené vydání</div>
+  </div>
+  <nav>
+    <div class="nav-group">Přehled</div>
+    <button class="active" onclick="showPage('overview',this)">⬛ Dashboard</button>
+    <button onclick="showPage('map',this)">🗺 Mapa</button>
+    <div class="nav-sep"></div>
+    <div class="nav-group">Svět</div>
+    <button onclick="showPage('locations',this)">🏚 Lokace — Jádro</button>
+    <button onclick="showPage('newregions',this)">🌍 Nové oblasti</button>
+    <button onclick="showPage('factions',this)">⚔ Frakce & NPC</button>
+    <button onclick="showPage('religion',this)">🕯 Náboženství</button>
+    <div class="nav-sep"></div>
+    <div class="nav-group">Pravidla</div>
+    <button onclick="showPage('bestiary',this)">👁 Bestiář</button>
+    <button onclick="showPage('economy',this)">⚖ Ekonomika</button>
+    <button onclick="showPage('encounters',this)">🎲 Setkání</button>
+    <div class="nav-sep"></div>
+    <div class="nav-group">Kampaň</div>
+    <button onclick="showPage('adventures',this)">📜 Dobrodružství</button>
+    <button onclick="showPage('improv',this)">🎭 Improvizace NPC</button>
+    <button onclick="showPage('sessions',this)">📓 Zápisky</button>
+    <button onclick="showPage('custom',this)">✦ Vlastní obsah</button>
+  </nav>
+</div>
+
+<!-- ═══════════════════════════════════ MAIN ════════ -->
+<div id="main">
+
+<!-- ────────────────── DASHBOARD ──────────────────── -->
+<div class="page active" id="page-overview">
+<h2 class="page-title">Dashboard — Hvozd Železné přísahy</h2>
+<div class="callout gold">„Hvozd není jen les. Je to živá zeď. Tady bohové jsou krutí a lidé ještě krutější."</div>
+
+<h3 class="st">Atmosféra — Slavic Noir</h3>
+<p><strong>Slavic Noir</strong> — morálně šedý svět bez nablýskaných zbrojí. Magie je nebezpečná, příroda nepřítel. Inspirace <em>Jurajom Červenákem</em> (Černokněžník, Bohatýr, Stein a Barbarič). Časová epocha: pomezí Velké Moravy a Christianizace, přibližně 9. stol.</p>
+<p>Podnebí kontinentální. Cesty = blátivé koleje. Les hustší a temnější než jakýkoli moderní les. Hvozd má vlastní vůli — nechce vás tady.</p>
+
+<h3 class="st">Tři hlavní konflikty</h3>
+<div class="conflict-box"><h4>🕯 Kříž vs. Totem</h4><p>Gorazd tlačí na Mstislava, aby zničil Krvavý Dub. Libuše hrozí: pokud se tak stane, běsové vtrhnou do vesnic.</p></div>
+<div class="conflict-box"><h4>⚔ Stará krev vs. Nový řád</h4><p>Bořuta provokuje Mstislava. Postavy mohou být diplomaty nebo špehy. Každá strana má argumenty a mrtvé.</p></div>
+<div class="conflict-box"><h4>⛏ Hlad po železe</h4><p>Bojan a Horymír potřebují nové šachty, ty vedou do doupat Psoglavů. Vladyka chce zbraně, církev chce doly posvětit.</p></div>
+
+<h3 class="st">Politický trojúhelník</h3>
+<div class="g3">
+<div class="card"><div style="font-family:'Cinzel',serif;color:var(--iron2);font-size:12px;">Říše & Vladyka</div><p style="font-size:13px;margin-top:7px;">Klid na těžbu a daně. Avary = pohanští vrazi. Platí zbraněmi a legitimností.</p></div>
+<div class="card"><div style="font-family:'Cinzel',serif;color:var(--green2);font-size:12px;">Starověrci (Libuše)</div><p style="font-size:13px;margin-top:7px;">Rovnováha světů, Stará cesta. Platí magií a znalostí hvozdu.</p></div>
+<div class="card"><div style="font-family:'Cinzel',serif;color:var(--red2);font-size:12px;">Avaři (Kuvrati)</div><p style="font-size:13px;margin-top:7px;">Hvozd = ukradené dědictví. Slovany = otroci. Platí strachem a rychlostí.</p></div>
+</div>
+
+<h3 class="st">Kalendář & Svátky</h3>
+<div class="weather-bar">
+<div class="season"><span class="s-icon">🌱</span><div class="s-name">Jaro</div><div class="s-desc">Bláto, povodeň, hlad. Běsové se probouzejí.</div></div>
+<div class="season"><span class="s-icon">☀</span><div class="s-name">Léto</div><div class="s-desc">Cestování snazší. Kupalo. Lovecká výprava.</div></div>
+<div class="season"><span class="s-icon">🍂</span><div class="s-name">Podzim</div><div class="s-desc">Nájezdy, sklizeň. Dědy — noc předků.</div></div>
+<div class="season"><span class="s-icon">❄</span><div class="s-name">Zima</div><div class="s-desc">Sníh, smrt. Strigoňové silní. Kračun.</div></div>
+</div>
+<table><tr><th>Svátek</th><th>Doba</th><th>DrD2 dopad</th></tr>
+<tr><td><strong>Kračun</strong></td><td>Zimní slunovrat</td><td>Náročnost magie +2 bez posvátného ohně</td></tr>
+<tr><td><strong>Vynášení Morany</strong></td><td>Jarní rovnodennost</td><td>Účast léčí Jizvu na Duši 1. úrovně</td></tr>
+<tr><td><strong>Kupalo</strong></td><td>Letní slunovrat</td><td>Lektvary Mastičkáře mají +1 sílu</td></tr>
+<tr><td><strong>Dědy</strong></td><td>Podzimní noc</td><td>Komunikace s duchy bez magie; riziko „oblíbení"</td></tr>
+</table>
+
+<h3 class="st">House Rules (přehled)</h3>
+<div class="g2">
+<div class="callout iron"><strong>Gritty Realism:</strong> Krátký odpočinek = 8h v bezpečí. Dlouhý odpočinek = týden v osadě.</div>
+<div class="callout iron"><strong>Ohrožení neklesá</strong> automaticky — přenáší se, dokud postavy nenajdou útočiště.</div>
+<div class="callout gold"><strong>Znamení víry:</strong> Modlitba = -1 Náročnost příštího hodu v doméně boha.</div>
+<div class="callout gold"><strong>Neklidná půda:</strong> Avarské bojiště = vstup +1 Ohrožení automaticky.</div>
+<div class="callout green"><strong>Hnijící rány:</strong> Každý boj v blátě — šance 1/6 na Sněť.</div>
+<div class="callout green"><strong>Zásoby váží:</strong> 50 kůží = plný těžký pytel; rozhodnutí při útěku.</div>
+</div>
+</div>
+
+<!-- ────────────────── MAPA ───────────────────────── -->
+<div class="page" id="page-map">
+<h2 class="page-title">🗺 Mapa Hvozdu</h2>
+<div class="map-notice">
+  <strong>Mapa Hvozdu</strong> — editor hextml.playest.net. Soubor mapy (<code>mapa_hvozdu.html</code>) je ke stažení níže a lze ho otevřít lokálně v prohlížeči jako offline editor. Alternativně vlož URL sdílené mapy a načti ji.
+  <br><br>
+  <div class="fr" style="align-items:center;gap:8px;">
+    <input id="map-url-input" style="flex:1;background:var(--bg4);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:4px;font-family:monospace;font-size:11px;" placeholder="Vlož URL sdílené hextml mapy..." value="https://hextml.playest.net/">
+    <button class="btn btn-s" onclick="loadMap()">Načíst</button>
+    <a href="https://hextml.playest.net/" target="_blank" class="btn btn-p" style="text-decoration:none;">Otevřít editor ↗</a>
+  </div>
+</div>
+<div class="callout iron" style="margin-bottom:12px;">ℹ Hextml může blokovat embedding. Pokud se mapa nezobrazí, klikni na „Otevřít editor ↗" a pracuj v novém okně. Lokální soubor <strong>mapa_hvozdu.html</strong> funguje offline po stažení.</div>
+<iframe id="map-frame" src="https://hextml.playest.net/" title="Mapa Hvozdu" allow="fullscreen"></iframe>
+</div>
+
+<!-- ────────────────── LOKACE JÁDRO ──────────────── -->
+<div class="page" id="page-locations">
+<h2 class="page-title">🏚 Lokace — Jádro panství</h2>
+
+<!-- TRNOVÝ ÚJEZD -->
+<h3 class="st">Trnový Újezd — Centrum moci</h3>
+<div class="card">
+<div class="ch" onclick="toggleCard(this)"><span class="cn">🏰 Hradiště Trnový Újezd</span><span class="cr">Hlavní sídlo, Vladyka Mstislav</span><span class="ct">▼</span></div>
+<div class="cb">
+<p><strong>Opevnění:</strong> Komorová konstrukce z dubových klád + hlína + kámen. Palisáda s ochozem. Příkop s vlčími jámami (naostřené kůly). Velitel Bořivoj ji denně inspektuje.</p>
+<p><strong>Akropole:</strong> Srubový palác na kamenné podezdívce, sýpky, zbrojnice. Bílá vápencová rotunda — svítí do dálky, působí cizorodě v dřevěném hradišti.</p>
+<p><strong>Předhradí:</strong> Blátivé uličky, polozemnice, dílny. Zápach činěné kůže a kouře. Tady žije skutečný puls hradiště.</p>
+<h4 class="sub">Detailní NPC</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Charakter</th><th>Fáma / Háček</th></tr>
+<tr><td><strong>Vratko</strong></td><td>Podkoní</td><td>Kulhá, voní po hnoji, k lidem vrčí, ke koním šeptá</td><td>„Vladykův hřebec se vrátil s pěnou a zapletenou hřívou. Tohle plete jen Mora."</td></tr>
+<tr><td><strong>Živa</strong></td><td>Kuchařka</td><td>Ruce od mouky, ví vše o ložnicích — za kousek medu pusí informaci</td><td>„Gorazd pálí v rotundě staré pergameny a síru. Co schovává?"</td></tr>
+<tr><td><strong>Kožich</strong></td><td>Koželužník</td><td>Trvale hnědé ruce, smrad tříslovin, nikdo si k němu nepřisedne</td><td>„Pes s lidskýma očima. Jen se díval, pak zmizel v dýmu."</td></tr>
+<tr><td><strong>Mlada</strong></td><td>Služebná</td><td>Vyděšená, modřiny od Radima — hledá útěk</td><td>„Radim se v noci vytrácí, vrací se s cizí krví na košili."</td></tr>
+<tr><td><strong>Těcha</strong></td><td>Ponocný</td><td>Starec, vyhaslá dýmka, mluví si pro sebe</td><td>„Viděl jsem stíny bez nohou obcházet valy. Avaři se vracejí."</td></tr>
+<tr><td><strong>Velitel Bořivoj</strong></td><td>Velitel stráže</td><td>Přísný, mlčenlivý, nedůvěřuje Bojanovi — podezřívá ho z prodeje zbraní</td><td>Má v pokoji nůž s avarskými rytinami. Jak ho získal?</td></tr>
+<tr><td><strong>Hospodyně Milada</strong></td><td>Správkyně paláce</td><td>Žena v pozadí, spravuje sýpky, zná všechna tajemství rodiny</td><td>Ví o Mstislavově tajném uctívání starých bohů. Drží to jako zástavní právo.</td></tr>
+<tr><td><strong>Bratr Jáchym</strong></td><td>Písař v rotundě</td><td>Mladý, zvědavý, studuje avarské runy místo latinských textů</td><td>Dopisuje si s Opatem Silvestrem o zakázaných věcech. Gorazd ho sleduje.</td></tr>
+</table>
+<h4 class="sub">Jména pro improvizaci — Trnový Újezd</h4>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Dobromil','starý kovářský pomocník, tichý, nosí šarm pod košilí')"><span class="bn-name">Dobromil</span><span class="bn-arch">pomocník, staromilec</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Sněžka','mladá prodavačka na trhu, přehnaně veselá, skrývá smutek')"><span class="bn-name">Sněžka</span><span class="bn-arch">trhovkyně, přehrávaná</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Budivoj','vojín na bráně, nervózní, první týden služby')"><span class="bn-name">Budivoj</span><span class="bn-arch">nováček vojín</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Rach','opilý dlužník u hospody, všechno ví, nic nedokáže')"><span class="bn-name">Rach</span><span class="bn-arch">opilec, dlužník</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Věšta','stará žena u studny, klíčí hráči přezdívky, prorocká')"><span class="bn-name">Věšta</span><span class="bn-arch">stará žena, prorocká</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Přemysl','vladykův posel, vždy spěchá, ví o diplomatických zákulisích')"><span class="bn-name">Přemysl</span><span class="bn-arch">posel, nervózní</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Zdeňka','dcera koželužníka, chce se naučit číst od Jáchyma')"><span class="bn-name">Zdeňka</span><span class="bn-arch">dcera řemeslníka</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Vojen','postarší vojín, odpovídá jen na přímé otázky, má šrám přes krk')"><span class="bn-name">Vojen</span><span class="bn-arch">veterán, lakonický</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Ctibor','obchodník s plátnem, vždy přehání zásoby, bojí se moru')"><span class="bn-name">Ctibor</span><span class="bn-arch">obchodník, hypochondr</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Radmila','vdova po vojínovi, pronajímá poschodí, slyší vše')"><span class="bn-name">Radmila</span><span class="bn-arch">vdova, bystrá</span></div>
+</div>
+</div>
+</div>
+
+<!-- VLČÍ DŮL -->
+<div class="card">
+<div class="ch" onclick="toggleCard(this)"><span class="cn">⛏ Vlčí Důl</span><span class="cr">Hornická osada, půl dne od Újezdu</span><span class="ct">▼</span></div>
+<div class="cb">
+<p>Specializuje se na těžbu bahenního železa. Podezření z uctívání <strong>Velese</strong> — dobytek nezvykle zdravý i za moru. Kovář prý kalí železo v krvi. <em>Železo zde levnější (-10 %), ale jídlo drahé.</em></p>
+<div class="callout">Nová šachta č. 3 narazila na kamennou bránu bez zámku. Za ní šeptání. Horymír ji nechal zakrýt prkny.</div>
+<h4 class="sub">Detailní NPC</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Charakter</th><th>Háček</th></tr>
+<tr><td><strong>Kazimír</strong></td><td>Starý havíř</td><td>Vykašlává černý hlen, chybí 2 prsty, věří v Permona</td><td>Zná tajnou odbočku za bránu. Chce průvodce, ne hrdiny.</td></tr>
+<tr><td><strong>Běla</strong></td><td>Hostinská U Zlámané lopaty</td><td>Chybí řezáky, svaly jako chlap, okovaná hůl pod pultem</td><td>Schraňuje věci zmizelých horníků. Proč?</td></tr>
+<tr><td><strong>Malík</strong></td><td>Pomocník u milířů</td><td>15 let, černý od sazí, touží být bojovníkem</td><td>Vlčí hlavy mu slíbily přijetí za hlavu misionáře.</td></tr>
+<tr><td><strong>Drahoslava</strong></td><td>Vdova po haviři</td><td>Pere prádlo, potajmu pálí bylinky, hlas mrtvého muže ji volá</td><td>Muž jí ve snu říká: „Pod horou spí něco. Utečte."</td></tr>
+<tr><td><strong>Bivoj</strong></td><td>Kovářský pomocník</td><td>Obrovský, mentálně pomalejší, naivní dobrák</td><td>Dělá, co se mu řekne za jídlo. Kdo ho zneužije?</td></tr>
+<tr><td><strong>Dozorce Horymír</strong></td><td>Vedoucí těžby</td><td>Pod tlakem Mstislava, podplácí uhlíře, má tajemství</td><td>Tajně obchoduje s nalezenými avarskými artefakty.</td></tr>
+<tr><td><strong>Stařena Doubrava</strong></td><td>Kořenářka</td><td>Tichá, bylinky v pytlíčcích, konkuruje Sestře Anežce</td><td>Vede tajné Velesovy rituály. Spojka mezi horníky a Kruhem.</td></tr>
+</table>
+<h4 class="sub">Jména pro improvizaci — Vlčí Důl</h4>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Záviš','starý horník, polovina tváře spálená, mluví jen o dolech')"><span class="bn-name">Záviš</span><span class="bn-arch">havíř, zjizvený</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Bohdanka','mladá žena, manžel v dole zmizela, chce odpovědi')"><span class="bn-name">Bohdanka</span><span class="bn-arch">manželka, zoufale hledá</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Ratibor','nový havíř z jiného kraje, nezná místní pověry')"><span class="bn-name">Ratibor</span><span class="bn-arch">přespolní, nevěřící</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Prkno','přezdívka skinnýho kluka co leze do nejužších štol')"><span class="bn-name">Prkno</span><span class="bn-arch">průzkumník štol</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Vlna','žena co vaří pro dělníky, zná jejich tajemství')"><span class="bn-name">Vlna</span><span class="bn-arch">kuchařka, důvěrnice</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Ostřih','předák směny, příliš tvrdý, bije za nedbalost')"><span class="bn-name">Ostřih</span><span class="bn-arch">předák, brutální</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Kopec','přezdívka tlustého obchodníka se zásobami, má vždy víc než říká')"><span class="bn-name">Kopec</span><span class="bn-arch">zásobovač, nepoctivý</span></div>
+</div>
+</div>
+</div>
+
+<!-- SILVA NIGRA -->
+<div class="card">
+<div class="ch" onclick="toggleCard(this)"><span class="cn">🌲 Silva Nigra — Černý hvozd</span><span class="cr">Neprostupný prales, východ panství</span><span class="ct">▼</span></div>
+<div class="cb">
+<p>Stromy tak husté, v poledne nedopadá světlo. Tady končí lidské zákony. Každý, kdo vstoupí, zanechá něco za sebou — pozornost Lešije, vzpomínku, kousek dechu.</p>
+<div class="callout"><strong>Krvavý Dub:</strong> Centrální posvátný strom, kůra načervenalá od dávných obětí. Kolem lebky a totemy. Gorazd ho chce pokácet. Libuše říká: krvavý dub je zástrčka — bez něj vyteče Nav do světa živých.</div>
+<h4 class="sub">Entity v hvozdu (NPC charakter)</h4>
+<table><tr><th>Jméno</th><th>Typ</th><th>Přístup</th><th>Cena za pomoc</th></tr>
+<tr><td><strong>Lesan</strong></td><td>Volchvův učedník</td><td>Nepřátelský k cizím, chrání Krvavý Dub, nenávidí biřice</td><td>Informace o hvozdu za prokázanou úctu k Staré cestě</td></tr>
+<tr><td><strong>Milhost</strong></td><td>Šílený poustevník</td><td>Žije u mohyl, mluví s duchy, byl vojín — traumatizovaný</td><td>Přeloží avarské runy za doprovázeí zpátky k mohylám</td></tr>
+<tr><td><strong>Lešij</strong></td><td>Duch lesa (entita)</td><td>Neosobní, mate cestu — testuje, kdo si hvozd zaslouží</td><td>Nabídni dar z lesa (krev, jméno, vzpomínku)</td></tr>
+<tr><td><strong>Bílá Srnka</strong></td><td>Zvěstovatel osudu</td><td>Pasivní — její výskyt = blízkost velkého neštěstí nebo zázraku</td><td>Nelze „mluvit" — jen interpretovat</td></tr>
+</table>
+<h4 class="sub">Jména pro improvizaci — v hvozdu</h4>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Bolemír','vyvrženec, žije v lese 3 roky, zná každou stezku za cenu')"><span class="bn-name">Bolemír</span><span class="bn-arch">lesnický vyvrženec</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Tmavka','přezdívka ženy co nosí zásoby volchvům, mlčí')"><span class="bn-name">Tmavka</span><span class="bn-arch">kurýrka volchvů</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Drahan','zběhlý vojín od Bořuty, hledá azyl v hvozdu')"><span class="bn-name">Drahan</span><span class="bn-arch">dezertér, ozbrojený</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Kvítka','sběračka léčivých bylin, moc se přiblížila k Dubu')"><span class="bn-name">Kvítka</span><span class="bn-arch">bylinkářka, zasažená</span></div>
+</div>
+<h4 class="sub">Klíčová místa v Silva Nigra</h4>
+<table><tr><th>Místo</th><th>Vzdálenost</th><th>Co najdou</th><th>Riziko</th></tr>
+<tr><td>Krvavý Dub</td><td>Srdce hvozdu</td><td>Posvátné obětiště, Dubové slzy (lék na sněť), Lesan</td><td>Svatokrádež = trest od Volchvů</td></tr>
+<tr><td>Mohylník Tří sester</td><td>1 den chůze V</td><td>3 avarské mohyly, nerezavějící meč, bronzová maska</td><td>Draugři, Návská tíseň</td></tr>
+<tr><td>Zapomenuté spáleniště</td><td>½ dne S</td><td>Místo kde Slované pálili avarské mrtvé. Popel, střepy zbraní</td><td>Neklidná půda +1 Ohrožení vstupem, halucinace</td></tr>
+<tr><td>Samota U Tří lip</td><td>Okraj, 2h</td><td>Modly, obětiny. Místo pro rituály Staré cesty</td><td>Můra v noci. Prach z ritual probudí duchy</td></tr>
+<tr><td>Vyjící rokle</td><td>7h chůze SZ</td><td>Doupě Psoglavů — Alfa s náhrdelníkem z prstů horníků</td><td>Organizovaná smečka, úzký terén</td></tr>
+</table>
+</div>
+</div>
+
+<!-- MRTVÉ MOČÁLY -->
+<div class="card">
+<div class="ch" onclick="toggleCard(this)"><span class="cn">🌊 Mrtvé močály</span><span class="cr">Delta Běsice, jižní část panství</span><span class="ct">▼</span></div>
+<div class="cb">
+<p>Bludičky lákají do hlubokých tůní (ignis fatuus). Pod hladinou Utopenci a Rusalky. Rybí karaváky tu tuhnou za mlhy. Delta je živé bludiště.</p>
+<div class="callout"><strong>Potopená avarská věž:</strong> Ruina v blátě jižní delty. Sklepení s pokladem, střeží ho Bauk — démon který se bojí světla, pohybuje se stíny neslyšně. Vchod skrytý za vodopádem.</div>
+<h4 class="sub">NPC v močálech</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Háček</th></tr>
+<tr><td><strong>Bezuch</strong></td><td>Převozník, hluchoněmý (nebo předstírá)</td><td>Vidí věci pod hladinou. Kreslí do písku. Za převoz chce „věc, co nepatří lidem" — šupinu vodníka, jantar.</td></tr>
+<tr><td><strong>Stojan</strong></td><td>Rybář, ošlehaný větrem</td><td>Rusalka mu vzala bratra. Hledá ji s harpunou. Nikdy se nepřiblíží k jezeру bez pití.</td></tr>
+<tr><td><strong>Janek</strong></td><td>Uprchlík v rákosí</td><td>Skrývá se na ostrůvku v jezeře. Dluhy? Nebo něco horšího? Paranoidní, nespal dny.</td></tr>
+<tr><td><strong>Květava</strong></td><td>Sběračka rákosí</td><td>Mokré sukně, prasklá kůže na nohou. Zná každou tůň kde se projde suchou nohou.</td></tr>
+<tr><td><strong>Jantarový Jan</strong></td><td>Hledač jantaru v deltě</td><td>Zná cestu k avarské věži. Zná Bezucha. Dodává jantar Luborovi. Vídá věci v mlze.</td></tr>
+</table>
+<h4 class="sub">Jména pro improvizaci — Mrtvé močály</h4>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Sítí','přezdívka rybáře, chytá víc duší než ryb v poslední době')"><span class="bn-name">Sítí</span><span class="bn-arch">rybář, pověrčivý</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Mokřina','stará žena, sbírá bylinky na bahně, slyší rusalky zpívat')"><span class="bn-name">Mokřina</span><span class="bn-arch">stará, půl šílená</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Lev','vojín co hlídá brod, unaven, chce převelení')"><span class="bn-name">Lev</span><span class="bn-arch">voják u brodu</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Kaluž','přezdívka kluka co vyrůstá v deltě, umí plovit jako ryba')"><span class="bn-name">Kaluž</span><span class="bn-arch">místní chlapec</span></div>
+</div>
+</div>
+</div>
+
+<!-- BOJANŮV HAMR -->
+<div class="card">
+<div class="ch" onclick="toggleCard(this)"><span class="cn">🔥 Bojanův hamr</span><span class="cr">Kovárna, soběstačná usedlost</span><span class="ct">▼</span></div>
+<div class="cb">
+<p>Neutrální půda v konfliktech — Bojan prodá každému, kdo zaplatí. Staví se k víře pragmaticky: uctívá Svaroga, protože „kovář potřebuje nebeský oheň, ne sliby z papíru".</p>
+<h4 class="sub">NPC v hamru</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Háček</th></tr>
+<tr><td><strong>Kovář Bojan</strong></td><td>Majitel, mistr kovář</td><td>Zbylí po ženě, strach z Běsů. Tajně prodává zbraně i Bořutovi.</td></tr>
+<tr><td><strong>Chval</strong></td><td>Pravá ruka, tovaryš</td><td>Popálené předloktí, extrémně mlčenlivý, sleduje ruce každého návštěvníka.</td></tr>
+<tr><td><strong>Milena</strong></td><td>Bojanova žena, finanční správkyně</td><td>Ostrý jazyk, každou hřivnu obrátí třikrát. Ví o tajném obchodu s Bořutou.</td></tr>
+<tr><td><strong>Duben</strong></td><td>Dřevorubec</td><td>Jizva z padající větve přes obličej. Ví kde jsou staré vlčí jámy, na které se zapomnělo.</td></tr>
+<tr><td><strong>Železka</strong></td><td>Učedník, 14 let</td><td>Bystrý chlapec, touží cestovat, slyší šeptání z kovu při kalení.</td></tr>
+</table>
+<h4 class="sub">Jména pro improvizaci — Hamr & okolí</h4>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Slavomír','zákazník co přišel pro čepel, zůstal týden bez důvodu')"><span class="bn-name">Slavomír</span><span class="bn-arch">záhadný zákazník</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Brána','přezdívka velké ženy co kuje bez slova, nová tovaryška')"><span class="bn-name">Brána</span><span class="bn-arch">mlčenlivá tovaryška</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Mladen','dodavatel dřevěného uhlí, šílí z hluku, pije hodně')"><span class="bn-name">Mladen</span><span class="bn-arch">dodavatel, alkoholik</span></div>
+</div>
+</div>
+</div>
+
+<!-- SOUSEDÉ -->
+<h3 class="st">Sousední panství</h3>
+<div class="g2">
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">🏛 Severní brána (Sever, 3 dny)</span><span class="ct">▼</span></div>
+<div class="cb"><p>Kamenná pevnost Říše. <strong>Kastelán Bernard z Auerspergu</strong> — nadřízený Mstislava, pohrdá jím. Místo stížností a církevního soudu. Skupuje veškeré stříbro v kraji — proč?</p>
+<h4 class="sub">Jména pro improvizaci</h4>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Přibyslava','Bernard\'s překladatelka, rodilá Slovaně, slouží Říši s odporem')"><span class="bn-name">Přibyslava</span><span class="bn-arch">překladatelka, rozporná</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Gerhard','Bernardův adjutant, precizní, nesnáší chaos pohraničí')"><span class="bn-name">Gerhard</span><span class="bn-arch">říšský voják</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Václav','kněz co sjel z Říší, chce domů, pomůže za cestu')"><span class="bn-name">Václav</span><span class="bn-arch">kněz, nostalgický</span></div>
+</div>
+</div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">⚓ Bělicí (Jih, 2 dny po Běsici)</span><span class="ct">▼</span></div>
+<div class="cb"><p>Trhové městečko, kupecký rod <strong>Vlkosů</strong>. Mstislav tu má dluhy. Nejlepší ceny za kůže. Luxusní zboží. Kosmopolitní — potkáš tu lidi ze 3 kultur.</p>
+<h4 class="sub">Klíčoví obchodníci</h4>
+<table><tr><th>Jméno</th><th>Obor</th><th>Háček</th></tr>
+<tr><td>Lubor</td><td>Vetešník</td><td>Prodá cokoliv. Koupí info za správnou cenu.</td></tr>
+<tr><td>Plav</td><td>Vorař</td><td>Splavuje kmeny. Ví o všem co pluje řekou — i tělech.</td></tr>
+<tr><td>Květa</td><td>Tkaladlena</td><td>Špatný zrak, výborná paměť. Ceny lnu i informací.</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Ondřej','kupec co přijel ze severu, hledá jantar, o hvozdu neví nic')"><span class="bn-name">Ondřej</span><span class="bn-arch">naivní kupec ze severu</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Drahomíra','majitelka lázní, sbírá dluhopisy mocných')"><span class="bn-name">Drahomíra</span><span class="bn-arch">lázně, vydírání</span></div>
+</div>
+</div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">🐦 Havraní skála (Západ, 2 dny)</span><span class="ct">▼</span></div>
+<div class="cb"><p>Hradiště bez rotundy. <strong>Vladyka Bořuta „Starokrev"</strong> — nenávidí Mstislava, podporuje Vlčí hlavy. Útočiště pro uprchlíky před církví. Starých tradic pevnost.</p>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Radovan','Bořutův posel, přátelský, sleduje pro pána')"><span class="bn-name">Radovan</span><span class="bn-arch">Bořutův agent</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Světluše','uprchlá konkubína z Újezdu, hledá azyl u Bořuty')"><span class="bn-name">Světluše</span><span class="bn-arch">uprchlice, hledá azyl</span></div>
+</div>
+</div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">✝ Opatství Sv. Maří (SV, 2,5 dne)</span><span class="ct">▼</span></div>
+<div class="cb"><p>Klášter benediktinů. <strong>Opat Silvestr</strong> — zájem o alchymii víc než modlitby. Nejlepší knihovna. Dodává Mstislavovi léky výměnou za „diskrétnost".</p>
+<h4 class="sub">Klášterní NPC</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Háček</th></tr>
+<tr><td>Opat Silvestr</td><td>Opat, alchymista</td><td>Studuje co církev zakazuje. Má spisy o avarské magii.</td></tr>
+<tr><td>Bratr Ambrož</td><td>Knihovník</td><td>Slepý na jedno oko od bylinného experimentu. Ví vše co je v knihovně.</td></tr>
+<tr><td>Sestra Klára</td><td>Lékárnice</td><td>Jedinou která opravdu věří, to pro ni není povolání — je to poslání.</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Benedikt','mladý mnich co právě přišel z Říší, šokován pohraničím')"><span class="bn-name">Benedikt</span><span class="bn-arch">naivní novic</span></div>
+</div>
+</div></div>
+</div>
+</div>
+
+<!-- ────────────────── NOVÉ OBLASTI ──────────────── -->
+<div class="page" id="page-newregions">
+<h2 class="page-title">🌍 Nové oblasti — Rozšíření světa</h2>
+<p>Tyto oblasti leží za hranicemi jádra panství. Poskytují nové prostory pro expedice, obchod a konfrontaci s většími silami světa.</p>
+
+<div class="g4" style="margin:14px 0;">
+<div class="hex-region" onclick="scrollTo(0,0)"><span class="hr-icon">⛰</span><div class="hr-name">Šedá hora</div><div class="hr-diff">Nebezpečí: ★★★</div></div>
+<div class="hex-region"><span class="hr-icon">💀</span><div class="hr-name">Pohřební rovina</div><div class="hr-diff">Nebezpečí: ★★★★</div></div>
+<div class="hex-region"><span class="hr-icon">🛣</span><div class="hr-name">Solná stezka</div><div class="hr-diff">Nebezpečí: ★★</div></div>
+<div class="hex-region"><span class="hr-icon">🔥</span><div class="hr-name">Nová mýtina</div><div class="hr-diff">Nebezpečí: ★</div></div>
+<div class="hex-region"><span class="hr-icon">🕳</span><div class="hr-name">Podzemí Újezdu</div><div class="hr-diff">Nebezpečí: ★★★</div></div>
+<div class="hex-region"><span class="hr-icon">🏕</span><div class="hr-name">Avarský tábor</div><div class="hr-diff">Nebezpečí: ★★★★</div></div>
+<div class="hex-region"><span class="hr-icon">🏝</span><div class="hr-name">Záhadný ostrov</div><div class="hr-diff">Nebezpečí: ★★</div></div>
+<div class="hex-region"><span class="hr-icon">🌾</span><div class="hr-name">Pelyňková louka</div><div class="hr-diff">Nebezpečí: ★</div></div>
+</div>
+
+<!-- ŠEDÁ HORA -->
+<h3 class="st">⛰ Šedá hora — Horský hřeben nad Vlčím Dolem</h3>
+<div class="callout iron">Vzdálenost od Újezdu: ~2 dny. Přístup: Horská stezka přes milíře, pak kamenitý výstup. Ovládá ji: Nikdo — nicméně Avaři pravidelně přepadají horské přechody.</div>
+<p>Skalnatý hřeben nad údolím Vlčího Dolu. Starší havíři pamatují dobu, kdy tu stávaly avarské hlídkové věže. Dnes zůstaly jen zarostlé základy a podivné nápisy v kameni. Místní pastevci tvrdí, že v bouřce Perunovy blesky míří vždy na <strong>Perunovu skálu</strong> — plochý balvan na vrcholu hřebenu, pokrytý vybitými pruhy.</p>
+<div class="g2">
+<div class="card">
+<div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">⚡ Perunova skála</div>
+<p style="font-size:13px;margin-top:7px;">Plochý balvan na vrcholu hřebenu. Za bouřky sem míří blesky s nadpřirozenou pravidelností. Pohanský rituál zde = +2 k hodům na Tělo po dobu 24h. Ale přivábí bouři i v bezvětří.</p>
+</div>
+<div class="card">
+<div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">🗼 Zřícenina Avarské věže</div>
+<p style="font-size:13px;margin-top:7px;">Základy kamenné strážní věže. V sutinách: nerezavějící skoby, zbytky kuší jiného konstruktu. Jedno patro stále stojí — výhled na 20 km. Ideální pozorovatelna.</p>
+</div>
+</div>
+<h4 class="sub">NPC — Šedá hora</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Charakter</th><th>Háček</th></tr>
+<tr><td><strong>Pastýř Svatomír</strong></td><td>Pastevec koz, místní „starosta"</td><td>Starý, klidný, kouří pěnkavu, mluvní jen s tím, komu věří</td><td>Zná bezpečné horské cesty. Za informace chce ochranu stáda před vlky.</td></tr>
+<tr><td><strong>Vanda</strong></td><td>Svatomírova vnučka</td><td>16 let, přehnaně zvědavá, vylézá na věž navzdory zákazům</td><td>Zakreslila mapu okolí. Viděla z věže Avarský tábor.</td></tr>
+<tr><td><strong>Kmen (Přezdívka)</strong></td><td>Poustevník u Perunovy skály</td><td>Nemluví — komunukuje výkřiky a gesty. Byl zasažen bleskem? Nebo proměněn?</td><td>Provádí rituály na skále každou noc. Kdo ho sem poslal?</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Horoslav','horský lovec, pronásleduje vzácného jelena tři týdny')"><span class="bn-name">Horoslav</span><span class="bn-arch">lovec, obsedantní</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Kytice','pastevkyně, zraněná Avarským šípem, potřebuje pomoc')"><span class="bn-name">Kytice</span><span class="bn-arch">pastevkyně, zraněná</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Zloděj oblak','přezdívka průvodce horami, zná cesty co Avaři nehlídají')"><span class="bn-name">Zloděj oblak</span><span class="bn-arch">horský průvodce</span></div>
+</div>
+
+<!-- POHŘEBNÍ ROVINA -->
+<h3 class="st">💀 Pohřební rovina — Srdce Avarské posmrtné přítomnosti</h3>
+<div class="callout">Vzdálenost: 1,5 dne hluboko do Silva Nigra (na východ). Plochá kotlina uprostřed hvozdu kde stromy řídnou — a přitom tu není světlo. Vzduch je studený i v srpnu.</div>
+<p>Desítky avarských mohyl rozmístěných bez zjevného řádu. Bílý mech pokrývá vše. Půda je na dotek studená jako ve sklepě. Milhost tu žije v rozpadlé chýši a „rozhovory" s duchy označuje za každodenní rutinu.</p>
+<p>Avaři věří, že pohřbení zde drží jejich nárok na tuto zem. Jejich živí šamani (Kamové) sem putují jednou za rok provést rituál — obnovit kletbu.</p>
+<h4 class="sub">Klíčové mohyly</h4>
+<table><tr><th>Mohyla</th><th>Co ukrývá</th><th>Strážce</th><th>Nebezpečí</th></tr>
+<tr><td><strong>Mohyla Starého Khana</strong></td><td>Zlatá číše s Tengriovým symbolem, avarský luk z ohrnutého rohu (Charakteristika 8)</td><td>Silný Draugr — Khan sám, neklouzák obrany</td><td>Zabiješ-li ho, Kuvrati ho pocítí. Přijdou.</td></tr>
+<tr><td><strong>Mohyla Šamanky</strong></td><td>Runové kameny pro věštění, amulet Erlik-Chána (+2 k rozhovorům s mrtvými)</td><td>Slabý Strigoň, ale volá spolučníky</td><td>Amulet přitahuje duchy kde ho nosiš</td></tr>
+<tr><td><strong>Mohyla Tří sester</strong></td><td>Tři pohřbené bojovnice, bronzové náramky, nerezavějící krátký meč</td><td>Tři slabší Draugři útočící koordinovaně</td><td>Jejich přísaha přežila smrt — kdo ukradne zbraně, je součástí jejich příběhu</td></tr>
+<tr><td><strong>Prázdná mohyla</strong></td><td>Prázdná — kdo tu byl pohřben? Zlaté sponky, zbytky kůže</td><td>Nic... ale je tu teplo</td><td>Toto je místo, kde se Avarský Kam ukryl po rituálu</td></tr>
+</table>
+<h4 class="sub">NPC — Pohřební rovina</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Charakter & Háček</th></tr>
+<tr><td><strong>Milhost</strong></td><td>Šílený poustevník, ex-válečník</td><td>Mluví s duchy jako s sousedy. Dokáže přeložit avarské runy. Chce jen klid a tabák.</td></tr>
+<tr><td><strong>Kam Ulján</strong></td><td>Avarský šaman, příchozí z táborů</td><td>Přichází jednou za rok, nevraživě sleduje kohokoli u mohyl. Vypadá na 90, pohybuje se jako kočka. Není tu pro boj — je tu pro obřad.</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Bezejmenný','vyvrženec co spí u mohyl, tvrdí že mu duchové nosí sny')"><span class="bn-name">Bezejmenný</span><span class="bn-arch">vyvrženec, snář</span></div>
+</div>
+
+<!-- SOLNÁ STEZKA -->
+<h3 class="st">🛣 Solná stezka — Obchodní tepna jihu</h3>
+<div class="callout iron">Jednodenní trasa od Bělicí na sever do Újezdu. Polooficiální cesta — Mstislav ji „udržuje" (sbírá mýto), ale de facto ji kontrolují kupci a bandité střídavě.</div>
+<p>Prašná letní cesta, blátivé koryto na jaře a na podzim. Solné karavany táhnou dvakrát do měsíce. Podél trasy:</p>
+<div class="g2">
+<div class="card">
+<div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">🏨 Kupecký dvorec „U Tří cest"</div>
+<p style="font-size:13px;margin-top:7px;">Největší komerční ubytovna v kraji. Dřevěná, kouřová, vždy obsazená. Neutrální půda — i nepřátelé si tu nemohou otevřeně ublížit (zvyk, ne zákon). Pokud chceš vydírat, vyjednávat nebo shromažďovat informace — jsi tady.</p>
+</div>
+<div class="card">
+<div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">🪨 Kamenný brod</div>
+<p style="font-size:13px;margin-top:7px;">Mělký přechod přes Běsici. Vladykův výběrčí mýta tu sedí v chladném dešti a vybírá „ochranu" — 2 plátna za vůz, 1 za pěšáka. Místní chodí o 2 km dál bažinami, zdarma.</p>
+</div>
+</div>
+<h4 class="sub">NPC — Solná stezka</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Charakter & Háček</th></tr>
+<tr><td><strong>Hospodský Lubor</strong></td><td>Majitel Kupeckého dvorce</td><td>Tučný, přátelský, všechno slyší. Prodá info oběma stranám. Má svůj „kodex" — zrádci kupce jsou na blacklistu.</td></tr>
+<tr><td><strong>Výběrčí Hynek</strong></td><td>Vladykův celník u brodu</td><td>Mlád, nafoukaný, zbírá mýto i kde nemá právo. Šikanuje malé karavany, velké nechá projít.</td></tr>
+<tr><td><strong>Karavanář Semjon</strong></td><td>Vedoucí solné karavany</td><td>Přijíždí pravidelně. Zná všechny plotky od Bělicí po Sever. Za správnou cenu přepraví i lidi.</td></tr>
+<tr><td><strong>Zloděj Párek</strong></td><td>Kapesní zloděj u dvorce</td><td>Malý, nenápadný, pracuje pro Vlčí hlavy. Označuje karavany, co se vyplatí přepadnout.</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Jaroslav','kupec s důležitým dopisem, bojí se ho doručit')"><span class="bn-name">Jaroslav</span><span class="bn-arch">kupec, má tajemství</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Tichomír','voják Bernarda camouflage jako kupec, sleduje karavany')"><span class="bn-name">Tichomír</span><span class="bn-arch">přestrojený zvěd</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Dívka bez jména','mladá uprchlice v karaváně, neřekne odkud ani kam')"><span class="bn-name">Bez jména</span><span class="bn-arch">dívka, uprchlice</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Kopytník','přezdívka vetešníka co jezdí s karavanou, prodává vše')"><span class="bn-name">Kopytník</span><span class="bn-arch">pojízdný vetešník</span></div>
+</div>
+
+<!-- NOVÁ MÝTINA -->
+<h3 class="st">🔥 Nová mýtina „U Dubového pahýlu"</h3>
+<div class="callout green">Vzdálenost od Újezdu: 3h chůze JZ. Nová osada — teprve rok stará. 8 rodin, 40 lidí. Žádná rotunda, žádná vladykova přítomnost. Svoboda, ale i zranitelnost.</div>
+<p>Mýtina vznikla poté, co rodiny z Újezdu dostaly půdu výměnou za odvedení syna do vladykovy družiny. Je to experiment — hraniční osada, která má být nárazníkem. Pahýl dubů uprostřed (odsud název) byl posvátný — byl skácen, ale kořeny stále živé a slyšitelné v noci.</p>
+<div class="g2">
+<div class="card"><div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">Atmosféra</div>
+<p style="font-size:13px;margin-top:7px;">Optimismus prvního roku střídá strach druhého. Vlci přiblíží, Vlčí hlavy testují hranice. Ženy skrývají bylinné amulety, muži přísahají na kříž. Tady začíná rozpad nebo přežití.</p></div>
+<div class="card"><div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">Co osada potřebuje</div>
+<p style="font-size:13px;margin-top:7px;">Kovář — nejbližší je Bojanův hamr (3h). Lékař — nikdo. Kněz — Gorazd sem přijde „brzy". Zbraně — 3 oštěpy, 1 sekera. Ochrana — nikdo.</p></div>
+</div>
+<h4 class="sub">NPC — Nová mýtina</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Charakter & Háček</th></tr>
+<tr><td><strong>Starosta Miroslav</strong></td><td>Neoficiální vedoucí osady, rolník</td><td>Pragmatický otec sedmi dětí. Věří v kříž i v Peruna. Chce jen aby osada přežila. Bude spolupracovat s kýmkoli rozumným.</td></tr>
+<tr><td><strong>Baba Zuzana</strong></td><td>Nejstarší žena osady, „moudrá žena"</td><td>Pamatuje Avary z dětství. Zná byliny a zaříkání. Nechce aby sem přišel kněz.</td></tr>
+<tr><td><strong>Bodlák</strong></td><td>Mladý strážce, přezdívka</td><td>18 let, sebevědomý, nevyzpytatelný. Je to syn onoho vojína? Nebo syn jiného?</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Olena','matka trojčat, jedno se nenarodilo mrtvé, ale...)"><span class="bn-name">Olena</span><span class="bn-arch">matka, zlé znamení</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Ctirad','pastevec co zahnal vlky sám. Jak?')"><span class="bn-name">Ctirad</span><span class="bn-arch">pastevec, tajemství</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Klára','dítě co chodí ke kořenům pahýlu v noci a povídá si')"><span class="bn-name">Klára</span><span class="bn-arch">dítě, kontakt s kořeny</span></div>
+</div>
+
+<!-- PODZEMÍ -->
+<h3 class="st">🕳 Podzemí pod Újezdem — Staré tunely</h3>
+<div class="callout">Vstup: Tajný. Přístup přes sklep vladykovy sýpky (Hospodyně Milada ví). Nikdo přesně neví jak hluboko jdou. Horymír se domněl, že nová šachta č.3 je propojená — odtud šeptání.</div>
+<p>Síť tunelů, která existuje déle než hradiště. Základy rotundy narazily na jeden tunel — Gorazd ho dal zazdít a o věci mlčí. Části podzemí jsou přirozené jeskyně, části tesvané rukou. <strong>Kým a proč?</strong></p>
+<h4 class="sub">Sektory podzemí</h4>
+<table><tr><th>Sektor</th><th>Popis</th><th>Hrozba</th><th>Poklad</th></tr>
+<tr><td><strong>Stará studna</strong></td><td>Přirozená jeskynní studna — voda černá jako v Mrtvém prameni</td><td>Vodní entita, nespí</td><td>Dno pokryto mincemi z 5 různých epoch</td></tr>
+<tr><td><strong>Vytesané chodby</strong></td><td>Pravidelné, dláto-stopy na stěnách, neznámé symboly</td><td>Klaustrafobie, orientace</td><td>Starý pergamen v niche — čitelný? Kdo ho tu nechal?</td></tr>
+<tr><td><strong>Zápar</strong></td><td>Místo kde se tunel stýká s šachtou č.3 — vzduch páchne sirami</td><td>Jedovaté plyny, Náročnost 3 přežití</td><td>Avarský poklad ukrytý za plynem</td></tr>
+<tr><td><strong>Uzavřená komora</strong></td><td>Zamurovaná Gorazdem. Co za ní je — kosti? Oltář?</td><td>Gorazd — zjistí, kdo to otevřel</td><td>???</td></tr>
+</table>
+
+<!-- AVARSKÝ TÁBOR -->
+<h3 class="st">🏕 Avarský tábor — Kuvrati v Silva Nigra</h3>
+<div class="callout">Pohyblivý tábor — 40–80 jezdců. Nepravidelně se přesouvá podél hranic Silva Nigra. Najít ho: hod Přežití Náročnost 3 nebo intel od Vakouna (stopaře). Přijít sem bez pozvání = smrt nebo zajatí.</div>
+<p>Avaři jsou disciplinovaná vojenská síla — ne bandité. Mají hierarchii, kódy cti, vlastní zákony. Jsou krutí k nepřátelům a přísní k sobě. <em>Lze s nimi vyjednávat</em> — ale jenom pokud přijdete s silou nebo statusem.</p>
+<h4 class="sub">Klíčové postavy tábora</h4>
+<table><tr><th>Jméno</th><th>Titul</th><th>Charakter & Přístup</th></tr>
+<tr><td><strong>Kagan Baján ml.</strong></td><td>Velitel kuvratů</td><td>40 let, jizvy přes tvář, inteligentní stratég. Mluví několika jazyky. Pohrdá Slovany ale respektuje sílu. Nebojuje o to, co nemá cenu — bojuje o budoucnost. Má plán.</td></tr>
+<tr><td><strong>Kam Ulján</strong></td><td>Šaman</td><td>Starý. Kontakt s pohřební rovinou. Ví o Krvavém Dubu víc než Libuše.</td></tr>
+<tr><td><strong>Temür</strong></td><td>Velitel osobní stráže</td><td>Mladý, brutální, zkouší každého nováčka v souboji. Spravedlivý dle vlastního kódu.</td></tr>
+<tr><td><strong>Boguslav</strong></td><td>Slovanský otrok, překladatel</td><td>Z Újezdu. Byl zajat jako dítě. Vypadá avarsky v myšlení. Pomůže? Za co?</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Aibek','mladý Avar, tajně se učí Slovanský jazyk, fascinuje ho Stará cesta')"><span class="bn-name">Aibek</span><span class="bn-arch">mladý Avar, zvědavý</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Zajatec č.3','Slovan zajatý před 3 týdny, ví věci o pohybu tábora')"><span class="bn-name">Zajatec (bez jména)</span><span class="bn-arch">vězeň se znalostmi</span></div>
+</div>
+
+<!-- ZÁHADNÝ OSTROV -->
+<h3 class="st">🏝 Záhadný ostrov — Delta Běsice</h3>
+<div class="callout green">Přístup: pouze člunem (viz Bezuch). Malý ostrov 80×50m uprostřed jezerní části delty. Rákosí ho skrývá z břehu.</div>
+<p>Tři věci dělají ostrov výjimečným: (1) Kamenný kruh — 9 balvanů, polovina pod vodou. Starší než Avaři, starší než Slované. (2) Janek se tu skrývá. (3) Ptáci sem nelétají. Nikdy. Ani v létě.</p>
+<h4 class="sub">Co se tu děje</h4>
+<table><tr><th>Záhada</th><th>Co hráči vidí</th><th>Pravda (pro vypravěče)</th></tr>
+<tr><td>Kamenný kruh</td><td>Symboly vyhlodány vodou, jeden kámen hřeje na dotek</td><td>Starý pohanský komunikační uzel — lze s ním kontaktovat duchy nebo entitu v jezeře</td></tr>
+<tr><td>Janekův úkryt</td><td>Chatrč z rákosí, zásoby na 3 dny, zakopané zlato</td><td>Janek není dlužník — je svědek vraždy. Ví kdo zabil vladykova posla loni v zimě.</td></tr>
+<tr><td>Ticho ptáků</td><td>Absolutní ticho mimo vítr</td><td>V hloubce pod ostrovem spí entita — vodní, stará, neznámá ani ruskalkám. Kamové o ní vědí.</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Janek','uprchlík, svědek vraždy, ví příliš, paranoidní')"><span class="bn-name">Janek</span><span class="bn-arch">uprchlík, klíčový svědek</span></div>
+</div>
+
+<!-- PELYŇKOVÁ LOUKA -->
+<h3 class="st">🌾 Pelyňková louka — Sever od Újezdu, 1h</h3>
+<div class="callout green">Jednoduše přístupná. Léto: plná stříbrného pelyňku a jiných léčivých bylin. Zima: pustá, ale byliny zmrzlé mají dvojnásobnou sílu jako sušené.</div>
+<p>Klidné místo. Zdánlivě. Ale brtníci (lesní včelaři) si tu zřídili tajné schůzky — a platí daně vosku nejen vladykovi, ale i Volchvům. Louka je neutrální půda pro tajné setkání.</p>
+<h4 class="sub">NPC — Louka</h4>
+<table><tr><th>Jméno</th><th>Role</th><th>Háček</th></tr>
+<tr><td><strong>Brtník Slavko</strong></td><td>Lesní včelař</td><td>Platí daň medovinou vladykovi — a tajně bylinami Libuši. Nechce problémy, ale ví moc.</td></tr>
+<tr><td><strong>Věra</strong></td><td>Mastičkářka z Újezdu, sbírá zde</td><td>Konkuruje Sestře Anežce i Doubravce. Nezávisí na nikom. Za bylinky vyléčí — za informaci o příštím výletu, vyléčí zadarmo.</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Zlaťák','přezdívka brtnických pomocníků, vždy žlutý od vosku')"><span class="bn-name">Zlaťák</span><span class="bn-arch">brtník, neukecatelný</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Poutník','cizinec co sbírá byliny do pytle, nechce říct proč nebo pro koho')"><span class="bn-name">Poutník</span><span class="bn-arch">záhadný sběrač</span></div>
+</div>
+</div>
+
+<!-- ────────────────── FRAKCE & NPC ──────────────── -->
+<div class="page" id="page-factions">
+<h2 class="page-title">⚔ Frakce & NPC</h2>
+
+<h3 class="st">Vladykův dvůr — Oceňování oceli</h3>
+<div class="callout iron">Cíle: stabilita, dynastické následnictví Radima, obrana před hvozdem a Avary. Oficálně křesťané, soukromě věrní tradicím.</div>
+<div class="g2">
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">Vladyka Mstislav „Železný"</span><span class="cr">Věk 55 — Vládce</span><span class="ct">▼</span></div>
+<div class="cb"><div class="stat-block"><div class="stat-row"><div class="stat"><span class="val">5</span><span class="lbl">Tělo</span></div><div class="stat"><span class="val">4</span><span class="lbl">Duše</span></div><div class="stat"><span class="val">6</span><span class="lbl">Vliv</span></div></div></div>
+<p style="margin-top:9px;">Přežil brutalitou a paranoiou. Tělo = mapa jizev. Přijal křest pro zbraně z Říše, v soukromí nosí Perunovu sekeru. Cíl: Radim musí vládnout.</p>
+<p><strong>Motivace v tuto chvíli:</strong> Bernard na něj tlačí. Bořuta provokuje na západě. Libuše mu tajně radí. <em>Komu věří?</em></p>
+<span class="tag iron">Podřízený Bernardovi (napětí)</span><span class="tag red">Rival Bořuty</span><span class="tag gold">Tajná dohoda: Libuše</span></div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">Syn Radim</span><span class="cr">Věk 20 — Dědic, problém</span><span class="ct">▼</span></div>
+<div class="cb"><div class="stat-block"><div class="stat-row"><div class="stat"><span class="val">6</span><span class="lbl">Tělo</span></div><div class="stat"><span class="val">2</span><span class="lbl">Duše</span></div><div class="stat"><span class="val">4</span><span class="lbl">Vliv</span></div></div></div>
+<p style="margin-top:9px;">Vynikající bojovník, katastrofální vládce. Pohrdá vším slabým. Vrací se v noci s cizí krví. <strong>Obsedantní zájem o Starou cestu</strong> — ne z víry, ale z touhy po moci bez kněžích.</p>
+<span class="tag red">Vztah k hráčům: testuje jejich sílu prvním setkáním</span></div></div>
+</div>
+
+<h3 class="st">Církevní misie — Nový řád</h3>
+<div class="callout">Cíle: christianizace, zničení Krvavého Dubu, inkvizice. Magie = dílo ďábla. Ale ne každý věří z přesvědčení — někteří jen ze strachu.</div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">Otec Gorazd</span><span class="cr">Věk 30 — Fanatik s mozkem</span><span class="ct">▼</span></div>
+<div class="cb"><div class="stat-block"><div class="stat-row"><div class="stat"><span class="val">2</span><span class="lbl">Tělo</span></div><div class="stat"><span class="val">6</span><span class="lbl">Duše</span></div><div class="stat"><span class="val">5</span><span class="lbl">Vliv</span></div></div></div>
+<p style="margin-top:9px;">Inteligentní, nekompromisní. Věří každé slovo toho co říká — to je co ho dělá nebezpečným. Ale <strong>v rotundě pálí tajné pergameny</strong>. Má vlastní projekt, o kterém Bernard neví.</p>
+<p><em>Tajemství Gorazda:</em> Sbírá záznamy o nadpřirozených událostech — ne aby je potlačil, ale aby je pochopil a ovládl pro Církev.</p></div></div>
+<div class="g2">
+<div class="card"><div style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;margin-bottom:7px;">Bratrstvo Biče</div><p style="font-size:13px;">3 mniši-bojovníci. Hrubé hábity, kroužkové košile. Hledají vykoupení. Jsou to: Metoděj (velitel, exvoják), Ezra (léčitel, temná minulost), a Poutník (mladý, pochybuje).</p></div>
+<div class="card"><div style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;margin-bottom:7px;">Sestra Anežka</div><p style="font-size:13px;">Bylinkářka, milosrdná, konkuruje Doubravce. Tajně věří, že Stará cesta a Nová víra nejsou nepřátelé — jen různé dialekty jedné pravdy. Nikdy to neřekne nahlas.</p></div>
+</div>
+
+<h3 class="st">Starověrci — Kruh Volchvů</h3>
+<div class="callout gold">Cíle: ochrana posvátných míst, udržení rovnováhy. Za pomoc: krev, vzpomínka, nebo slib.</div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">Vědma Libuše</span><span class="cr">Věk neznámý — Baba Jaga</span><span class="ct">▼</span></div>
+<div class="cb"><div class="stat-block"><div class="stat-row"><div class="stat"><span class="val">2</span><span class="lbl">Tělo</span></div><div class="stat"><span class="val">8</span><span class="lbl">Duše</span></div><div class="stat"><span class="val">7</span><span class="lbl">Vliv</span></div></div></div>
+<p style="margin-top:9px;">Chýše na kůlech v bažině. Strážkyně rovnováhy. Pomůže — za cenu. Morálka nelidská. Jednání s ní: <em>nikdy nelži, nikdy neptej se na co nechceš vědět odpověď</em>.</p>
+<p><strong>Co Libuše ví (co ostatní nevědí):</strong> Krvavý Dub je zástrčka, ne symbol. Pod ním je prastarý průchod do Navu. Pokud strom padne, Nav se otevře.</p></div></div>
+
+<h3 class="st">Vlčí hlavy — Vyvrženci</h3>
+<div class="callout">Původně svobodní lidé. Dnes organizovaná divočina. Nosí vlčí kůže, útočí na karavany. Ale lze vyjednávat — skrze sílu nebo čest.</div>
+<table><tr><th>Jméno</th><th>Role</th><th>Charakter</th><th>Cena za spolupráci</th></tr>
+<tr><td><strong>Náčelník Vlk</strong></td><td>Vůdce klanu</td><td>50 let, jizva přes oko, mlčenlivý, spravedlivý dle divočiny</td><td>Prokázání síly v souboji nebo zrušení mýta na jejich teritoriu</td></tr>
+<tr><td><strong>Vrtoch</strong></td><td>Zvěd, sabotér</td><td>Mladý, rychlý, mluví dvěma jazyky, vypadá jako obchodník</td><td>Informace za informaci; je to on co označuje karavany Párkovi</td></tr>
+<tr><td><strong>Šarka</strong></td><td>Léčitelka klanu</td><td>Žena, studovala u Libuše, ale odešla — proč?</td><td>Vyléčí bez ceny toho, kdo přijde sám a zranění je z boje za spravedlnost</td></tr>
+</table>
+<div class="blank-npc-grid">
+<div class="blank-npc" onclick="openImprovPanel(this,'Býk','přezdívka největšího bojovníka Vlčích hlav, rád se dívá jak druzí bojují')"><span class="bn-name">Býk</span><span class="bn-arch">bojovník, divák</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Jehla','přezdívka zvěda co je malá a neviditelná, šije informace dohromady')"><span class="bn-name">Jehla</span><span class="bn-arch">zvěd, nenápadná</span></div>
+<div class="blank-npc" onclick="openImprovPanel(this,'Starý Dub','starý člen co pamatuje časy před Mstislavem')"><span class="bn-name">Starý Dub</span><span class="bn-arch">pamětník klanu</span></div>
+</div>
+</div>
+
+<!-- ────────────────── NÁBOŽENSTVÍ ───────────────── -->
+<div class="page" id="page-religion">
+<h2 class="page-title">🕯 Náboženství — Dvojvěří</h2>
+<div class="callout gold">Většina „obyčejných lidí" balancuje mezi oběma světy. Ráno na mši, cestou domů mince do Běsice, misku kaše u prahu pro „Hospodáříčka".</div>
+
+<h3 class="st">Nová víra — Křesťanství</h3>
+<div class="g2">
+<div class="deity"><div class="dn">☩ Bůh Otec & Spasitel</div><div class="de">Bílý Bůh — vzdálená entita</div><p style="font-size:13px;">Žádat: odpuštění, spása, mír, ochrana před „ďábelskými běsy".</p></div>
+<div class="deity"><div class="dn">⚔ Sv. Jiří</div><div class="de">Patron válečníků a nestvůrnikobijce</div><p style="font-size:13px;">Žádat: pomoc v boji s Psoglavy, ochrana při průzkumu.</p></div>
+<div class="deity"><div class="dn">⛏ Sv. Barbora</div><div class="de">Patronka horníků</div><p style="font-size:13px;">V dolech místo Velesovi — aby unikli Gorazdovu hněvu.</p></div>
+<div class="deity"><div class="dn">⚓ Sv. Klement</div><div class="de">Patron rotundy a námořníků</div><p style="font-size:13px;">Ochrna hradiště a plavby po Běsici.</p></div>
+</div>
+<p style="font-size:13px;"><em>Místa zasvěcená kříži = útočiště pro Duši (obnova +1) — ale jen pro ty, co se nezapletli s běsy.</em></p>
+
+<h3 class="st">Stará cesta — Pohanský panteon</h3>
+<p style="font-size:13px;"><em>Místa moci (háje, kamenné kruhy) = mocné rituály za platbu Jizvami nebo krví.</em></p>
+<div class="g2">
+<div class="deity"><div class="dn">⚡ Perun — Hromovládce</div><div class="de">Bůh nebes, blesku, dubu. Patron vladyky.</div><p style="font-size:13px;"><strong>Žádat:</strong> síla v boji, déšť, posvěcení přísahy (odtud Železná přísaha). <strong>DrD2:</strong> akce na Těle.</p></div>
+<div class="deity"><div class="dn">🐍 Veles — Pán podsvětí</div><div class="de">Vládce Navu, dobytka, magie. Patron horníků.</div><p style="font-size:13px;"><strong>Žádat:</strong> ruda v dole, ochrana stád, obchod, klid mrtvých. <strong>DrD2:</strong> Lstivost + Stará magie.</p></div>
+<div class="deity"><div class="dn">🌾 Mokoš — Matka země</div><div class="de">Plodnost, sklizeň, ženské práce.</div><p style="font-size:13px;"><strong>Žádat:</strong> zdravé dítě, úroda, domov. <strong>DrD2:</strong> léčení v jejích hájích snazší.</p></div>
+<div class="deity"><div class="dn">❄ Morana — Paní smrti</div><div class="de">Bohyně zimy — usmíření, ne láska.</div><p style="font-size:13px;"><strong>Žádat:</strong> rychlá smrt blízkého, odejít („přejdi můj dům"). <strong>DrD2:</strong> +1 Ohrožení v zimě.</p></div>
+<div class="deity"><div class="dn">☀ Bělobog</div><div class="de">Štěstí, jasný den. Mimořádný úspěch.</div><p style="font-size:13px;"><em>„Dej, ať mě ruka neomýlí."</em> Světlo ostré — odhaluje i slabosti.</p></div>
+<div class="deity"><div class="dn">🌑 Černobog</div><div class="de">Neštěstí, noc. Fatální selhání.</div><p style="font-size:13px;"><em>„Přejdi můj dům."</em> Neuctívají ho z lásky — ze strachu aby si jich nevšiml.</p></div>
+<div class="deity"><div class="dn">🔥 Svarog — Prabůh</div><div class="de">Nebeský kovář, otec bohů.</div><p style="font-size:13px;">Žádat moudrost, posvěcení hamru. Čistý oheň zahání běsy.</p></div>
+<div class="deity"><div class="dn">💨 Stribog — Pán větrů</div><div class="de">Příznivý vítr nebo ledový severák.</div><p style="font-size:13px;">Žádat příznivý vítr na Běsici, odvát pach lovců.</p></div>
+</div>
+
+<h3 class="st">Avarský panteon</h3>
+<div class="g2">
+<div class="deity"><div class="dn">🌌 Tengri — Věčné nebe</div><div class="de">Lhostejný, krutý. „Studený bůh."</div><p style="font-size:13px;">Vše pod nebem patří Tengrimu — tedy Avarům. Žádat: vítězství v sedle.</p></div>
+<div class="deity"><div class="dn">💀 Erlik-Chán — Pán tmy</div><div class="de">Král mrtvých, moc nad stíny.</div><p style="font-size:13px;">Kamové obětují černé koně. Stojí za Draugry. Mohyly = „kotvy" nároku na zem.</p></div>
+<div class="deity"><div class="dn">🐺 Umay — Matka vlků</div><div class="de">Patronka divokosti, žen, vlků.</div><p style="font-size:13px;">Vlci v Silva Nigra jsou jejími posly. Pouto s Vlčími hlavami.</p></div>
+</div>
+
+<h3 class="st">Mechanika víry (house rules)</h3>
+<table><tr><th>Situace</th><th>Efekt</th></tr>
+<tr><td>Upřímná modlitba relevantnímu bohu/světci</td><td>-1 Náročnost příštího hodu v doméně božstva</td></tr>
+<tr><td>Postava uctívá obě strany (dvojvěří)</td><td>Riziko „Hněvu nebes": +1 Ohrožení, pokud si Vypravěč přeje</td></tr>
+<tr><td>Rituál na místě moci (háj, kruh, Krvavý Dub)</td><td>Mocnější efekt, ale cena: Jizva nebo krev nebo slib</td></tr>
+<tr><td>Porušení přísahy na Kameni smíření</td><td>Okamžitá Jizva na Duši (mechanická)</td></tr>
+</table>
+</div>
+
+<!-- ────────────────── BESTIÁŘ ───────────────────── -->
+<div class="page" id="page-bestiary">
+<h2 class="page-title">👁 Bestiář & Nemoci</h2>
+<div class="callout">Monstra nejsou generičtí nepřátelé — jsou to entity spojené s místem. Boj je hádanka. Hrubá síla nestačí.</div>
+
+<h3 class="st">Nestvůry</h3>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">🐺 Psoglav</span><span class="cr">Smečkový predátor, Silva Nigra</span><span class="ct">▼</span></div>
+<div class="cb">
+<div class="stat-block"><div class="stat-row"><div class="stat"><span class="val">8</span><span class="lbl">Tělo</span></div><div class="stat"><span class="val">4</span><span class="lbl">Duše</span></div><div class="stat"><span class="val">5</span><span class="lbl">Vliv</span></div><div class="stat"><span class="val">18</span><span class="lbl">Sudba</span></div><div class="stat"><span class="val">6</span><span class="lbl">Charakt.</span></div></div></div>
+<p style="margin-top:8px;"><strong>Železný skus:</strong> ≥2 útočí na cíl → Výhoda na Lest (povalení). <strong>Pach krve:</strong> automaticky cítí zraněnou postavu 1 km. <strong>Vytí (Děs):</strong> 1 Sudba → útok na Duši všech v dohledu (+1 Ohrožení při neúspěchu). <strong>Terén:</strong> V blátě každý Manévr +1 Zdroj. Útočí z vyvýšených kořenů (Výhoda pro ně).</p>
+<p><strong>Slabina:</strong> Ohně se bojí (ne fyzicky, psychologicky). Tábořiště s hořícím ohněm = Psoglavi nepřiblíží se do 30m.</p></div></div>
+
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">💀 Draugr — Avarský jezdec</span><span class="cr">Nemrtvý, pohřební rovina</span><span class="ct">▼</span></div>
+<div class="cb">
+<div class="callout">„Jeho zbroj je pokrytá hlínou a kořeny, ale šavle se leskne jako právě vytažená z výhně."</div>
+<div class="stat-block"><div class="stat-row"><div class="stat"><span class="val">5</span><span class="lbl">Tělo</span></div><div class="stat"><span class="val">3</span><span class="lbl">Duše</span></div><div class="stat"><span class="val">1</span><span class="lbl">Vliv</span></div><div class="stat"><span class="val">8</span><span class="lbl">Sudba</span></div></div><div class="stat-row"><div class="stat"><span class="val">6</span><span class="lbl">H.Tělo</span></div><div class="stat"><span class="val">4</span><span class="lbl">H.Duše</span></div></div></div>
+<p style="margin-top:8px;"><strong>Mrtvé maso:</strong> Ignoruje manévr Silně. Jizva vyžaduje úspěch + 2 body Zdroje navíc. <strong>Návský chlad:</strong> Každý útok = -1 bod Duše. <strong>Nerezavějící ocel:</strong> Obrana stojí +1 Zdroj. <strong>Slabina:</strong> Zbraně požehnané pohanským rituálem (nebo Libušiným zaříkáním) ignorují Mrtvé maso.</p></div></div>
+
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">🔮 Strigoň — Avarský upír</span><span class="cr">Nemrtvý šaman, mohyly, noc</span><span class="ct">▼</span></div>
+<div class="cb">
+<div class="stat-block"><div class="stat-row"><div class="stat"><span class="val">4</span><span class="lbl">Tělo</span></div><div class="stat"><span class="val">7</span><span class="lbl">Duše</span></div><div class="stat"><span class="val">5</span><span class="lbl">Vliv</span></div><div class="stat"><span class="val">12</span><span class="lbl">Sudba</span></div></div></div>
+<p style="margin-top:8px;">Vypadá jako živý člověk v noci. Vstupuje do snů. <strong>Polibek Strigona:</strong> Oběť při neúspěchu ztratí 2 body max. Těla (vrátí se jen po rituálu). <strong>Vězeň dne:</strong> Přes den je spoután v hrobě — kdokoli ho najde a spalí je v bezpečí. <strong>Slabina:</strong> Oheň, žehnané oleje, přítomnost Mastičkáře s Pelyňkem.</p></div></div>
+
+<div class="g2">
+<div class="card"><div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">🦎 Bauk — Démon stínů</div><p style="font-size:13px;margin-top:7px;">Jeskyně za vodopádem. Dlouhé paže, pohybuje se stíny. Útočí ve spánku, tahá do temnoty. Bojí se světla — pochodní, ohnivých koulí, sluneční paprsky. Vytrvalý a trpělivý.</p></div>
+<div class="card"><div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">🌊 Rusalka</div><p style="font-size:13px;margin-top:7px;">Jezera a Běsice. Lákají muže pod hladinu. Zpěv = střet na Duši Náročnost 3. Nelze s nimi bojovat v hluboké vodě (jsou doma). Na suchu jsou zranitelné ale rychle prchají.</p></div>
+<div class="card"><div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">🌫 Lešij — Duch lesa</div><p style="font-size:13px;margin-top:7px;">Neustálá dezorientace. Nelze zabít — lze oklamat nebo usmířit (oběť do lesa, nikdy záda otočena). Hráči chodí v kruzích až do vyčerpání bez obranné akce (Věda/Přežití Náročnost 4).</p></div>
+<div class="card"><div class="card-name" style="font-family:'Cinzel',serif;color:var(--gold);font-size:12px;">🐃 Tur (Pratur)</div><p style="font-size:13px;margin-top:7px;">Výsadní zvěř vladyky. Lov bez svolení = smrt. Hranice Těla 10, útok srážecí (srazit k zemi = Jizva noha). Hluk ho přivede, ne zaplaší.</p></div>
+</div>
+
+<h3 class="st">Nemoci</h3>
+<table><tr><th>Nemoc</th><th>Původ</th><th>Mechanika DrD2</th><th>Léčba</th></tr>
+<tr><td><strong>Bahenní horečka</strong></td><td>Neošetřená voda, hmyz</td><td>Nelze obnovit Zdroje odpočinkem. Hod Odolnosti denně — neúspěch = Jizva 1 Tělo</td><td>Rašelinový dráp (-2 Náročnost hodu)</td></tr>
+<tr><td><strong>Hniloba nohou</strong></td><td>Mokré boty v blátě 2+ dny</td><td>+1 Náročnost pohybu. Bez léčby → Mrzák (trvalá Jizva)</td><td>Vrbový jantarián mast, suché oblečení</td></tr>
+<tr><td><strong>Souchotiny</strong></td><td>Prach dolů, milíře</td><td>Max. Těla -2. Zadýchání při námaze</td><td>Uhelný květ inhalace (+1 max. Těla dočasně)</td></tr>
+<tr><td><strong>Sněť (Vězeňská hniloba)</strong></td><td>Infekce v ráně od bláta</td><td>-1 Zdroj Těla / 6 hodin bez léčby</td><td>Cauterizace (amputace = zastaví), Dubové slzy</td></tr>
+<tr><td><strong>Vlčí strach</strong></td><td>Kousnutí Psoglavem</td><td>Nutno pálit Duši aby nezaútočil na spojence</td><td>Stříbrný pelyněk, rituál Zaříkávače</td></tr>
+<tr><td><strong>Návská tíseň</strong></td><td>Mohyly, příliš dlouho</td><td>+2 Náročnost Charisma/Vliv. Vypadá jako mrtvola.</td><td>Mohylové jmelí, vykuřování Zaříkávačem</td></tr>
+</table>
+
+<h3 class="st">Herbář</h3>
+<table><tr><th>Bylina</th><th>Lokalita</th><th>Léčí</th><th>Riziko sběru</th></tr>
+<tr><td>Rašelinový dráp</td><td>Mrtvé močály</td><td>Bahenní horečka</td><td>Hod Atletika/Přežití nebo uvíznout v rašelině</td></tr>
+<tr><td>Dubové slzy</td><td>Krvavý Dub</td><td>Sněť</td><td>Sběr = svatokrádež → trest Volchvů</td></tr>
+<tr><td>Uhelný květ</td><td>Šachty Vlčího Dolu</td><td>Souchotiny (dočasně)</td><td>Vysoce hořlavý → exploze</td></tr>
+<tr><td>Stříbrný pelyněk</td><td>Pelyňková louka</td><td>Vlčí strach</td><td>Větší dávka = halucinace (slyšíš mrtvé)</td></tr>
+<tr><td>Mohylové jmelí</td><td>Pohřební rovina</td><td>Návská tíseň</td><td>Musíš nakrmit rostlinu vlastní krví</td></tr>
+<tr><td>Vrbový jantarián</td><td>Delta Běsice</td><td>Hniloba nohou</td><td>Přitahuje agresivní vodní krysy</td></tr>
+</table>
+</div>
+
+<!-- ────────────────── EKONOMIKA ─────────────────── -->
+<div class="page" id="page-economy">
+<h2 class="page-title">⚖ Ekonomika — Přežití a obchod</h2>
+<div class="callout iron">Zlaté „Solidy" lid odmítá — nechápou je nebo se bojí. Tady se platí pragmaticky: tím co má hodnotu pro přežití.</div>
+<div class="g3">
+<div class="card"><strong>Plátno (Šátečky)</strong><p style="font-size:13px;margin-top:6px;">Základní. Čtverec lněného plátna. 10 pláten = 1 slepice.</p></div>
+<div class="card"><strong>Kožešiny (Kuny/Veverky)</strong><p style="font-size:13px;margin-top:6px;">Standard pro obchod s Říší. 40 veverčích = „Sorochok" = základní účetní jednotka.</p></div>
+<div class="card"><strong>Hřivny</strong><p style="font-size:13px;margin-top:6px;">Pruty stříbra nebo železa. Pro dobytek, zbraně, výkupné.</p></div>
+</div>
+<table><tr><th>Předmět</th><th>Kůže (Kuna)</th><th>DrD2 Stříbrné</th><th>Poznámka</th></tr>
+<tr><td>Nocleh a jídlo</td><td>1/10</td><td>2 st.</td><td>Na lavici. Vlčí Důl: x2 (jídlo drahé)</td></tr>
+<tr><td>Oštěp (železný hrot)</td><td>2</td><td>20 st.</td><td>Dominantní zbraň domobrany</td></tr>
+<tr><td>Sekera (pracovní)</td><td>3</td><td>30 st.</td><td>Nástroj i zbraň</td></tr>
+<tr><td>Meč (místní, měkký kov)</td><td>50</td><td>500 st.</td><td>Láme se při Kritickém neúspěchu</td></tr>
+<tr><td>Meč (kvalitní ocel)</td><td>200 / 2 hřivny</td><td>2000 st.</td><td>Legendární — každý ho zná</td></tr>
+<tr><td>Kroužková zbroj</td><td>300 / 3 hřivny</td><td>3000 st.</td><td>Jen vladyka a elita</td></tr>
+<tr><td>Kůň (jezdecký)</td><td>150</td><td>1500 st.</td><td>Strategický zdroj, každý ví o každém koni</td></tr>
+<tr><td>Sůl (1 kg)</td><td>1</td><td>10 st.</td><td>Nutná pro zimu</td></tr>
+<tr><td>Jantar (kus)</td><td>5–15</td><td>50–150 st.</td><td>Kupci ze severu platí více</td></tr>
+<tr><td>Léčivý odvar (základ)</td><td>3</td><td>30 st.</td><td>Sestra Anežka, Doubrava</td></tr>
+</table>
+<div class="callout gold"><strong>Logistika:</strong> 50 kuních kůží = plný těžký pytel. Při útěku: zahodit „peníze", nebo riskovat dopadení?</div>
+<div class="callout iron"><strong>Alternativní platba:</strong> Služba (vyčistíme mýtinu od Psoglavů), Informace (kde Avaři drží zajatce), Krev (Libuše nepřijme kůže).</div>
+</div>
+
+<!-- ────────────────── SETKÁNÍ ────────────────────── -->
+<div class="page" id="page-encounters">
+<h2 class="page-title">🎲 Náhodná setkání & Tabulky</h2>
+<h3 class="st">Základní tabulka cest (1k6)</h3>
+<table><tr><th>Hod</th><th>Událost</th><th>Typ</th></tr>
+<tr><td>1</td><td>Zlomená osa u vozu / zchromlý kůň</td><td><span class="tag iron">Logistika (Tělo)</span></td></tr>
+<tr><td>2</td><td>Smečka Psoglavů na stopě</td><td><span class="tag red">Boj (Střet)</span></td></tr>
+<tr><td>3</td><td>Zbloudilý avarský šíp z houští</td><td><span class="tag red">Přepadení (Lstivost)</span></td></tr>
+<tr><td>4</td><td>Nález mrtvoly s podivnými symboly</td><td><span class="tag">Horor (Duše)</span></td></tr>
+<tr><td>5</td><td>Zkorumpovaná vladykova hlídka vybírá mýto</td><td><span class="tag gold">Sociální (Vliv)</span></td></tr>
+<tr><td>6</td><td>Náhlá mlha, ztráta orientace, Lešij?</td><td><span class="tag iron">Terén (Výzva)</span></td></tr>
+</table>
+<h3 class="st">Nálezy v hexu (1k10)</h3>
+<table><tr><th>Hod</th><th>Nález</th><th>Dopad</th></tr>
+<tr><td>1</td><td>Opuštěný povoz</td><td>Zásoby, ale Sněť z hnijícího nákladu</td></tr>
+<tr><td>2</td><td>Stará past na medvěda</td><td>Výzva Lstivost — selhání = Jizva noha</td></tr>
+<tr><td>3</td><td>Boží muka / kaplička</td><td>Krátký odpočinek, +1 Duše pro věřící</td></tr>
+<tr><td>4</td><td>Vyvrácený prastarý strom</td><td>Zatarasená cesta, kůň Náročnost 2</td></tr>
+<tr><td>5</td><td>Skrýš Vlčích hlav</td><td>Dutý strom, dýky, šifrovaný vzkaz</td></tr>
+<tr><td>6</td><td>Mrtvý zvěd</td><td>Info o pohybu nepřátel v sousedním hexu</td></tr>
+<tr><td>7</td><td>Strž po dešti</td><td>Cesta pryč, obejít = +2 hodiny</td></tr>
+<tr><td>8</td><td>Kruh hub (čarodějný)</td><td>Nápor na Duši, zaříkávači cítí silnou magii</td></tr>
+<tr><td>9</td><td>Osamělý avarský hrob</td><td>Kamenný náhrobek, riziko slabšího Draugra</td></tr>
+<tr><td>10</td><td>Opuštěný milíř</td><td>Suché místo, zásoby dřevěného uhlí</td></tr>
+</table>
+<h3 class="st">Osud Avarských zajatců (1k6)</h3>
+<table><tr><th>Hod</th><th>Osud</th><th>Herní situace</th></tr>
+<tr><td>1</td><td>Otrocká karavana</td><td>Spoutáni, hnáni na východ. Útěk než opustí Silva Nigra.</td></tr>
+<tr><td>2</td><td>Oběť Erlik-Chánovi</td><td>Rituál krve do příštího úplňku u mohyl.</td></tr>
+<tr><td>3</td><td>Výslech v sedle</td><td>Chtějí info o Újezdě. Střet Duše/Vliv s Kamem.</td></tr>
+<tr><td>4</td><td>Nucené práce</td><td>Těžba bahenního železa. Sabotáž ideální.</td></tr>
+<tr><td>5</td><td>Štvanice</td><td>Pustí je, dají náskok, pak loví pro zábavu.</td></tr>
+<tr><td>6</td><td>Výkupné</td><td>Vzkaz Mstislavovi. Čekání v kleci.</td></tr>
+</table>
+<h3 class="st">Rozšířená setkání (1k6)</h3>
+<table><tr><th>Hod</th><th>Setkání</th><th>Popis</th></tr>
+<tr><td>1</td><td>Vyslanec Běsů</td><td>Černý pes s hořícíma očima. Nakrm → stříbrná mince. Útok → Psoglav.</td></tr>
+<tr><td>2</td><td>Morový vůz</td><td>Vůz mrtvol bez řidiče. Zkouška Odolnosti na nákazu.</td></tr>
+<tr><td>3</td><td>Zbloudilý rytíř</td><td>Šílený, útočí na mlýn. Cenná výbava.</td></tr>
+<tr><td>4</td><td>Obětiště</td><td>Čerstvě zabitý jelen na stromech. Vlkodlak nebo Volchv?</td></tr>
+<tr><td>5</td><td>Kupci s otroky</td><td>Morální dilema — osvobodit (boj) nebo mlčet?</td></tr>
+<tr><td>6</td><td>Bouře</td><td>Blesk zapaluje strom. Vyčerpání, mokré tětivy.</td></tr>
+</table>
+<h3 class="st">Stupňování ohrožení prostředím</h3>
+<div class="callout gold">Den 1: Bláto — Náročnost 1 pochodu. → Den 2: Déšť + vytí Psoglavů v dálce → +1 Ohrožení. → Noc: Nemohou najít suché dřevo. Bez úspěchu Přežití: 0 Zdrojů ráno + postih.</div>
+</div>
+
+<!-- ────────────────── DOBRODRUŽSTVÍ ─────────────── -->
+<div class="page" id="page-adventures">
+<h2 class="page-title">📜 Dobrodružství & Zápletky</h2>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">A: Krev na sněhu</span><span class="cr">Detektivní / Horor, zimní</span><span class="ct">▼</span></div>
+<div class="cb">
+<p><strong>Zápletka:</strong> Tuhá zima. Z hradiště zmizela dcera kováře Bojana. Stopy vedou do lesa — pak náhle končí. Jako by vzlétla.</p>
+<p><strong>Vyšetřování:</strong> Dívka nebyla unesena zvířetem, ale Vichřicí — vzdušným démonem přitaženým vášní a strachem. Babky: narodila se za zatmění, bylo to jen otázkou času.</p>
+<p><strong>Zvrat:</strong> Utekla sama — za milencem (syn náčelníka Vlčích hlav). Vichřice byl vedlejší efekt.</p>
+<p><strong>Rozhodnutí:</strong> Zachránit pár → válka klan vs. hradiště. Odvléct dívku → nová hrozba. Třetí cesta?</p>
+</div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">B: Železný idol</span><span class="cr">Politika / Explorace</span><span class="ct">▼</span></div>
+<div class="cb">
+<p><strong>Zápletka:</strong> Gorazd objevil v bažinách modlu boha války z meteorického železa. Chce ji roztavit na zvon.</p>
+<p><strong>Konflikt:</strong> Libuše: roztavení vypustí Běsa Války. Vladyka: chce železo na zbraně.</p>
+<p><strong>Finále — kovárna:</strong> Idol při tavení začne křičet. Psychický útok na hradiště. Hráči musí zastavit kováře, nebo provést protirituál — běs bude spoután do zvonu (magická moc, přitahuje neštěstí).</p>
+</div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">C: Noc Dlouhých Nožů</span><span class="cr">Politická krize, morální volba</span><span class="ct">▼</span></div>
+<div class="cb">
+<p><strong>Zápletka:</strong> Výběrčí daní z Říše přijíždí s armádou. Vyžaduje trojnásobný tribut. Zjišťuje o pohanství. Hrozí vypálením.</p>
+<p><strong>Eskalace:</strong> Mstislav chce povraždit vojáky ve spánku a svalit vinu na nájezdníky. Hráči jsou svědky přípravy.</p>
+<p><strong>Role hráčů:</strong> Pomoci vladykovi (krev na rukou, ale přízeň). Varovat vyslance (boj s přáteli). Třetí cesta (falešné důkazy).</p>
+</div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">D: Záhadný ostrov</span><span class="cr">Průzkum / Tajemství</span><span class="ct">▼</span></div>
+<div class="cb">
+<p><strong>Zápletka:</strong> Bezuch pokaváté naznačuje ostrov v deltě. Janek tam prý ví pravdu o vraždě vladykova posla. A v kamenném kruhu je možná způsob jak mluvit s čímsi starým.</p>
+<p><strong>Komplikace:</strong> Rusalky ostrov střeží. Kamův rituál na pohřební rovině ovlivní entitu pod ostrovem. Janekova informace mohla by svrhnout vladyku — nebo ho zachránit.</p>
+</div></div>
+<div class="card"><div class="ch" onclick="toggleCard(this)"><span class="cn">E: Pohřební rovina — Čas Kama</span><span class="cr">Napínavý / Závod s časem</span><span class="ct">▼</span></div>
+<div class="cb">
+<p><strong>Zápletka:</strong> Milhost přiběhne poraněný z pohřební roviny — Kam Ulján přichází na roční rituál. Pokud ho dokončí, kletba mohyl se obnoví na dalších 10 let. Ale Milhost tvrdí, že letos Ulján chce víc: chce otevřít Khanovu mohylu.</p>
+<p><strong>Komplikace:</strong> Přerušit rituál = rozhněvat Avary z tábora. Nechat ho dokončit = větší hrozba. A co když Milhost lže — nebo se mýlí?</p>
+</div></div>
+
+<h3 class="st">Startovní otázky pro hráče</h3>
+<div class="card">
+<p><strong>Co tě do Hvozdu přivedlo?</strong> Jen průjezd? Hledáš učení (u Bojana nebo Libuše)? Nebo jsi poutník, kterému docházejí zásoby?</p>
+<p><strong>Kříž na krku — ale co máš v kapse?</strong> Jaký pohanský talisman nosíš tajně? Komu se omlouváš, když v lese zabiješ zvíře?</p>
+<p><strong>Co ti Hvozd vzal?</strong> Jakou jizvu (fyzickou nebo na duši) neseš z prvního setkání s tímto krajem?</p>
+<p><strong>Který z obyčejných lidí ti dluží za život?</strong> Vyber NPC — co jsi pro něj udělal a proč o tom nikdo nesmí vědět?</p>
+<p><strong>Jaká je tvá Železná přísaha?</strong> Co jsi odpřisáhl — sobě, bohu, předkům — a co se stane, když to porušíš?</p>
+<p><strong>Proč se nemůžeš vrátit do vnitrozemí?</strong> Jaký hřích nebo hrozba uzavřely cestu zpět?</p>
+</div>
+
+<h3 class="st">Popisná technika (atmosféra)</h3>
+<div class="g2">
+<div class="callout" style="border-color:var(--red);">❌ <em>„Jdete lesem a prší."</em></div>
+<div class="callout gold">✅ <em>„Ledový déšť bičuje vaše tváře a mění stezku v koryto hnědého bahna. Cítíte pach tlejícího listí a mokré psí srsti — i když žádného psa nevidíte. Stromy sténají jako oběšenci."</em></div>
+</div>
+</div>
+
+<!-- ────────────────── IMPROVIZACE NPC ───────────── -->
+<div class="page" id="page-improv">
+<h2 class="page-title">🎭 Improvizace NPC</h2>
+<p>Klikni na jméno pro rychlý panel. Nebo hoď kostkami a vytvoř NPC na místě.</p>
+
+<h3 class="st">Mužská jména — rezerva</h3>
+<div class="g4" id="male-names">
+<div class="improv-name-card" onclick="openImprovPanel(this,'Dobroslav','tichý, schovaný, neřekne víc než musí')"><div class="iname">Dobroslav</div><div class="iarch">tichý, schovaný</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Slavomír','hlasitý, přesvědčený, pamatuje věci jinak než byly')"><div class="iname">Slavomír</div><div class="iarch">hlasitý, nepřesný</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Ctirad','rytířský typ, ale v nesprávném světě')"><div class="iname">Ctirad</div><div class="iarch">nesprávný hrdina</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Záviš','cynický, viděl příliš, pije')"><div class="iname">Záviš</div><div class="iarch">cynický, unavený</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Milič','příliš přátelský, co tím sleduje?')"><div class="iname">Milič</div><div class="iarch">příliš přátelský</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Ratibor','nový v kraji, nic nezná, vše mu vadí')"><div class="iname">Ratibor</div><div class="iarch">přespolní, kritický</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Vojen','mlčí, ale má šrámy ze tří válek')"><div class="iname">Vojen</div><div class="iarch">veterán, ticho</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Přemysl','vždy v pohybu, ví víc než říká')"><div class="iname">Přemysl</div><div class="iarch">posel, tajnosti</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Ctibor','kupecký typ, vždy počítá, co to stojí ho')"><div class="iname">Ctibor</div><div class="iarch">kupecký, kalkulující</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Dobromil','otcovský, dává rady i když nejsou žádány')"><div class="iname">Dobromil</div><div class="iarch">otcovský, rady</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Radic','mladý, sebejistý, ještě ho nezlomil život')"><div class="iname">Radic</div><div class="iarch">mladý, naivní</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Semjon','obchodník, preferuje kompromis, nenávidí násilí')"><div class="iname">Semjon</div><div class="iarch">obchodník, smírný</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Bolemír','bývalý voják, teď jen chce být sám')"><div class="iname">Bolemír</div><div class="iarch">samotář ex-voják</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Drahan','hledá něco ztraceného, nevíš co')"><div class="iname">Drahan</div><div class="iarch">hledač, záhadný</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Svatomír','starý, klidný, ví že svět skončí špatně')"><div class="iname">Svatomír</div><div class="iarch">starý, fatalista</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Bratumil','přátelský ke všem, věrný nikomu')"><div class="iname">Bratumil</div><div class="iarch">přátelský, nespolehlivý</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Mečislav','bojovník, ale válčí jen na straně co platí')"><div class="iname">Mečislav</div><div class="iarch">žoldák, pragmatik</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Budivoj','nováček, snaží se, kazí to')"><div class="iname">Budivoj</div><div class="iarch">nováček, katastrofa</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Horoslav','posedlý jedním cílem, vše ostatní mu schází')"><div class="iname">Horoslav</div><div class="iarch">posedlý cílem</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Ostřih','krutý správce, ale spravedlivý dle vlastních pravidel')"><div class="iname">Ostřih</div><div class="iarch">krutý, ale pravidla</div><div class="iused">použito</div></div>
+</div>
+
+<h3 class="st">Ženská jména — rezerva</h3>
+<div class="g4" id="female-names">
+<div class="improv-name-card" onclick="openImprovPanel(this,'Sněžka','veselá, ale smutek za tím')"><div class="iname">Sněžka</div><div class="iarch">veselost, smutek</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Věšta','stará, říká věci co lidi nečekají')"><div class="iname">Věšta</div><div class="iarch">prorocká stařena</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Radmila','vdova, podnikavá, nezávislá')"><div class="iname">Radmila</div><div class="iarch">vdova, podnikavá</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Drahomíra','má moc, chce více')"><div class="iname">Drahomíra</div><div class="iarch">ambiciózní žena</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Bohdanka','hledá manžela, nese ztrátu')"><div class="iname">Bohdanka</div><div class="iarch">smutek, hledání</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Doubravka','moudrá, neváhá říct nepříjemnou pravdu')"><div class="iname">Doubravka</div><div class="iarch">přímá, moudrá</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Světluše','křehká navenek, tvrdá uvnitř')"><div class="iname">Světluše</div><div class="iarch">zdání vs. skutečnost</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Vlasta','bojovný temperament, neposedí')"><div class="iname">Vlasta</div><div class="iarch">temperamentní</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Milena','láskyplná, ale chraň se jí ublížit')"><div class="iname">Milena</div><div class="iarch">laskavá, ale nebezpečná</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Zdeňka','zvědavá, dotazy bez konce')"><div class="iname">Zdeňka</div><div class="iarch">zvědavá, dotazy</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Kvítka','naivní a zranitelná, ale ne hloupá')"><div class="iname">Kvítka</div><div class="iarch">naivní, ne hloupá</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Věra','věrná — ale komu? To je otázka')"><div class="iname">Věra</div><div class="iarch">loajální, ale komu?</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Slavka','pyšná na svůj původ, i když je nevelký')"><div class="iname">Slavka</div><div class="iarch">hrdá, trochu povýšená</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Přibyslava','cizí krev, přišla odjinud, přizpůsobuje se')"><div class="iname">Přibyslava</div><div class="iarch">přespolní, adaptivní</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Drahuše','obchodnice, vždy ví cenu čehokoli')"><div class="iname">Drahuše</div><div class="iarch">obchodnice, cena všeho</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Kvetoslava','bylinkářka, doma v lese, ne mezi lidmi')"><div class="iname">Kvetoslava</div><div class="iarch">bylinkářka, lesní</div><div class="iused">použito</div></div>
+</div>
+
+<h3 class="st">Avarská jména (pro Avary nebo kontakty)</h3>
+<div class="g4">
+<div class="improv-name-card" onclick="openImprovPanel(this,'Temür','tvrdý jako ocel, ale chápe čest')"><div class="iname">Temür</div><div class="iarch">válečník, čest</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Aibek','mladý, zvědavý, netypický Avar')"><div class="iname">Aibek</div><div class="iarch">zvědavý, jiný</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Küčük','malý, nenápadný, smrtelně nebezpečný')"><div class="iname">Küčük</div><div class="iarch">malý, smrtelný</div><div class="iused">použito</div></div>
+<div class="improv-name-card" onclick="openImprovPanel(this,'Mergen','lučištník, mluví málo, střílí přesně')"><div class="iname">Mergen</div><div class="iarch">lučištník, mlčenlivý</div><div class="iused">použito</div></div>
+</div>
+
+<h3 class="st">Generátor NPC na místě (hoď 1k6 pro každou kategorii)</h3>
+<div class="g2">
+<div class="card">
+<h4 class="sub">🎲 Hodit za mě</h4>
+<button class="btn btn-p" onclick="rollNPC()" style="margin-bottom:10px;">Vygenerovat NPC</button>
+<div id="npc-roll-result" style="font-size:13px;line-height:1.9;"></div>
+</div>
+<div class="card">
+<h4 class="sub">Tabulky (manuálně)</h4>
+<table style="font-size:12px;">
+<tr><th>1k6</th><th>Vzhled</th><th>Nálada</th><th>Chce</th><th>Tajemství</th></tr>
+<tr><td>1</td><td>Velký & pomalý</td><td>Podezřívavý</td><td>Jídlo</td><td>Je zloděj</td></tr>
+<tr><td>2</td><td>Malý & rychlý</td><td>Přátelský</td><td>Informaci</td><td>Pracuje pro dva</td></tr>
+<tr><td>3</td><td>Jizvy na tváři</td><td>Opilý</td><td>Pomstu</td><td>Uprchlík</td></tr>
+<tr><td>4</td><td>Příliš čistý</td><td>Vystrašený</td><td>Ochranu</td><td>Ví o vraždě</td></tr>
+<tr><td>5</td><td>Staré oblečení</td><td>Drzý</td><td>Cestu ven</td><td>Má dluh</td></tr>
+<tr><td>6</td><td>Zakrytá tvář</td><td>Smutný</td><td>Odpuštění</td><td>Je někdo jiný</td></tr>
+</table>
+</div>
+</div>
+<div class="card" style="margin-top:10px;">
+<h4 class="sub">Rychlé profese (hoď 1k10)</h4>
+<div class="g4" style="font-size:12px;">
+<span>1 — Havíř</span><span>2 — Rybář</span><span>3 — Vojín (zběhlý)</span><span>4 — Kuchař/ka</span>
+<span>5 — Posel</span><span>6 — Pastevec</span><span>7 — Obchodník</span><span>8 — Kněz/ka</span>
+<span>9 — Mastičkář/ka</span><span>10 — Bez práce</span>
+</div>
+</div>
+</div>
+
+<!-- ────────────────── ZÁPISKY ───────────────────── -->
+<div class="page" id="page-sessions">
+<h2 class="page-title">📓 Zápisky ze sezení</h2>
+<div id="loading-s" style="display:none;color:var(--text-dim);font-style:italic;">Načítám zápisky...</div>
+<div id="sessions-list"></div>
+<div class="add-panel">
+<h3 class="st" style="margin-top:0;">Přidat zápis ze sezení</h3>
+<div class="fr">
+<div class="fg f1"><label>Číslo sezení</label><input type="number" id="s-num" placeholder="1" min="1"></div>
+<div class="fg f1"><label>Datum</label><input type="date" id="s-date"></div>
+<div class="fg f1"><label>Kde se odehrálo</label><input type="text" id="s-loc" placeholder="Trnový Újezd, Silva Nigra..."></div>
+</div>
+<div class="fg"><label>Název sezení</label><input type="text" id="s-title" placeholder="Např. Noc na mohylách"></div>
+<div class="fg"><label>Hráčské postavy (oddělené čárkou)</label><input type="text" id="s-players" placeholder="Radovan, Slávek, Mirka"></div>
+<div class="fg"><label>TLDR / Shrnutí</label><textarea id="s-notes" placeholder="Co se stalo? Jaká rozhodnutí? Klíčové momenty?"></textarea></div>
+<div class="fg"><label>Otevřené nitě & cliffhangery</label><textarea id="s-threads" placeholder="Co zůstalo nevyřešeno? Na co navázat?"></textarea></div>
+<div class="fg"><label>NPC poprvé potkáni</label><input type="text" id="s-npcs" placeholder="Bezuch, Ulján, Stará Věšta..."></div>
+<div style="display:flex;gap:10px;"><button class="btn btn-p" onclick="saveSession()">Uložit zápis</button><button class="btn btn-s" onclick="clearForm()">Vymazat</button></div>
+<div id="save-status" style="margin-top:9px;font-size:12px;color:var(--gold);font-style:italic;"></div>
+</div>
+</div>
+
+<!-- ────────────────── VLASTNÍ OBSAH ─────────────── -->
+<div class="page" id="page-custom">
+<h2 class="page-title">✦ Vlastní obsah</h2>
+<p>Přidej si vlastní poznámky, NPC, lokace nebo zápletky.</p>
+<div id="custom-list"></div>
+<div class="add-panel">
+<h3 class="st" style="margin-top:0;">Přidat vlastní záznam</h3>
+<div class="fr">
+<div class="fg f1"><label>Název</label><input type="text" id="c-title" placeholder="Záhadný kupec ze severu..."></div>
+<div class="fg" style="min-width:140px;"><label>Kategorie</label>
+<select id="c-cat"><option>NPC</option><option>Lokace</option><option>Zápletka</option><option>Předmět</option><option>Poznámka</option><option>Jiné</option></select></div>
+</div>
+<div class="fg"><label>Obsah / Poznámky</label><textarea id="c-body" placeholder="Popisy, statistiky, háčky, propojení..."></textarea></div>
+<div style="display:flex;gap:10px;"><button class="btn btn-p" onclick="saveCustom()">Přidat</button><button class="btn btn-s" onclick="clearCustomForm()">Vymazat</button></div>
+<div id="custom-status" style="margin-top:9px;font-size:12px;color:var(--gold);font-style:italic;"></div>
+</div>
+</div>
+
+</div><!-- #main -->
+
+<!-- ═══════════════════════════════ IMPROV PANEL ════ -->
+<div id="npc-quick-panel">
+<button class="close-panel" onclick="closeImprovPanel()">✕</button>
+<h4>🎭 Rychlý NPC</h4>
+<div id="improv-content" class="npc-result"></div>
+<div style="margin-top:12px;display:flex;gap:8px;">
+<button class="btn btn-s" onclick="markUsed()" style="font-size:9px;padding:6px 12px;">Označit jako použito</button>
+<button class="btn btn-p" onclick="rollNPCPanel()" style="font-size:9px;padding:6px 12px;">Nový NPC</button>
+</div>
+</div>
+
+<script>
+// ── NAV ──────────────────────────────────────────────
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  const pg = document.getElementById('page-' + id);
+  if (pg) pg.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'sessions') loadSessions();
+  if (id === 'custom') loadCustom();
+}
+document.querySelectorAll('nav button').forEach(btn => {
+  btn.addEventListener('click', function() { showPage(this.getAttribute('onclick').match(/'([^']+)'/)[1], this); });
+});
+
+// ── CARDS ────────────────────────────────────────────
+function toggleCard(h) {
+  h.classList.toggle('open');
+  const b = h.nextElementSibling;
+  if (b) b.classList.toggle('open');
+}
+
+// ── MAP ──────────────────────────────────────────────
+function loadMap() {
+  const url = document.getElementById('map-url-input').value.trim();
+  if (url) document.getElementById('map-frame').src = url;
+}
+
+// ── IMPROV PANEL ─────────────────────────────────────
+let currentImprovCard = null;
+function openImprovPanel(el, name, desc) {
+  currentImprovCard = el;
+  const panel = document.getElementById('npc-quick-panel');
+  const content = document.getElementById('improv-content');
+  content.innerHTML = `
+    <div style="margin-bottom:8px;"><strong style="font-size:16px;font-family:'Cinzel',serif;">${name}</strong></div>
+    <div style="margin-bottom:10px;color:var(--text-dim);font-style:italic;">${desc}</div>
+    <hr style="border-color:var(--border);margin:10px 0;">
+    <strong>Jak mluví:</strong> ${getRandomSpeech()}<br>
+    <strong>Fyzický detail:</strong> ${getRandomDetail()}<br>
+    <strong>Co chce:</strong> ${getRandomWant()}<br>
+    <strong>Tajemství:</strong> ${getRandomSecret()}
+  `;
+  panel.style.display = 'block';
+}
+function closeImprovPanel() {
+  document.getElementById('npc-quick-panel').style.display = 'none';
+  currentImprovCard = null;
+}
+function markUsed() {
+  if (currentImprovCard) {
+    currentImprovCard.classList.toggle('used');
+  }
+}
+
+// ── NPC GENERATOR ────────────────────────────────────
+const appearances = ['Velký & pomalý, zakrytá tvář','Malý & rychlý, prohnaný pohled','Jizvy na tváři, přímý pohled','Příliš čistý pro toto místo','Staré oblečení, nové boty','Zakrytá tvář, rukavice v létě','Jeden chybějící prst','Neustále se dívá za záda','Příliš veselé oči'];
+const moods = ['podezřívavý','překvapivě přátelský','opilý ale bystrý','vystrašený ale tváří se statečně','drzý','hluboce smutný','velmi unavený','nervózní, ruce se třesou','klidný jako skála'];
+const wants = ['jídlo a přespání','informaci o pohybu vojáků','pomstu za konkrétní křivdu','ochranu — někdo ho sleduje','peníze za dluh','cestu ven z tohoto kraje','odpuštění za dávnou věc','spojence pro jeden konkrétní plán'];
+const secrets = ['pracuje pro dvě protikladné strany','je uprchlík hledaný za vraždu','ví o ukrytém pokladu','má důkaz o zradě mocného','je nemocný a ví o tom','přišel z místa, kam nikdo nechodí','není to kdo říká že je','má dítě, o kterém nikdo neví'];
+const speechStyles = ['přerývavě, pauzami','příliš rychle, střídá témata','monotónně, jako by recitoval','s tichým smíchem','s neustálým „říkám vám"','v přezdívkách a metaforách','jednou větou, konec'];
+
+function getRandom(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+function getRandomSpeech() { return getRandom(speechStyles); }
+function getRandomDetail() { return getRandom(appearances); }
+function getRandomWant() { return getRandom(wants); }
+function getRandomSecret() { return getRandom(secrets); }
+
+const maleNames = ['Dobroslav','Slavomír','Ctirad','Záviš','Milič','Ratibor','Vojen','Přemysl','Ctibor','Dobromil','Radic','Semjon','Bolemír','Drahan','Svatomír','Bratumil','Mečislav','Budivoj','Horoslav','Ostřih'];
+const femaleNames = ['Sněžka','Věšta','Radmila','Drahomíra','Bohdanka','Doubravka','Světluše','Vlasta','Milena','Zdeňka','Kvítka','Věra','Slavka','Přibyslava','Drahuše','Kvetoslava'];
+const professions = ['Havíř','Rybář','Zběhlý vojín','Kuchař/ka','Posel','Pastevec','Obchodník','Kněz/ka','Mastičkář/ka','Bez práce, dělá vše'];
+
+function rollNPC() {
+  const gender = Math.random() > 0.5 ? 'M' : 'F';
+  const name = getRandom(gender === 'M' ? maleNames : femaleNames);
+  const prof = getRandom(professions);
+  const result = `
+    <strong>Jméno:</strong> ${name} (${prof})<br>
+    <strong>Vzhled:</strong> ${getRandom(appearances)}<br>
+    <strong>Nálada:</strong> ${getRandom(moods)}<br>
+    <strong>Chce:</strong> ${getRandom(wants)}<br>
+    <strong>Tajemství:</strong> ${getRandom(secrets)}<br>
+    <strong>Mluví:</strong> ${getRandom(speechStyles)}
+  `;
+  document.getElementById('npc-roll-result').innerHTML = result;
+}
+
+function rollNPCPanel() {
+  const gender = Math.random() > 0.5 ? 'M' : 'F';
+  const name = getRandom(gender === 'M' ? maleNames : femaleNames);
+  const prof = getRandom(professions);
+  document.getElementById('improv-content').innerHTML = `
+    <div style="margin-bottom:8px;"><strong style="font-size:16px;font-family:'Cinzel',serif;">${name}</strong> <span style="color:var(--text-dim);font-size:12px;">${prof}</span></div>
+    <hr style="border-color:var(--border);margin:10px 0;">
+    <strong>Vzhled:</strong> ${getRandom(appearances)}<br>
+    <strong>Nálada:</strong> ${getRandom(moods)}<br>
+    <strong>Chce:</strong> ${getRandom(wants)}<br>
+    <strong>Tajemství:</strong> ${getRandom(secrets)}<br>
+    <strong>Mluví:</strong> ${getRandom(speechStyles)}
+  `;
+}
+
+// ── SESSIONS ─────────────────────────────────────────
+async function loadSessions() {
+  document.getElementById('loading-s').style.display = 'block';
+  let sessions = [];
+  try { const r = await window.storage.get('hvozd_sessions_v2'); if (r && r.value) sessions = JSON.parse(r.value); } catch(e) {}
+  document.getElementById('loading-s').style.display = 'none';
+  renderSessions(sessions);
+}
+function renderSessions(sessions) {
+  const list = document.getElementById('sessions-list');
+  if (!sessions.length) { list.innerHTML = '<div class="callout iron" style="margin-bottom:18px;">Zatím žádné zápisky.</div>'; return; }
+  sessions.sort((a,b) => b.num - a.num);
+  list.innerHTML = sessions.map(s => `
+    <div class="se">
+      <div class="sh" onclick="toggleSes(this)">
+        <span class="sn">#${s.num}</span>
+        <span class="st2">${esc(s.title||'Bez názvu')}</span>
+        ${s.loc ? `<span class="sd">📍 ${esc(s.loc)}</span>` : ''}
+        <span class="sd">${s.date||''}</span>
+        <button class="sdel" onclick="delSession(event,'${s.id}')">✕</button>
+      </div>
+      <div class="sb">
+        ${s.players ? `<div style="margin-bottom:7px;"><span class="tag">Hráči</span> <em>${esc(s.players)}</em></div>` : ''}
+        ${s.npcs ? `<div style="margin-bottom:7px;"><span class="tag iron">NPC potkáni</span> <em>${esc(s.npcs)}</em></div>` : ''}
+        ${s.notes ? `<div style="margin-bottom:10px;"><span class="tag gold">Shrnutí</span><br><br>${esc(s.notes)}</div>` : ''}
+        ${s.threads ? `<div><span class="tag red">Otevřené nitě</span><br><br>${esc(s.threads)}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+function toggleSes(h) { const b = h.nextElementSibling; b.classList.toggle('open'); }
+async function saveSession() {
+  const num = parseInt(document.getElementById('s-num').value)||1;
+  const obj = { id: Date.now().toString(), num,
+    date: document.getElementById('s-date').value,
+    title: document.getElementById('s-title').value.trim(),
+    loc: document.getElementById('s-loc').value.trim(),
+    players: document.getElementById('s-players').value.trim(),
+    notes: document.getElementById('s-notes').value.trim(),
+    threads: document.getElementById('s-threads').value.trim(),
+    npcs: document.getElementById('s-npcs').value.trim()
+  };
+  if (!obj.title) { document.getElementById('save-status').textContent = '⚠ Zadej název.'; return; }
+  let arr = [];
+  try { const r = await window.storage.get('hvozd_sessions_v2'); if (r && r.value) arr = JSON.parse(r.value); } catch(e) {}
+  arr.push(obj);
+  try { await window.storage.set('hvozd_sessions_v2', JSON.stringify(arr)); document.getElementById('save-status').textContent = '✓ Uloženo!'; clearForm(); renderSessions(arr); setTimeout(()=>{document.getElementById('save-status').textContent='';},3000); }
+  catch(e) { document.getElementById('save-status').textContent = '⚠ Chyba: '+e.message; }
+}
+async function delSession(e, id) {
+  e.stopPropagation(); if (!confirm('Smazat zápis?')) return;
+  let arr = []; try { const r = await window.storage.get('hvozd_sessions_v2'); if (r && r.value) arr = JSON.parse(r.value); } catch(e) {}
+  arr = arr.filter(s => s.id !== id);
+  try { await window.storage.set('hvozd_sessions_v2', JSON.stringify(arr)); renderSessions(arr); } catch(e) {}
+}
+function clearForm() { ['s-num','s-date','s-title','s-loc','s-players','s-notes','s-threads','s-npcs'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; }); }
+
+// ── CUSTOM ───────────────────────────────────────────
+async function loadCustom() {
+  let items = []; try { const r = await window.storage.get('hvozd_custom_v2'); if (r && r.value) items = JSON.parse(r.value); } catch(e) {}
+  renderCustom(items);
+}
+function renderCustom(items) {
+  const list = document.getElementById('custom-list');
+  const cats = {NPC:'tag gold',Lokace:'tag iron',Zápletka:'tag red',Předmět:'tag green',Poznámka:'tag',Jiné:'tag'};
+  if (!items.length) { list.innerHTML = '<div class="callout iron" style="margin-bottom:18px;">Žádný vlastní obsah.</div>'; return; }
+  list.innerHTML = items.map(item => `
+    <div class="card" style="margin-bottom:11px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
+        <span style="font-family:'Cinzel',serif;font-size:12.5px;color:var(--gold);flex:1;">${esc(item.title)}</span>
+        ${item.cat ? `<span class="${cats[item.cat]||'tag'}">${esc(item.cat)}</span>` : ''}
+        <button class="sdel" onclick="delCustom('${item.id}')">✕</button>
+      </div>
+      <div style="font-size:13.5px;white-space:pre-wrap;">${esc(item.body)}</div>
+    </div>
+  `).join('');
+}
+async function saveCustom() {
+  const obj = { id: Date.now().toString(), title: document.getElementById('c-title').value.trim(), cat: document.getElementById('c-cat').value, body: document.getElementById('c-body').value.trim() };
+  if (!obj.title) { document.getElementById('custom-status').textContent = '⚠ Zadej název.'; return; }
+  let items = []; try { const r = await window.storage.get('hvozd_custom_v2'); if (r && r.value) items = JSON.parse(r.value); } catch(e) {}
+  items.unshift(obj);
+  try { await window.storage.set('hvozd_custom_v2', JSON.stringify(items)); document.getElementById('custom-status').textContent = '✓ Přidáno!'; clearCustomForm(); renderCustom(items); setTimeout(()=>{document.getElementById('custom-status').textContent='';},3000); }
+  catch(e) { document.getElementById('custom-status').textContent = '⚠ Chyba: '+e.message; }
+}
+async function delCustom(id) {
+  if (!confirm('Smazat?')) return;
+  let items = []; try { const r = await window.storage.get('hvozd_custom_v2'); if (r && r.value) items = JSON.parse(r.value); } catch(e) {}
+  items = items.filter(i => i.id !== id);
+  try { await window.storage.set('hvozd_custom_v2', JSON.stringify(items)); renderCustom(items); } catch(e) {}
+}
+function clearCustomForm() { ['c-title','c-body'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; }); }
+
+// ── UTILS ────────────────────────────────────────────
+function esc(s) { if(!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Default date
+document.addEventListener('DOMContentLoaded', () => {
+  const d = document.getElementById('s-date');
+  if (d) d.value = new Date().toISOString().split('T')[0];
+});
+</script>
+</body>
+</html>

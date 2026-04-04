@@ -7,7 +7,11 @@ def create_app():
 
     from .routes.main import main
     from .routes.campaigns import campaigns
+    from .routes.npcs import npcs
     app.register_blueprint(main)
     app.register_blueprint(campaigns)
+    app.register_blueprint(npcs)
+
+    app.jinja_env.globals['enumerate'] = enumerate
 
     return app
