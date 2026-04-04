@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}DMmeLord{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="logo">⚔ DMmeLord</span>
+  </div>
+  <nav class="topbar-nav">
+    <a href="{{ url_for('main.dashboard') }}" class="nav-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}">Dashboard</a>
+    <a href="{{ url_for('campaigns.npcs') }}" class="nav-link {% if request.endpoint == 'campaigns.npcs' %}active{% endif %}">NPCs</a>
+    <a href="{{ url_for('campaigns.locations') }}" class="nav-link {% if request.endpoint == 'campaigns.locations' %}active{% endif %}">Locations</a>
+    <a href="{{ url_for('campaigns.sessions') }}" class="nav-link {% if request.endpoint == 'campaigns.sessions' %}active{% endif %}">Sessions</a>
+    <a href="{{ url_for('campaigns.economy') }}" class="nav-link {% if request.endpoint == 'campaigns.economy' %}active{% endif %}">Economy</a>
+  </nav>
+  <div class="topbar-right">
+    <!-- Campaign switcher -->
+    <div class="campaign-switcher">
+      <button class="switcher-btn" id="switcherToggle">
+        {{ campaign }} <span class="caret">▾</span>
+      </button>
+      <div class="switcher-dropdown" id="switcherDropdown">
+        {% for c in campaigns %}
+          <a href="{{ url_for('main.switch_campaign', name=c) }}"
+             class="switcher-option {% if c == campaign %}current{% endif %}">
+            {{ c }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- Initiative tracker toggle -->
+    <button class="icon-btn" id="initiativeToggle" title="Initiative tracker">⚡</button>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- INITIATIVE PANEL (slide-over) -->
+<div class="initiative-panel" id="initiativePanel">
+  <div class="initiative-header">
+    <span>Initiative</span>
+    <button class="icon-btn" id="initiativeClose">✕</button>
+  </div>
+  <div class="initiative-list" id="initiativeList"></div>
+  <div class="initiative-add">
+    <input type="text" id="initName" placeholder="Name" class="init-input">
+    <input type="number" id="initNumber" placeholder="Init" class="init-input init-num">
+    <button class="btn-primary" onclick="addInitiative()">+</button>
+  </div>
+  <div class="initiative-actions">
+    <button class="btn-ghost" onclick="sortInitiative()">Sort ↓</button>
+    <button class="btn-ghost" onclick="clearInitiative()">Clear</button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
