@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
-from app.data import list_entities, get_entity, save_entity, delete_entity, slugify
+from app.data import list_entities, get_entity, save_entity, delete_entity, slugify, render_wiki_html
 
 locations = Blueprint('locations', __name__, url_prefix='/c/locations')
 
@@ -18,6 +18,21 @@ def index():
     types = sorted(set(l.get('type', '') for l in all_locs if l.get('type')))
     return render_template('locations.html', locations=all_locs, campaign=campaign(),
                            regions=regions, types=types)
+
+@locations.route('/<slug>')
+def detail(slug):
+    loc = get_entity(campaign(), 'locations', slug)
+    if not loc:
+        return redirect(url_for('locations.index'))
+    all_npcs = list_entities(campaign(), 'npcs')
+    loc_npcs = [n for n in all_npcs if n.get('location') == loc.get('name')]
+    all_locs = list_entities(campaign(), 'locations')
+    types   = sorted(set(l.get('type', '')   for l in all_locs if l.get('type')))
+    regions = sorted(set(l.get('region', '') for l in all_locs if l.get('region')))
+    loc['_body_html'] = render_wiki_html(campaign(), loc.get('_body', ''))
+    return render_template('location_detail.html', loc=loc,
+                           loc_npcs=loc_npcs, types=types, regions=regions)
+
 
 @locations.route('/new', methods=['POST'])
 def new():

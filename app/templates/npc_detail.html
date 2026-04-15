@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% block title %}{{ npc.name }} — {{ campaign }}{% endblock %}
+
+{% block content %}
+<div class="detail-nav">
+  <a href="{{ url_for('npcs.index') }}" class="back-link">← NPCs</a>
+</div>
+
+<div class="detail-header">
+  <div class="detail-title-row">
+    <h1 class="detail-name editable-text" data-slug="{{ npc._slug }}" data-field="name">{{ npc.name }}</h1>
+    <span class="disposition-badge badge-{{ npc.disposition or 'unknown' }}" id="dispBadge">
+      {{ (npc.disposition or 'unknown')|capitalize }}
+    </span>
+  </div>
+  <div class="detail-subtitle">
+    <span class="editable-text meta-item" data-slug="{{ npc._slug }}" data-field="role" data-placeholder="Role">{{ npc.role or '—' }}</span>
+    <span class="meta-sep">·</span>
+    <span class="editable-text meta-item" data-slug="{{ npc._slug }}" data-field="faction" data-placeholder="Faction">{{ npc.faction or '—' }}</span>
+  </div>
+  {% if npc.tags %}
+  <div class="tag-row" style="margin-top:10px;">
+    {% for tag in npc.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<!-- Meta bar -->
+<div class="card detail-meta-card">
+  <div class="relation-row">
+    <div class="relation-field">
+      <label>Location</label>
+      <select class="relation-select" onchange="updateField('location', this.value)">
+        <option value="">—</option>
+        {% for l in location_names %}
+        <option value="{{ l }}" {% if npc.location == l %}selected{% endif %}>{{ l }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="relation-field">
+      <label>Disposition</label>
+      <select class="relation-select" id="dispSelect" onchange="updateDisposition(this.value)">
+        {% for d in dispositions %}
+        <option value="{{ d }}" {% if npc.disposition == d %}selected{% endif %}>{{ d|capitalize }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="relation-field" style="flex:2;">
+      <label>Last meeting</label>
+      <input type="date" class="relation-input"
+             value="{{ npc.last_meeting or '' }}"
+             onchange="updateField('last_meeting', this.value)">
+    </div>
+  </div>
+
+  <div class="relation-field" style="margin-top:12px;">
+    <label>Last meeting summary</label>
+    <div class="editable-block" data-field="last_meeting_summary">
+      <div class="editable-view">{{ npc.last_meeting_summary or '<em class="empty">Click to add summary.</em>' }}</div>
+      <textarea class="editable-edit" style="display:none;">{{ npc.last_meeting_summary or '' }}</textarea>
+      <div class="editable-controls" style="display:none;">
+        <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
+        <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="relation-field" style="margin-top:12px;">
+    <label>Tags (comma separated)</label>
+    <div class="editable-block" data-field="tags">
+      <div class="editable-view">{{ npc.tags|join(', ') if npc.tags else '<em class="empty">No tags. Click to add.</em>' }}</div>
+      <textarea class="editable-edit" style="display:none; min-height:40px;">{{ npc.tags|join(', ') if npc.tags else '' }}</textarea>
+      <div class="editable-controls" style="display:none;">
+        <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
+        <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agreements -->
+<div class="card" style="margin-top:10px;">
+  <div class="section-header">
+    <span>Agreements & Deadlines</span>
+    <button class="btn-ghost btn-sm" onclick="toggleAgreementForm()">+ Add</button>
+  </div>
+  <div class="agreement-add-form" id="agr-form" style="display:none; margin-top:8px;">
+    <div class="field-row">
+      <div class="field-group" style="flex:3;">
+        <label>Agreement</label>
+        <input type="text" id="agr-text" placeholder="What was agreed">
+      </div>
+      <div class="field-group">
+        <label>Days until deadline</label>
+        <input type="number" id="agr-days" placeholder="0 = none" min="0">
+      </div>
+    </div>
+    <div class="form-actions" style="margin-top:8px;">
+      <button class="btn-primary btn-sm" onclick="addAgreement()">Save</button>
+      <button class="btn-ghost btn-sm" onclick="toggleAgreementForm()">Cancel</button>
+    </div>
+  </div>
+  <div id="agr-list">
+    {% if npc.agreements %}
+      {% for agr in npc.agreements %}
+      <div class="agreement-item">
+        <span class="agr-text">{{ agr.text }}</span>
+        {% if agr.deadline_days %}
+        <span class="agr-deadline {% if agr.deadline_days <= 3 %}urgent{% elif agr.deadline_days <= 7 %}warning{% endif %}">
+          {{ agr.deadline_days }}d
+        </span>
+        {% endif %}
+        <button class="btn-ghost btn-sm btn-danger" onclick="deleteAgreement({{ loop.index0 }})">✕</button>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="empty-state" style="padding:8px 0 4px;">No agreements yet.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Lore / Notes -->
+<div class="card" style="margin-top:10px;">
+  <div class="section-header" style="margin-bottom:12px;">
+    <span>Lore & Notes</span>
+    <span style="font-size:11px;color:var(--overlay0);">Markdown · [[wiki links]]</span>
+  </div>
+  <div class="editable-block" data-field="body">
+    <div class="editable-view prose detail-prose">
+      {% if npc._body %}{{ npc._body_html | safe }}
+      {% else %}<em class="empty">No notes yet. Click to add. Supports Markdown and [[wiki links]].</em>{% endif %}
+    </div>
+    <textarea class="editable-edit" style="display:none; min-height:320px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.6;">{{ npc._body or '' }}</textarea>
+    <div class="editable-controls" style="display:none;">
+      <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
+      <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete -->
+<div style="margin-top:16px; padding-bottom:32px; display:flex; justify-content:flex-end;">
+  <button class="btn-ghost btn-sm btn-danger" onclick="document.getElementById('deleteModal').style.display='flex'">Delete NPC</button>
+</div>
+
+<div class="modal-overlay" id="deleteModal" style="display:none;">
+  <div class="modal-box">
+    <p>Delete <strong>{{ npc.name }}</strong>? This cannot be undone.</p>
+    <form method="POST" action="{{ url_for('npcs.delete', slug=npc._slug) }}">
+      <div class="form-actions" style="margin-top:12px;">
+        <button type="submit" class="btn-primary btn-danger">Delete</button>
+        <button type="button" class="btn-ghost" onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const slug = '{{ npc._slug }}';
+
+function updateField(field, value) {
+  fetch(`/c/npcs/${slug}/update`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`
+  });
+}
+
+function updateDisposition(value) {
+  updateField('disposition', value);
+  const badge = document.getElementById('dispBadge');
+  badge.className = `disposition-badge badge-${value}`;
+  badge.textContent = value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+// Click-to-edit single line (name, role, faction)
+document.querySelectorAll('.editable-text').forEach(el => {
+  el.addEventListener('click', function() {
+    const field = el.dataset.field;
+    const current = el.textContent.trim() === '—' ? '' : el.textContent.trim();
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = current;
+    input.className = 'inline-input';
+    if (el.tagName === 'H1') { input.style.fontSize = '22px'; input.style.fontWeight = '600'; }
+    input.placeholder = el.dataset.placeholder || '';
+    el.replaceWith(input);
+    input.focus();
+    const save = () => {
+      updateField(field, input.value.trim());
+      el.textContent = input.value.trim() || '—';
+      input.replaceWith(el);
+    };
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
+  });
+});
+
+// Click-to-edit blocks
+document.querySelectorAll('.editable-block').forEach(block => {
+  const view = block.querySelector('.editable-view');
+  view.style.cursor = 'pointer';
+  view.addEventListener('click', () => {
+    view.style.display = 'none';
+    block.querySelector('.editable-edit').style.display = 'block';
+    block.querySelector('.editable-controls').style.display = 'flex';
+    block.querySelector('.editable-edit').focus();
+  });
+});
+
+function saveBlock(btn) {
+  const block = btn.closest('.editable-block');
+  const view = block.querySelector('.editable-view');
+  const edit = block.querySelector('.editable-edit');
+  const controls = btn.closest('.editable-controls');
+  const field = block.dataset.field;
+  fetch(`/c/npcs/${slug}/update`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(edit.value)}`
+  }).then(() => {
+    if (field === 'body') { window.location.reload(); return; }
+    view.textContent = edit.value || '';
+    view.style.display = 'block';
+    edit.style.display = 'none';
+    controls.style.display = 'none';
+  });
+}
+
+function cancelBlock(btn) {
+  const block = btn.closest('.editable-block');
+  block.querySelector('.editable-view').style.display = 'block';
+  block.querySelector('.editable-edit').style.display = 'none';
+  btn.closest('.editable-controls').style.display = 'none';
+}
+
+function toggleAgreementForm() {
+  const f = document.getElementById('agr-form');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function addAgreement() {
+  const text = document.getElementById('agr-text').value.trim();
+  const days = document.getElementById('agr-days').value || '0';
+  if (!text) return;
+  fetch(`/c/npcs/${slug}/agreement/add`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `text=${encodeURIComponent(text)}&deadline_days=${encodeURIComponent(days)}`
+  }).then(() => window.location.reload());
+}
+
+function deleteAgreement(idx) {
+  fetch(`/c/npcs/${slug}/agreement/${idx}/delete`, { method: 'POST' })
+    .then(() => window.location.reload());
+}
+</script>
+{% endblock %}

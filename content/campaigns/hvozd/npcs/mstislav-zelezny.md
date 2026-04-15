@@ -3,7 +3,8 @@ agreements: []
 disposition: neutral
 faction: Vladykův dvůr
 last_meeting: ''
-last_meeting_summary: ''
+last_meeting_summary: Naposledy se s ním viděli, když domluvil Jasek pomoc s Křesťanským
+  problémem.
 location: Trnový Újezd
 name: Vladyka Mstislav "Železný"
 role: Vladyka Trnového Újezdu

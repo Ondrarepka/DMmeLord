@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
-from app.data import list_entities, get_entity, save_entity, delete_entity, slugify, DISPOSITIONS
+from app.data import list_entities, get_entity, save_entity, delete_entity, slugify, DISPOSITIONS, render_wiki_html
 
 npcs = Blueprint('npcs', __name__, url_prefix='/c/npcs')
 
@@ -21,6 +21,22 @@ def index():
     return render_template('npcs.html', npcs=all_npcs, campaign=campaign(),
                            dispositions=DISPOSITIONS, factions=factions,
                            location_names=location_names)
+
+@npcs.route('/<slug>')
+def detail(slug):
+    npc = get_entity(campaign(), 'npcs', slug)
+    if not npc:
+        return redirect(url_for('npcs.index'))
+    all_locs = list_entities(campaign(), 'locations')
+    location_names = sorted(l['name'] for l in all_locs)
+    all_npcs = list_entities(campaign(), 'npcs')
+    factions = sorted(set(n.get('faction', '') for n in all_npcs if n.get('faction')))
+    npc['_body_html'] = render_wiki_html(campaign(), npc.get('_body', ''))
+    return render_template('npc_detail.html', npc=npc,
+                           dispositions=DISPOSITIONS,
+                           location_names=location_names,
+                           factions=factions)
+
 
 @npcs.route('/new', methods=['POST'])
 def new():

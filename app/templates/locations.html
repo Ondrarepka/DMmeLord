@@ -74,9 +74,7 @@
      data-region="{{ loc.region or '' }}">
 
   <div class="loc-header">
-    <span class="loc-name editable-text"
-          data-slug="{{ loc._slug }}"
-          data-field="name">{{ loc.name }}</span>
+    <a href="{{ url_for('locations.detail', slug=loc._slug) }}" class="loc-name">{{ loc.name }}</a>
     {% if loc.type %}
     <span class="type-badge">{{ loc.type }}</span>
     {% endif %}

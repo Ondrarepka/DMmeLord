@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Session #{{ s.number }} — {{ campaign }}{% endblock %}
+
+{% block content %}
+<div class="detail-nav">
+  <a href="{{ url_for('sessions.index') }}" class="back-link">← Sessions</a>
+</div>
+
+<div class="detail-header">
+  <div class="detail-title-row">
+    <h1 class="detail-name editable-text" data-field="title">{{ s.title }}</h1>
+    <span class="session-num-badge">#{{ s.number }}</span>
+  </div>
+  <div class="detail-subtitle">
+    <input type="date" class="session-date-input" value="{{ s.date or '' }}"
+           onchange="updateField('date', this.value)">
+  </div>
+</div>
+
+<!-- Notes -->
+<div class="card" style="margin-top:16px;">
+  <div class="section-header" style="margin-bottom:12px;">
+    <span>Session Notes</span>
+    <span style="font-size:11px;color:var(--overlay0);">Markdown · [[wiki links]]</span>
+  </div>
+  <div class="editable-block" data-field="body">
+    <div class="editable-view prose detail-prose">
+      {% if s._body %}{{ s._body_html | safe }}
+      {% else %}<em class="empty">No notes yet. Click to add. Supports Markdown and [[wiki links]].</em>{% endif %}
+    </div>
+    <textarea class="editable-edit" style="display:none; min-height:400px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.6;">{{ s._body or '' }}</textarea>
+    <div class="editable-controls" style="display:none;">
+      <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
+      <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete -->
+<div style="margin-top:16px; padding-bottom:32px; display:flex; justify-content:flex-end;">
+  <button class="btn-ghost btn-sm btn-danger" onclick="document.getElementById('deleteModal').style.display='flex'">Delete Session</button>
+</div>
+
+<div class="modal-overlay" id="deleteModal" style="display:none;">
+  <div class="modal-box">
+    <p>Delete <strong>Session #{{ s.number }}: {{ s.title }}</strong>? This cannot be undone.</p>
+    <form method="POST" action="{{ url_for('sessions.delete', slug=s._slug) }}">
+      <div class="form-actions" style="margin-top:12px;">
+        <button type="submit" class="btn-primary btn-danger">Delete</button>
+        <button type="button" class="btn-ghost" onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const slug = '{{ s._slug }}';
+
+function updateField(field, value) {
+  fetch(`/c/sessions/${slug}/update`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`
+  });
+}
+
+document.querySelectorAll('.editable-text').forEach(el => {
+  el.addEventListener('click', function() {
+    const field = el.dataset.field;
+    const current = el.textContent.trim();
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = current;
+    input.className = 'inline-input';
+    if (el.tagName === 'H1') { input.style.fontSize = '22px'; input.style.fontWeight = '600'; }
+    el.replaceWith(input);
+    input.focus();
+    const save = () => {
+      updateField(field, input.value.trim());
+      el.textContent = input.value.trim() || el.textContent;
+      input.replaceWith(el);
+    };
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
+  });
+});
+
+document.querySelectorAll('.editable-block').forEach(block => {
+  const view = block.querySelector('.editable-view');
+  view.style.cursor = 'pointer';
+  view.addEventListener('click', () => {
+    view.style.display = 'none';
+    block.querySelector('.editable-edit').style.display = 'block';
+    block.querySelector('.editable-controls').style.display = 'flex';
+    block.querySelector('.editable-edit').focus();
+  });
+});
+
+function saveBlock(btn) {
+  const block = btn.closest('.editable-block');
+  const view = block.querySelector('.editable-view');
+  const edit = block.querySelector('.editable-edit');
+  const controls = btn.closest('.editable-controls');
+  const field = block.dataset.field;
+  fetch(`/c/sessions/${slug}/update`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(edit.value)}`
+  }).then(() => {
+    if (field === 'body') { window.location.reload(); return; }
+    view.textContent = edit.value || '';
+    view.style.display = 'block';
+    edit.style.display = 'none';
+    controls.style.display = 'none';
+  });
+}
+
+function cancelBlock(btn) {
+  const block = btn.closest('.editable-block');
+  block.querySelector('.editable-view').style.display = 'block';
+  block.querySelector('.editable-edit').style.display = 'none';
+  btn.closest('.editable-controls').style.display = 'none';
+}
+</script>
+{% endblock %}

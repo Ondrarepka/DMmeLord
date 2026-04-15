@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
+from app.data import list_entities
 import os
 
 main = Blueprint('main', __name__)
@@ -22,10 +23,37 @@ def index():
 
 @main.route('/dashboard')
 def dashboard():
-    campaign = session.get('campaign')
-    if not campaign:
+    camp = session.get('campaign')
+    if not camp:
         return redirect(url_for('main.index'))
-    return render_template('dashboard.html', campaign=campaign, campaigns=get_campaigns())
+
+    all_npcs = list_entities(camp, 'npcs')
+    all_locs = list_entities(camp, 'locations')
+    all_sessions = list_entities(camp, 'sessions')
+    all_sessions.sort(key=lambda s: s.get('number', 0), reverse=True)
+
+    # Collect all active agreements across all NPCs
+    urgent = []
+    for npc in all_npcs:
+        for agr in (npc.get('agreements') or []):
+            d = agr.get('deadline_days', 0)
+            if d:
+                urgent.append({
+                    'npc_name': npc['name'],
+                    'npc_slug': npc['_slug'],
+                    'text': agr['text'],
+                    'days': d,
+                })
+    urgent.sort(key=lambda x: x['days'])
+
+    return render_template('dashboard.html',
+                           campaign=camp,
+                           campaigns=get_campaigns(),
+                           npc_count=len(all_npcs),
+                           loc_count=len(all_locs),
+                           session_count=len(all_sessions),
+                           recent_sessions=all_sessions[:3],
+                           urgent_agreements=urgent)
 
 @main.route('/switch/<name>')
 def switch_campaign(name):

@@ -3,7 +3,7 @@ agreements: []
 disposition: hostile
 faction: Církevní misie
 last_meeting: ''
-last_meeting_summary: ''
+last_meeting_summary: Chce po nich, aby hospoda byla bez kurev
 location: Trnový Újezd
 name: Otec Gorazd
 role: Kněz — Církvení misie

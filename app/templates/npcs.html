@@ -102,9 +102,7 @@
   <!-- Card header -->
   <div class="npc-header">
     <div class="npc-identity">
-      <span class="npc-name editable-text"
-            data-slug="{{ npc._slug }}"
-            data-field="name">{{ npc.name }}</span>
+      <a href="{{ url_for('npcs.detail', slug=npc._slug) }}" class="npc-name">{{ npc.name }}</a>
       <span class="disposition-badge badge-{{ npc.disposition or 'unknown' }}">
         {{ (npc.disposition or 'unknown')|capitalize }}
       </span>

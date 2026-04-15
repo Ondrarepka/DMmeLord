@@ -625,3 +625,202 @@ p  { color: var(--subtext1); margin-bottom: 8px; }
   margin-top: 8px;
 }
 .faction-group-header:first-child { margin-top: 0; }
+
+/* ── NPC NAME AS LINK ── */
+.npc-name, .loc-name {
+  text-decoration: none;
+  color: var(--text);
+}
+.npc-name:hover, .loc-name:hover { color: var(--mauve); }
+
+/* ── DETAIL PAGE ── */
+.detail-nav { margin-bottom: 20px; }
+
+.back-link {
+  color: var(--subtext0);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--mauve); }
+
+.detail-header { margin-bottom: 8px; }
+
+.detail-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.detail-name {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.detail-name:hover { color: var(--mauve); }
+
+.detail-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--subtext0);
+  font-size: 14px;
+}
+
+.detail-meta-card { margin-top: 16px; }
+
+.detail-prose {
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 48px;
+}
+.detail-prose a {
+  color: var(--mauve);
+  text-decoration: none;
+}
+.detail-prose a:hover { text-decoration: underline; }
+
+/* ── NPC CHIP (location detail) ── */
+.npc-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid;
+  transition: opacity 0.15s;
+}
+.npc-chip:hover { opacity: 0.75; }
+.npc-chip.badge-allied     { color: var(--green);    border-color: var(--green);    background: rgba(166,227,161,0.08); }
+.npc-chip.badge-neutral    { color: var(--blue);     border-color: var(--blue);     background: rgba(137,180,250,0.08); }
+.npc-chip.badge-hostile    { color: var(--red);      border-color: var(--red);      background: rgba(243,139,168,0.08); }
+.npc-chip.badge-complicated{ color: var(--peach);    border-color: var(--peach);    background: rgba(250,179,135,0.08); }
+.npc-chip.badge-unknown    { color: var(--overlay1); border-color: var(--surface1); background: transparent; }
+
+/* ── SESSION CARDS ── */
+.session-list { display: flex; flex-direction: column; gap: 8px; }
+
+.session-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+}
+.session-card:hover { border-color: var(--mauve); }
+
+.session-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.session-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mauve);
+  min-width: 30px;
+}
+.session-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+.session-date {
+  font-size: 12px;
+  color: var(--overlay1);
+  font-family: 'JetBrains Mono', monospace;
+}
+.session-preview {
+  font-size: 13px;
+  color: var(--subtext0);
+  margin-top: 6px;
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.session-num-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mauve);
+  background: rgba(203,166,247,0.1);
+  border: 1px solid rgba(203,166,247,0.3);
+  border-radius: 99px;
+  padding: 2px 10px;
+}
+.session-date-input {
+  background: transparent;
+  border: none;
+  color: var(--subtext0);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+}
+.session-date-input:focus { color: var(--text); }
+
+/* ── DASHBOARD ── */
+.stat-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  flex: 1;
+  text-align: center;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+}
+.stat-card:hover { border-color: var(--mauve); }
+.stat-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--mauve);
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--subtext0);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+.dashboard-panel h2 {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--overlay1);
+  margin-bottom: 12px;
+}
+
+.doom-npc-link {
+  color: var(--subtext0);
+  text-decoration: none;
+  font-weight: 500;
+}
+.doom-npc-link:hover { color: var(--mauve); }

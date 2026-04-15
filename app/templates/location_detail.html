@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}{{ loc.name }} — {{ campaign }}{% endblock %}
+
+{% block content %}
+<div class="detail-nav">
+  <a href="{{ url_for('locations.index') }}" class="back-link">← Locations</a>
+</div>
+
+<div class="detail-header">
+  <div class="detail-title-row">
+    <h1 class="detail-name editable-text" data-slug="{{ loc._slug }}" data-field="name">{{ loc.name }}</h1>
+    {% if loc.type %}<span class="type-badge">{{ loc.type }}</span>{% endif %}
+  </div>
+  <div class="detail-subtitle">
+    <span class="editable-text meta-item" data-slug="{{ loc._slug }}" data-field="region" data-placeholder="Region">{{ loc.region or '—' }}</span>
+  </div>
+  {% if loc.tags %}
+  <div class="tag-row" style="margin-top:10px;">
+    {% for tag in loc.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<!-- Meta bar -->
+<div class="card detail-meta-card">
+  <div class="relation-row">
+    <div class="relation-field">
+      <label>Type</label>
+      <select class="relation-select" onchange="updateField('type', this.value)">
+        <option value="">—</option>
+        {% for t in types %}
+        <option value="{{ t }}" {% if loc.type == t %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+        {% if loc.type and loc.type not in types %}
+        <option value="{{ loc.type }}" selected>{{ loc.type }}</option>
+        {% endif %}
+      </select>
+    </div>
+    <div class="relation-field" style="flex:2;">
+      <label>Region</label>
+      <select class="relation-select" onchange="updateField('region', this.value)">
+        <option value="">—</option>
+        {% for r in regions %}
+        <option value="{{ r }}" {% if loc.region == r %}selected{% endif %}>{{ r }}</option>
+        {% endfor %}
+        {% if loc.region and loc.region not in regions %}
+        <option value="{{ loc.region }}" selected>{{ loc.region }}</option>
+        {% endif %}
+      </select>
+    </div>
+  </div>
+  <div class="relation-field" style="margin-top:12px;">
+    <label>Tags (comma separated)</label>
+    <div class="editable-block" data-field="tags">
+      <div class="editable-view">{{ loc.tags|join(', ') if loc.tags else '<em class="empty">No tags. Click to add.</em>' }}</div>
+      <textarea class="editable-edit" style="display:none; min-height:40px;">{{ loc.tags|join(', ') if loc.tags else '' }}</textarea>
+      <div class="editable-controls" style="display:none;">
+        <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
+        <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NPCs at this location -->
+{% if loc_npcs %}
+<div class="card" style="margin-top:10px;">
+  <div class="section-header" style="margin-bottom:10px;">
+    <span>NPCs here ({{ loc_npcs|length }})</span>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    {% for npc in loc_npcs %}
+    <a href="{{ url_for('npcs.detail', slug=npc._slug) }}" class="npc-chip badge-{{ npc.disposition or 'unknown' }}">
+      {{ npc.name }}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Description / Lore -->
+<div class="card" style="margin-top:10px;">
+  <div class="section-header" style="margin-bottom:12px;">
+    <span>Description & Lore</span>
+    <span style="font-size:11px;color:var(--overlay0);">Markdown · [[wiki links]]</span>
+  </div>
+  <div class="editable-block" data-field="body">
+    <div class="editable-view prose detail-prose">
+      {% if loc._body %}{{ loc._body_html | safe }}
+      {% else %}<em class="empty">No description yet. Click to add. Supports Markdown and [[wiki links]].</em>{% endif %}
+    </div>
+    <textarea class="editable-edit" style="display:none; min-height:320px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.6;">{{ loc._body or '' }}</textarea>
+    <div class="editable-controls" style="display:none;">
+      <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
+      <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete -->
+<div style="margin-top:16px; padding-bottom:32px; display:flex; justify-content:flex-end;">
+  <button class="btn-ghost btn-sm btn-danger" onclick="document.getElementById('deleteModal').style.display='flex'">Delete Location</button>
+</div>
+
+<div class="modal-overlay" id="deleteModal" style="display:none;">
+  <div class="modal-box">
+    <p>Delete <strong>{{ loc.name }}</strong>? This cannot be undone.</p>
+    <form method="POST" action="{{ url_for('locations.delete', slug=loc._slug) }}">
+      <div class="form-actions" style="margin-top:12px;">
+        <button type="submit" class="btn-primary btn-danger">Delete</button>
+        <button type="button" class="btn-ghost" onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const slug = '{{ loc._slug }}';
+
+function updateField(field, value) {
+  fetch(`/c/locations/${slug}/update`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`
+  });
+}
+
+document.querySelectorAll('.editable-text').forEach(el => {
+  el.addEventListener('click', function() {
+    const field = el.dataset.field;
+    const current = el.textContent.trim() === '—' ? '' : el.textContent.trim();
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = current;
+    input.className = 'inline-input';
+    if (el.tagName === 'H1') { input.style.fontSize = '22px'; input.style.fontWeight = '600'; }
+    input.placeholder = el.dataset.placeholder || '';
+    el.replaceWith(input);
+    input.focus();
+    const save = () => {
+      updateField(field, input.value.trim());
+      el.textContent = input.value.trim() || '—';
+      input.replaceWith(el);
+    };
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); });
+  });
+});
+
+document.querySelectorAll('.editable-block').forEach(block => {
+  const view = block.querySelector('.editable-view');
+  view.style.cursor = 'pointer';
+  view.addEventListener('click', () => {
+    view.style.display = 'none';
+    block.querySelector('.editable-edit').style.display = 'block';
+    block.querySelector('.editable-controls').style.display = 'flex';
+    block.querySelector('.editable-edit').focus();
+  });
+});
+
+function saveBlock(btn) {
+  const block = btn.closest('.editable-block');
+  const view = block.querySelector('.editable-view');
+  const edit = block.querySelector('.editable-edit');
+  const controls = btn.closest('.editable-controls');
+  const field = block.dataset.field;
+  fetch(`/c/locations/${slug}/update`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(edit.value)}`
+  }).then(() => {
+    if (field === 'body') { window.location.reload(); return; }
+    view.textContent = edit.value || '';
+    view.style.display = 'block';
+    edit.style.display = 'none';
+    controls.style.display = 'none';
+  });
+}
+
+function cancelBlock(btn) {
+  const block = btn.closest('.editable-block');
+  block.querySelector('.editable-view').style.display = 'block';
+  block.querySelector('.editable-edit').style.display = 'none';
+  btn.closest('.editable-controls').style.display = 'none';
+}
+</script>
+{% endblock %}

@@ -4,6 +4,7 @@ import markdown2
 import re
 from datetime import date
 
+
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), '..', 'content', 'campaigns')
 
 def campaign_dir(campaign):
@@ -68,3 +69,25 @@ def disposition_color(d):
         'complicated': 'peach',
         'unknown':     'overlay',
     }.get(d, 'overlay')
+
+# ── Wiki-link rendering ──
+
+def render_wiki_html(campaign, text):
+    """Render markdown with [[wiki links]] resolved to entity detail pages."""
+    if not text:
+        return ''
+    npcs = list_entities(campaign, 'npcs')
+    locs = list_entities(campaign, 'locations')
+    npc_map  = {n['name']: n['_slug'] for n in npcs}
+    loc_map  = {l['name']: l['_slug'] for l in locs}
+
+    def replace_link(m):
+        name = m.group(1).strip()
+        if name in npc_map:
+            return f'[{name}](/c/npcs/{npc_map[name]})'
+        if name in loc_map:
+            return f'[{name}](/c/locations/{loc_map[name]})'
+        return f'**{name}**'
+
+    text = re.sub(r'\[\[([^\]]+)\]\]', replace_link, text)
+    return markdown2.markdown(text, extras=['fenced-code-blocks', 'tables'])
