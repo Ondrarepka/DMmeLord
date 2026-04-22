@@ -1219,3 +1219,129 @@ p  { color: var(--subtext1); margin-bottom: 8px; }
 .fdate-today { font-size: 11px; padding: 3px 7px; margin-left: 4px; }
 
 .relation-static { font-size: 13px; color: var(--subtext1); }
+
+/* ── Search ── */
+.topbar-search { display: flex; align-items: center; }
+.topbar-search-input {
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  color: var(--text);
+  padding: 5px 10px;
+  border-radius: var(--r);
+  font-size: 12px;
+  width: 160px;
+  outline: none;
+  transition: border-color .15s;
+}
+.topbar-search-input:focus { border-color: var(--mauve); width: 200px; }
+.topbar-search-input::placeholder { color: var(--overlay0); }
+
+.search-form { display: flex; gap: 10px; margin-bottom: 24px; }
+.search-input {
+  flex: 1;
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: var(--r);
+  font-size: 14px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--mauve); }
+.search-meta { color: var(--overlay1); font-size: 13px; margin-bottom: 20px; }
+.search-group { margin-bottom: 28px; }
+.search-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--overlay1);
+  margin-bottom: 8px;
+}
+.search-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color .15s;
+}
+.search-result-row:hover { border-color: var(--mauve); }
+.sr-main { display: flex; align-items: center; gap: 10px; }
+.sr-name { font-weight: 500; font-size: 14px; }
+.sr-meta { font-size: 12px; color: var(--overlay1); }
+
+/* ── Session NPC chip remove button ── */
+.chip-remove {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  margin-left: 4px;
+  font-size: 10px;
+  padding: 0 2px;
+  line-height: 1;
+}
+.chip-remove:hover { opacity: 1; }
+
+/* ── Map ── */
+.map-controls { padding: 10px 14px; }
+.map-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  user-select: none;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--surface1);
+}
+.map-img { display: block; width: 100%; height: auto; }
+.map-pin {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  z-index: 10;
+}
+.pin-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--mauve);
+  border-radius: 50%;
+  border: 2px solid var(--base);
+  margin: 0 auto;
+  box-shadow: 0 0 0 2px var(--mauve);
+  cursor: pointer;
+}
+.pin-label {
+  display: none;
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface1);
+  border: 1px solid var(--surface2);
+  border-radius: var(--r);
+  padding: 4px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+  gap: 6px;
+  align-items: center;
+  z-index: 20;
+}
+.map-pin:hover .pin-label { display: flex; }
+.pin-label a { color: var(--text); text-decoration: none; }
+.pin-label a:hover { color: var(--mauve); }
+.pin-remove {
+  background: none;
+  border: none;
+  color: var(--overlay0);
+  cursor: pointer;
+  font-size: 10px;
+  padding: 0;
+  line-height: 1;
+}
+.pin-remove:hover { color: var(--red); }
+.map-hint { font-style: italic; }

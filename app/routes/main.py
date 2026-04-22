@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request
 from app.data import list_entities
 import os
+import re
 
 main = Blueprint('main', __name__)
 
@@ -61,3 +62,30 @@ def switch_campaign(name):
     if name in campaigns:
         session['campaign'] = name
     return redirect(url_for('main.dashboard'))
+
+
+@main.route('/search')
+def search():
+    camp = session.get('campaign')
+    if not camp:
+        return redirect(url_for('main.index'))
+    q = request.args.get('q', '').strip()
+    results = {'npcs': [], 'locations': [], 'sessions': []}
+    if q:
+        pat = re.compile(re.escape(q), re.IGNORECASE)
+        def matches(entity, *fields):
+            return any(pat.search(str(entity.get(f, '') or '')) for f in fields)
+
+        for npc in list_entities(camp, 'npcs'):
+            if matches(npc, 'name', 'role', 'faction', '_body'):
+                results['npcs'].append(npc)
+        for loc in list_entities(camp, 'locations'):
+            if matches(loc, 'name', 'region', '_body'):
+                results['locations'].append(loc)
+        for s in list_entities(camp, 'sessions'):
+            if matches(s, 'title', '_body'):
+                results['sessions'].append(s)
+        results['sessions'].sort(key=lambda s: s.get('number', 0), reverse=True)
+
+    total = sum(len(v) for v in results.values())
+    return render_template('search.html', q=q, results=results, total=total, campaign=camp)

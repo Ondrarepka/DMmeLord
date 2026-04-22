@@ -12,6 +12,7 @@ def create_app():
     from .routes.sessions import sessions_bp
     from .routes.calendar import calendar
     from .routes.economy import economy
+    from .routes.map import map_bp
     app.register_blueprint(main)
     app.register_blueprint(campaigns)
     app.register_blueprint(npcs)
@@ -19,6 +20,7 @@ def create_app():
     app.register_blueprint(sessions_bp)
     app.register_blueprint(calendar)
     app.register_blueprint(economy)
+    app.register_blueprint(map_bp)
 
     app.jinja_env.globals['enumerate'] = enumerate
 

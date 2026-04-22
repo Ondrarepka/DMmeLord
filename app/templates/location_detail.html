@@ -78,6 +78,24 @@
 </div>
 {% endif %}
 
+<!-- Sessions at this location -->
+{% if loc_sessions %}
+<div class="card" style="margin-top:10px;">
+  <div class="section-header" style="margin-bottom:10px;">
+    <span>Sessions here ({{ loc_sessions|length }})</span>
+  </div>
+  {% for s in loc_sessions %}
+  <a href="{{ url_for('sessions.detail', slug=s._slug) }}" class="session-card card" style="margin-bottom:6px; display:block;">
+    <div class="session-card-header">
+      <span class="session-number">#{{ s.number }}</span>
+      <span class="session-title">{{ s.title }}</span>
+      <span class="session-date">{{ s.date }}</span>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
 <!-- Description / Lore -->
 <div class="card" style="margin-top:10px;">
   <div class="section-header" style="margin-bottom:12px;">

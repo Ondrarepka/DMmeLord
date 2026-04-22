@@ -30,13 +30,19 @@ def detail(slug):
     if not loc:
         return redirect(url_for('locations.index'))
     all_npcs = list_entities(campaign(), 'npcs')
+    all_sessions = list_entities(campaign(), 'sessions')
     loc_npcs = [n for n in all_npcs if n.get('location') == loc.get('name')]
+    loc_sessions = sorted(
+        [s for s in all_sessions if s.get('location') == loc.get('name')],
+        key=lambda s: s.get('number', 0), reverse=True
+    )
     all_locs = list_entities(campaign(), 'locations')
     types   = sorted(set(l.get('type', '')   for l in all_locs if l.get('type')))
     regions = sorted(set(l.get('region', '') for l in all_locs if l.get('region')))
     loc['_body_html'] = render_wiki_html(campaign(), loc.get('_body', ''))
     return render_template('location_detail.html', loc=loc,
-                           loc_npcs=loc_npcs, types=types, regions=regions)
+                           loc_npcs=loc_npcs, loc_sessions=loc_sessions,
+                           types=types, regions=regions)
 
 
 @locations.route('/new', methods=['POST'])

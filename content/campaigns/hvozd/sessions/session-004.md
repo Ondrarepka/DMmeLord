@@ -1,5 +1,7 @@
 ---
 date: '2026-04-16'
+location: ''
+npcs: []
 number: 4
 title: Krvavý měsíc
 ---

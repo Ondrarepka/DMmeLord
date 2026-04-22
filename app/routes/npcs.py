@@ -35,15 +35,21 @@ def detail(slug):
         return redirect(url_for('npcs.index'))
     all_locs = list_entities(campaign(), 'locations')
     all_npcs = list_entities(campaign(), 'npcs')
+    all_sessions = list_entities(campaign(), 'sessions')
     locations_list = sorted(all_locs, key=lambda l: l['name'])
     factions = sorted(set(n.get('faction', '') for n in all_npcs if n.get('faction')))
     npc['_body_html'] = render_wiki_html(campaign(), npc.get('_body', ''))
     ingame = get_campaign_config(campaign()).get('ingame', {'day': 1, 'month': 1, 'year': 912})
+    npc_sessions = sorted(
+        [s for s in all_sessions if npc['name'] in (s.get('npcs') or [])],
+        key=lambda s: s.get('number', 0), reverse=True
+    )
     return render_template('npc_detail.html', npc=npc,
                            dispositions=DISPOSITIONS,
                            locations_list=locations_list,
                            factions=factions,
-                           ingame=ingame)
+                           ingame=ingame,
+                           npc_sessions=npc_sessions)
 
 
 @npcs.route('/new', methods=['POST'])

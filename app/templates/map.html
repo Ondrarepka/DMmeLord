@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Map — {{ campaign }}{% endblock %}
+
+{% block content %}
+<div class="page-header" style="display:flex; align-items:center; justify-content:space-between;">
+  <h1>Map</h1>
+  <div style="display:flex; gap:8px; align-items:center;">
+    {% if map_cfg.get('image') %}
+    <form method="POST" action="{{ url_for('map.clear_image') }}" style="display:inline;">
+      <button type="submit" class="btn-ghost btn-sm btn-danger">Remove image</button>
+    </form>
+    {% endif %}
+    <label class="btn-ghost btn-sm" style="cursor:pointer;" for="uploadInput">
+      Upload map image
+    </label>
+    <form id="uploadForm" method="POST" action="{{ url_for('map.upload') }}" enctype="multipart/form-data" style="display:none;">
+      <input type="file" id="uploadInput" name="map_image" accept="image/*" onchange="document.getElementById('uploadForm').submit()">
+    </form>
+  </div>
+</div>
+
+{% if map_cfg.get('image') %}
+
+<!-- Pin-placement controls -->
+<div class="map-controls card" style="margin-bottom:10px;">
+  <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+      <input type="checkbox" id="pinModeToggle" onchange="togglePinMode(this.checked)">
+      <span>Pin placement mode</span>
+    </label>
+    <select id="pinLocSelect" class="relation-select" style="min-width:180px;" disabled>
+      <option value="">Select location to pin…</option>
+      {% for loc in unpinned_locs %}
+      <option value="{{ loc._slug }}" data-name="{{ loc.name }}">{{ loc.name }}</option>
+      {% endfor %}
+    </select>
+    <span class="map-hint" id="mapHint" style="display:none; color:var(--overlay1); font-size:12px;">Click on the map to place the pin</span>
+  </div>
+</div>
+
+<!-- Map canvas -->
+<div class="map-wrapper" id="mapWrapper">
+  <img src="{{ url_for('static', filename=map_cfg.image) }}" alt="Campaign map" class="map-img" id="mapImg"
+       draggable="false">
+
+  <!-- Pins -->
+  {% for pin in map_cfg.get('pins', []) %}
+  <div class="map-pin" style="left:{{ (pin.x * 100)|round(3) }}%; top:{{ (pin.y * 100)|round(3) }}%;"
+       data-id="{{ pin.id }}" title="{{ pin.location_name }}">
+    <div class="pin-dot"></div>
+    <div class="pin-label">
+      <a href="{{ url_for('locations.detail', slug=pin.location_slug) }}">{{ pin.location_name }}</a>
+      <button class="pin-remove" onclick="removePin('{{ pin.id }}')" title="Remove pin">✕</button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+
+<!-- No image yet -->
+<div class="card" style="text-align:center; padding:64px 32px; margin-top:16px;">
+  <p style="color:var(--overlay1); margin-bottom:16px;">No map image uploaded yet.</p>
+  <label class="btn-primary" style="cursor:pointer;" for="uploadInput2">
+    Upload map image
+  </label>
+  <form id="uploadForm2" method="POST" action="{{ url_for('map.upload') }}" enctype="multipart/form-data" style="display:none;">
+    <input type="file" id="uploadInput2" name="map_image" accept="image/*" onchange="document.getElementById('uploadForm2').submit()">
+  </form>
+</div>
+
+{% if all_locs %}
+<!-- Fallback: location list -->
+<div class="card" style="margin-top:16px;">
+  <div class="section-header" style="margin-bottom:12px;"><span>All Locations</span></div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    {% for loc in all_locs %}
+    <a href="{{ url_for('locations.detail', slug=loc._slug) }}" class="npc-chip badge-unknown">
+      {{ loc.name }}{% if loc.type %} <span style="opacity:.6; font-size:10px;">{{ loc.type }}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+let pinMode = false;
+
+function togglePinMode(on) {
+  pinMode = on;
+  document.getElementById('pinLocSelect').disabled = !on;
+  document.getElementById('mapHint').style.display = on ? 'inline' : 'none';
+  document.getElementById('mapWrapper').style.cursor = on ? 'crosshair' : 'default';
+}
+
+document.getElementById('mapWrapper')?.addEventListener('click', function(e) {
+  if (!pinMode) return;
+  const sel = document.getElementById('pinLocSelect');
+  const slug = sel.value;
+  const name = sel.selectedOptions[0]?.dataset.name;
+  if (!slug) { alert('Select a location first.'); return; }
+
+  const rect = this.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width;
+  const y = (e.clientY - rect.top)  / rect.height;
+
+  fetch('/c/map/pin/add', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({x, y, location_slug: slug, location_name: name})
+  }).then(() => window.location.reload());
+});
+
+function removePin(id) {
+  fetch(`/c/map/pin/${id}/delete`, {method: 'POST'})
+    .then(() => window.location.reload());
+}
+</script>
+{% endblock %}

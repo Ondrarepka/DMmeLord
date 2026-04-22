@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Search — {{ campaign }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Search</h1>
+</div>
+
+<form method="GET" action="{{ url_for('main.search') }}" class="search-form">
+  <input type="text" name="q" value="{{ q }}" placeholder="Search NPCs, locations, sessions…"
+         class="search-input" autofocus>
+  <button type="submit" class="btn-primary">Search</button>
+</form>
+
+{% if q %}
+<p class="search-meta">{{ total }} result{{ 's' if total != 1 }} for <strong>{{ q }}</strong></p>
+
+{% if results.npcs %}
+<div class="search-group">
+  <h2 class="search-group-title">NPCs ({{ results.npcs|length }})</h2>
+  {% for npc in results.npcs %}
+  <a href="{{ url_for('npcs.detail', slug=npc._slug) }}" class="search-result-row card">
+    <div class="sr-main">
+      <span class="sr-name">{{ npc.name }}</span>
+      {% if npc.role %}<span class="sr-meta">{{ npc.role }}</span>{% endif %}
+      {% if npc.faction %}<span class="sr-meta">· {{ npc.faction }}</span>{% endif %}
+    </div>
+    <span class="disposition-badge badge-{{ npc.disposition or 'unknown' }}">{{ (npc.disposition or 'unknown')|capitalize }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if results.locations %}
+<div class="search-group">
+  <h2 class="search-group-title">Locations ({{ results.locations|length }})</h2>
+  {% for loc in results.locations %}
+  <a href="{{ url_for('locations.detail', slug=loc._slug) }}" class="search-result-row card">
+    <div class="sr-main">
+      <span class="sr-name">{{ loc.name }}</span>
+      {% if loc.region %}<span class="sr-meta">{{ loc.region }}</span>{% endif %}
+    </div>
+    {% if loc.type %}<span class="type-badge">{{ loc.type }}</span>{% endif %}
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if results.sessions %}
+<div class="search-group">
+  <h2 class="search-group-title">Sessions ({{ results.sessions|length }})</h2>
+  {% for s in results.sessions %}
+  <a href="{{ url_for('sessions.detail', slug=s._slug) }}" class="search-result-row card">
+    <div class="sr-main">
+      <span class="session-number">#{{ s.number }}</span>
+      <span class="sr-name">{{ s.title }}</span>
+    </div>
+    <span class="sr-meta">{{ s.date }}</span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if total == 0 %}
+<p class="empty-state" style="margin-top:32px;">No results found.</p>
+{% endif %}
+
+{% endif %}
+{% endblock %}

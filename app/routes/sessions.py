@@ -34,6 +34,8 @@ def new():
         'number': next_num,
         'title': title,
         'date': session_date,
+        'location': '',
+        'npcs': [],
     }
     save_entity(campaign(), 'sessions', slug, metadata, '')
     return redirect(url_for('sessions.detail', slug=slug))
@@ -45,7 +47,15 @@ def detail(slug):
     if not s:
         return redirect(url_for('sessions.index'))
     s['_body_html'] = render_wiki_html(campaign(), s.get('_body', ''))
-    return render_template('session_detail.html', s=s, campaign=campaign())
+    all_npcs = list_entities(campaign(), 'npcs')
+    all_locs = list_entities(campaign(), 'locations')
+    session_npcs_names = s.get('npcs') or []
+    session_npc_objs = [n for n in all_npcs if n['name'] in session_npcs_names]
+    remaining_npcs = [n for n in all_npcs if n['name'] not in session_npcs_names]
+    return render_template('session_detail.html', s=s, campaign=campaign(),
+                           all_npcs=all_npcs, all_locs=all_locs,
+                           session_npc_objs=session_npc_objs,
+                           remaining_npcs=remaining_npcs)
 
 
 @sessions_bp.route('/<slug>/update', methods=['POST'])
@@ -61,9 +71,42 @@ def update(slug):
     elif field == 'number':
         metadata['number'] = int(value) if value else 0
         save_entity(campaign(), 'sessions', slug, metadata, s.get('_body', ''))
+    elif field == 'location':
+        metadata['location'] = value
+        save_entity(campaign(), 'sessions', slug, metadata, s.get('_body', ''))
     elif field in metadata:
         metadata[field] = value
         save_entity(campaign(), 'sessions', slug, metadata, s.get('_body', ''))
+    return jsonify({'ok': True})
+
+
+@sessions_bp.route('/<slug>/npc/add', methods=['POST'])
+def add_npc(slug):
+    s = get_entity(campaign(), 'sessions', slug)
+    if not s:
+        return jsonify({'error': 'not found'}), 404
+    metadata = {k: v for k, v in s.items() if not k.startswith('_')}
+    npcs = list(metadata.get('npcs') or [])
+    name = request.form.get('name', '').strip()
+    if name and name not in npcs:
+        npcs.append(name)
+    metadata['npcs'] = npcs
+    save_entity(campaign(), 'sessions', slug, metadata, s.get('_body', ''))
+    return jsonify({'ok': True})
+
+
+@sessions_bp.route('/<slug>/npc/remove', methods=['POST'])
+def remove_npc(slug):
+    s = get_entity(campaign(), 'sessions', slug)
+    if not s:
+        return jsonify({'error': 'not found'}), 404
+    metadata = {k: v for k, v in s.items() if not k.startswith('_')}
+    npcs = list(metadata.get('npcs') or [])
+    name = request.form.get('name', '').strip()
+    if name in npcs:
+        npcs.remove(name)
+    metadata['npcs'] = npcs
+    save_entity(campaign(), 'sessions', slug, metadata, s.get('_body', ''))
     return jsonify({'ok': True})
 
 

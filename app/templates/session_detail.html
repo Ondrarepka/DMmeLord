@@ -17,6 +17,49 @@
   </div>
 </div>
 
+<!-- Meta: location + NPCs present -->
+<div class="card detail-meta-card" style="margin-top:16px;">
+  <div class="relation-row">
+    <div class="relation-field" style="flex:2;">
+      <label>Location</label>
+      <select class="relation-select" onchange="updateField('location', this.value)">
+        <option value="">—</option>
+        {% for loc in all_locs %}
+        <option value="{{ loc.name }}" {% if s.location == loc.name %}selected{% endif %}>{{ loc.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- NPCs present -->
+<div class="card" style="margin-top:10px;">
+  <div class="section-header">
+    <span>NPCs Present</span>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <select id="npcAddSelect" class="relation-select" style="min-width:160px;">
+        <option value="">Add NPC…</option>
+        {% for npc in remaining_npcs %}
+        <option value="{{ npc.name }}">{{ npc.name }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn-ghost btn-sm" onclick="addSessionNpc()">+</button>
+    </div>
+  </div>
+  <div id="session-npc-list" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
+    {% if session_npc_objs %}
+      {% for npc in session_npc_objs %}
+      <span class="npc-chip badge-{{ npc.disposition or 'unknown' }}" id="npc-chip-{{ loop.index }}">
+        <a href="{{ url_for('npcs.detail', slug=npc._slug) }}" style="color:inherit; text-decoration:none;">{{ npc.name }}</a>
+        <button class="chip-remove" onclick="removeSessionNpc('{{ npc.name }}')" title="Remove">✕</button>
+      </span>
+      {% endfor %}
+    {% else %}
+      <span class="empty-state" id="npc-empty">No NPCs tagged yet.</span>
+    {% endif %}
+  </div>
+</div>
+
 <!-- Notes -->
 <div class="card" style="margin-top:16px;">
   <div class="section-header" style="margin-bottom:12px;">
@@ -122,6 +165,25 @@ function cancelBlock(btn) {
   block.querySelector('.editable-view').style.display = 'block';
   block.querySelector('.editable-edit').style.display = 'none';
   btn.closest('.editable-controls').style.display = 'none';
+}
+
+function addSessionNpc() {
+  const sel = document.getElementById('npcAddSelect');
+  const name = sel.value;
+  if (!name) return;
+  fetch(`/c/sessions/${slug}/npc/add`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `name=${encodeURIComponent(name)}`
+  }).then(() => window.location.reload());
+}
+
+function removeSessionNpc(name) {
+  fetch(`/c/sessions/${slug}/npc/remove`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `name=${encodeURIComponent(name)}`
+  }).then(() => window.location.reload());
 }
 </script>
 {% endblock %}

@@ -23,8 +23,14 @@
     <a href="{{ url_for('sessions.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('sessions.') %}active{% endif %}">Sessions</a>
     <a href="{{ url_for('calendar.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('calendar.') %}active{% endif %}">Calendar</a>
     <a href="{{ url_for('economy.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('economy.') %}active{% endif %}">Economy</a>
+    <a href="{{ url_for('map.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('map.') %}active{% endif %}">Map</a>
   </nav>
   <div class="topbar-right">
+    <!-- Search -->
+    <form method="GET" action="{{ url_for('main.search') }}" class="topbar-search">
+      <input type="text" name="q" placeholder="Search…" class="topbar-search-input"
+             {% if request.endpoint == 'main.search' %}value="{{ request.args.get('q', '') }}"{% endif %}>
+    </form>
     <!-- Campaign switcher -->
     <div class="campaign-switcher">
       <button class="switcher-btn" id="switcherToggle">
