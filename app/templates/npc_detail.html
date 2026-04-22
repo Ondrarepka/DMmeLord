@@ -32,8 +32,8 @@
       <label>Location</label>
       <select class="relation-select" onchange="updateField('location', this.value)">
         <option value="">—</option>
-        {% for l in location_names %}
-        <option value="{{ l }}" {% if npc.location == l %}selected{% endif %}>{{ l }}</option>
+        {% for loc in locations_list %}
+        <option value="{{ loc._slug }}" {% if npc.location == loc._slug %}selected{% endif %}>{{ loc.name }}</option>
         {% endfor %}
       </select>
     </div>
@@ -47,16 +47,30 @@
     </div>
     <div class="relation-field" style="flex:2;">
       <label>Last meeting</label>
-      <input type="date" class="relation-input"
-             value="{{ npc.last_meeting or '' }}"
-             onchange="updateField('last_meeting', this.value)">
+      <div class="fictional-date-inputs" id="lm-detail">
+        {% set lm = npc.last_meeting or '' %}
+        {% set lm_parts = lm.split('. ') if lm else [] %}
+        <input type="number" class="fdate-day" min="1" max="31" placeholder="d"
+               value="{{ lm_parts[0] if lm_parts|length >= 1 else '' }}"
+               onchange="saveFictionalDate()">
+        <span class="fdate-sep">.</span>
+        <input type="number" class="fdate-month" min="1" max="12" placeholder="m"
+               value="{{ lm_parts[1] if lm_parts|length >= 2 else '' }}"
+               onchange="saveFictionalDate()">
+        <span class="fdate-sep">.</span>
+        <input type="number" class="fdate-year" min="1" placeholder="r"
+               value="{{ lm_parts[2] if lm_parts|length >= 3 else '' }}"
+               onchange="saveFictionalDate()">
+        <button class="btn-ghost btn-sm fdate-today" type="button"
+                onclick="setIngameToday()" title="Set to current in-game date">Dnes</button>
+      </div>
     </div>
   </div>
 
   <div class="relation-field" style="margin-top:12px;">
     <label>Last meeting summary</label>
     <div class="editable-block" data-field="last_meeting_summary">
-      <div class="editable-view">{{ npc.last_meeting_summary or '<em class="empty">Click to add summary.</em>' }}</div>
+      <div class="editable-view">{% if npc.last_meeting_summary %}{{ npc.last_meeting_summary }}{% else %}<em class="empty">Ještě nepotkali.</em>{% endif %}</div>
       <textarea class="editable-edit" style="display:none;">{{ npc.last_meeting_summary or '' }}</textarea>
       <div class="editable-controls" style="display:none;">
         <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
@@ -159,6 +173,7 @@
 {% block scripts %}
 <script>
 const slug = '{{ npc._slug }}';
+const INGAME = {{ ingame | tojson }};
 
 function updateField(field, value) {
   fetch(`/c/npcs/${slug}/update`, {
@@ -166,6 +181,23 @@ function updateField(field, value) {
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: `field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`
   });
+}
+
+function saveFictionalDate() {
+  const wrap = document.getElementById('lm-detail');
+  const d = wrap.querySelector('.fdate-day').value.trim();
+  const m = wrap.querySelector('.fdate-month').value.trim();
+  const y = wrap.querySelector('.fdate-year').value.trim();
+  const val = (d || m || y) ? `${d || '?'}. ${m || '?'}. ${y || '?'}` : '';
+  updateField('last_meeting', val);
+}
+
+function setIngameToday() {
+  const wrap = document.getElementById('lm-detail');
+  wrap.querySelector('.fdate-day').value   = INGAME.day;
+  wrap.querySelector('.fdate-month').value = INGAME.month;
+  wrap.querySelector('.fdate-year').value  = INGAME.year;
+  saveFictionalDate();
 }
 
 function updateDisposition(value) {

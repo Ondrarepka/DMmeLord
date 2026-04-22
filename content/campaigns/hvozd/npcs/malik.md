@@ -4,7 +4,7 @@ disposition: neutral
 faction: Cech Kupců a Řemeslníků
 last_meeting: ''
 last_meeting_summary: ''
-location: Vlčí Důl
+location: vlci-dul
 name: Malík
 role: Pomocník u milířů — Vlčí Důl
 tags:

@@ -1,13 +1,17 @@
 ---
 name: Hradiště "Havraní skála"
+region: Západ
+tags:
+- Bořuta
+- pohanství
+- útočiště
+- rival
 type: Pohanské hradiště
-region: Západ (cca 2 dny jízdy přes hory)
-tags: [Bořuta, pohanství, útočiště, rival]
 ---
 
 Tradiční slovanské hradiště, které odmítá jakýkoliv vliv Říše i křesťanství.
 
-**Vládce:** Vladyka Bořuta „Starokrev" — na jeho území žádná rotunda stát nikdy nebude.
+**Vládce:** Vladyka [[Bořuta Starokrev]] — na jeho území žádná rotunda stát nikdy nebude.
 
 ## Atmosféra
 

@@ -4,8 +4,8 @@ disposition: hostile
 faction: Havraní skála
 last_meeting: ''
 last_meeting_summary: ''
-location: Havraní skála
-name: Vladyka Bořuta "Starokrev"
+location: havrani-skala
+name: Bořuta Starokrev
 role: Vladyka Havraní skály
 tags:
 - vladyka

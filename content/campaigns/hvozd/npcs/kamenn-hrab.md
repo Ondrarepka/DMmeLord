@@ -1,11 +1,11 @@
 ---
 agreements: []
-disposition: neutral
+disposition: complicated
 faction: Běsi
-last_meeting: ''
+last_meeting: 6. 3. 912
 last_meeting_summary: "Naposledy když se setkali jim hrabě pomohl se vyléčit a zbavil
   je Jaska, po jeho zrádném kousku. \nTaké jim nabídl pomoc se smlouvou s Permony"
-location: Místa moci a tajemství
+location: místa-moci
 name: Kamenný hrabě
 role: Běs léčivých studní
 tags:

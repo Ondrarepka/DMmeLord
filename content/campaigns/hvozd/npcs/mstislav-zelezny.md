@@ -2,11 +2,11 @@
 agreements: []
 disposition: neutral
 faction: Vladykův dvůr
-last_meeting: ''
+last_meeting: 6. 3. 912
 last_meeting_summary: Naposledy se s ním viděli, když domluvil Jasek pomoc s Křesťanským
   problémem.
-location: Trnový Újezd
-name: Vladyka Mstislav "Železný"
+location: trnovy-ujezd
+name: Mstislav
 role: Vladyka Trnového Újezdu
 tags:
 - vladyka
@@ -25,11 +25,11 @@ Navenek křesťan, v srdci pohan. Nikomu plně nedůvěřuje. Mluví málo, ale 
 
 ## Vztahy
 
-- **Kastelán Bernard** – formálně nadřízený, fakticky rival (napětí)
-- **Otec Gorazd** – toleruje ho jako politickou nutnost, ale nenávidí jeho fanatismus
-- **Vladyka Bořuta** – starý nepřítel, spory o pastviny a lovné lesy
-- **Vědma Libuše** – tajná dohoda; ví, že les bez Volchvů pohltí vesnice
-- **Syn Radim** – miluje ho, ale ví, že je špatný vůdce
+- [[Bernard z Auerspergu]] – formálně nadřízený, fakticky rival (napětí)
+- otec [[Gorazd]] – toleruje ho jako politickou nutnost, ale nenávidí jeho fanatismus
+- [[Bořuta Starokrev]] – starý nepřítel, spory o pastviny a lovné lesy
+- [[Libuše]] – tajná dohoda; ví, že les bez Volchvů pohltí vesnice
+- [[Radim]] – miluje ho, ale ví, že je špatný vůdce
 
 ## Zápletky
 

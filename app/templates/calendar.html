@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+{% block title %}Calendar — {{ campaign }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Calendar</h1>
+</div>
+
+<div class="cal-layout">
+
+  <!-- ── In-game date ── -->
+  <div class="card cal-date-card">
+    <div class="cal-label">In-game date</div>
+    <div class="cal-date-display">
+      <span class="cal-day">{{ cal.day }}.</span>
+      <span class="cal-month">{{ month_name }}</span>
+      <span class="cal-year">{{ cal.year }}</span>
+    </div>
+    <form method="POST" action="{{ url_for('calendar.advance') }}" class="cal-advance-form">
+      <input type="number" name="days" value="1" min="1" max="3650" class="cal-advance-input">
+      <button type="submit" class="btn-primary btn-sm">Advance days</button>
+    </form>
+  </div>
+
+  <!-- ── Real-world moon phase ── -->
+  <div class="card cal-moon-card">
+    <div class="cal-label">Dnešní fáze měsíce</div>
+    <div class="moon-display">
+      <span class="moon-emoji">{{ moon.emoji }}</span>
+      <div class="moon-info">
+        <span class="moon-name">{{ moon.name }}</span>
+        <span class="moon-detail">Den {{ moon.cycle_day }} / 29 cyklu</span>
+        {% if moon.days_to_full == 0 %}
+        <span class="moon-full-soon urgent">Dnes je úplněk!</span>
+        {% elif moon.days_to_full <= 2 %}
+        <span class="moon-full-soon warning">Úplněk za {{ moon.days_to_full }} {{ 'den' if moon.days_to_full == 1 else 'dny' }}</span>
+        {% else %}
+        <span class="moon-full-soon">Úplněk za {{ moon.days_to_full }} dní</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── In-game events ── -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span>Herní události</span>
+      <button class="btn-ghost btn-sm" onclick="toggleForm('ingameEventForm')">+ Přidat</button>
+    </div>
+
+    <div id="ingameEventForm" style="display:none; margin-bottom:14px; padding:12px; background:var(--base); border-radius:var(--r);">
+      <form method="POST" action="{{ url_for('calendar.ingame_event_add') }}">
+        <div class="field-row">
+          <div class="field-group">
+            <label>Den</label>
+            <input type="number" name="day" value="{{ cal.day }}" min="1" max="31" style="width:64px;">
+          </div>
+          <div class="field-group">
+            <label>Měsíc</label>
+            <select name="month">
+              {% for i, m in enumerate(czech_months) %}
+              <option value="{{ i+1 }}" {% if i+1 == cal.month %}selected{% endif %}>{{ i+1 }}. {{ m }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Rok</label>
+            <input type="number" name="year" value="{{ cal.year }}" style="width:90px;">
+          </div>
+          <div class="field-group">
+            <label>Typ</label>
+            <select name="type">
+              {% for k, v in ingame_event_types.items() %}
+              <option value="{{ k }}">{{ v.emoji }} {{ v.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="field-group" style="flex:3;">
+            <label>Popis</label>
+            <input type="text" name="title" required placeholder="Co se stalo?">
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:10px;">
+          <button type="submit" class="btn-primary btn-sm">Uložit</button>
+          <button type="button" class="btn-ghost btn-sm" onclick="toggleForm('ingameEventForm')">Zrušit</button>
+        </div>
+      </form>
+    </div>
+
+    {% if ingame_events %}
+    <div class="event-list">
+      {% for e in ingame_events %}
+      {% if e.get('auto') %}
+      <div class="event-row event-row-auto">
+        <span class="event-emoji">{{ e.emoji }}</span>
+        <span class="event-date ingame-date">{{ e.day }}. {{ e.month }}. {{ e.year }}</span>
+        <span class="event-title">{{ e.label }}</span>
+        <span class="event-type-badge event-auto-badge">astronomická</span>
+        <span style="width:32px;"></span>
+      </div>
+      {% else %}
+      {% set etype = ingame_event_types.get(e.type, ingame_event_types['custom']) %}
+      <div class="event-row">
+        <span class="event-emoji">{{ etype.emoji }}</span>
+        <span class="event-date ingame-date">{{ e.day }}. {{ e.month }}. {{ e.year }}</span>
+        <span class="event-title">{{ e.title }}</span>
+        <span class="event-type-badge">{{ etype.label }}</span>
+        <form method="POST" action="{{ url_for('calendar.ingame_event_delete', eid=e.id) }}" style="margin:0;">
+          <button type="submit" class="btn-ghost btn-sm btn-danger">✕</button>
+        </form>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state">Žádné herní události.</p>
+    {% endif %}
+  </div>
+
+  <!-- ── Real-world events ── -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span>Reálné události</span>
+      <button class="btn-ghost btn-sm" onclick="toggleForm('realEventForm')">+ Přidat</button>
+    </div>
+
+    <div id="realEventForm" style="display:none; margin-bottom:14px; padding:12px; background:var(--base); border-radius:var(--r);">
+      <form method="POST" action="{{ url_for('calendar.real_event_add') }}">
+        <div class="field-row">
+          <div class="field-group">
+            <label>Datum</label>
+            <input type="date" name="date" value="{{ today }}" required class="cal-advance-input" style="width:auto;">
+          </div>
+          <div class="field-group">
+            <label>Typ</label>
+            <select name="type">
+              {% for k, v in real_event_types.items() %}
+              <option value="{{ k }}">{{ v.emoji }} {{ v.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="field-group" style="flex:3;">
+            <label>Popis (volitelný)</label>
+            <input type="text" name="title" placeholder="Poznámka…">
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:10px;">
+          <button type="submit" class="btn-primary btn-sm">Uložit</button>
+          <button type="button" class="btn-ghost btn-sm" onclick="toggleForm('realEventForm')">Zrušit</button>
+        </div>
+      </form>
+    </div>
+
+    {% if real_events %}
+    <div class="event-list">
+      {% for e in real_events %}
+      {% set etype = real_event_types.get(e.type, real_event_types.custom) %}
+      <div class="event-row">
+        <span class="event-emoji">{{ etype.emoji }}</span>
+        <span class="event-date real-date">{{ e.date }}</span>
+        <span class="event-title">{{ e.title or etype.label }}</span>
+        <span class="event-type-badge">{{ etype.label }}</span>
+        <form method="POST" action="{{ url_for('calendar.real_event_delete', eid=e.id) }}" style="margin:0;">
+          <button type="submit" class="btn-ghost btn-sm btn-danger">✕</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state">Žádné reálné události.</p>
+    {% endif %}
+  </div>
+
+  <!-- ── Upcoming NPC deadlines ── -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span>Upcoming deadlines</span>
+    </div>
+    {% if deadlines %}
+    <div class="deadline-list">
+      {% for d in deadlines %}
+      <div class="deadline-row">
+        <span class="deadline-npc">{{ d.npc_name }}</span>
+        <span class="deadline-text">{{ d.text }}</span>
+        <span class="agr-deadline {% if d.days == 0 %}urgent{% elif d.days <= 3 %}urgent{% elif d.days <= 7 %}warning{% endif %}">
+          {% if d.days == 0 %}overdue{% else %}{{ d.days }}d{% endif %}
+        </span>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state">No active deadlines.</p>
+    {% endif %}
+  </div>
+
+  <!-- ── Trackers ── -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="section-header" style="margin-bottom:12px;">
+      <span>Trackers</span>
+      <button class="btn-ghost btn-sm" onclick="toggleForm('trackerForm')">+ Add</button>
+    </div>
+
+    <div id="trackerForm" style="display:none; margin-bottom:16px; padding:14px; background:var(--base); border-radius:var(--r);">
+      <form method="POST" action="{{ url_for('calendar.tracker_add') }}">
+        <div class="field-row">
+          <div class="field-group" style="flex:2;">
+            <label>Name</label>
+            <input type="text" name="name" required placeholder="e.g. Finished quests, Doom clock">
+          </div>
+          <div class="field-group">
+            <label>Type</label>
+            <select name="type" id="trackerType" onchange="updateTrackerFields()">
+              <option value="countdown">Countdown (days)</option>
+              <option value="progress">Progress (X / Y)</option>
+              <option value="counter">Counter</option>
+            </select>
+          </div>
+          <div class="field-group" id="fieldValue">
+            <label>Starting value</label>
+            <input type="number" name="value" value="0" min="0">
+          </div>
+          <div class="field-group" id="fieldCurrent" style="display:none;">
+            <label>Current</label>
+            <input type="number" name="current" value="0" min="0">
+          </div>
+          <div class="field-group" id="fieldMax" style="display:none;">
+            <label>Max</label>
+            <input type="number" name="max" value="5" min="1">
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:10px;">
+          <button type="submit" class="btn-primary">Add tracker</button>
+          <button type="button" class="btn-ghost" onclick="toggleForm('trackerForm')">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    {% if trackers %}
+    <div class="tracker-grid">
+      {% for t in trackers %}
+      <div class="tracker-card" id="tr-{{ t.id }}">
+        <div class="tracker-header">
+          <span class="tracker-name">{{ t.name }}</span>
+          <span class="tracker-type-badge type-{{ t.type }}">{{ t.type }}</span>
+          <form method="POST" action="{{ url_for('calendar.tracker_delete', tid=t.id) }}" style="margin:0;">
+            <button type="submit" class="btn-ghost btn-sm btn-danger">✕</button>
+          </form>
+        </div>
+
+        {% if t.type == 'countdown' %}
+        <div class="tracker-value {% if t.value <= 3 %}tracker-urgent{% elif t.value <= 7 %}tracker-warning{% endif %}">
+          {{ t.value }}<span class="tracker-unit">d</span>
+        </div>
+        <div class="tracker-controls">
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', -7)">−7d</button>
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', -1)">−1d</button>
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', 1)">+1d</button>
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', 7)">+7d</button>
+        </div>
+
+        {% elif t.type == 'progress' %}
+        <div class="tracker-progress-label">
+          <span id="tr-cur-{{ t.id }}">{{ t.current }}</span> / {{ t.max }}
+        </div>
+        <div class="tracker-progress-bar">
+          <div class="tracker-progress-fill"
+               style="width: {{ (t.current / t.max * 100)|round|int if t.max else 0 }}%"></div>
+        </div>
+        <div class="tracker-controls">
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', -1)">−1</button>
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', 1)">+1</button>
+        </div>
+
+        {% elif t.type == 'counter' %}
+        <div class="tracker-value">
+          <span id="tr-val-{{ t.id }}">{{ t.value }}</span>
+        </div>
+        <div class="tracker-controls">
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', -1)">−1</button>
+          <button class="btn-ghost btn-sm" onclick="adjustTracker('{{ t.id }}', 1)">+1</button>
+        </div>
+        {% endif %}
+
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state">No trackers yet.</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleForm(id) {
+  const f = document.getElementById(id);
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function updateTrackerFields() {
+  const type = document.getElementById('trackerType').value;
+  document.getElementById('fieldValue').style.display   = type === 'progress' ? 'none' : '';
+  document.getElementById('fieldCurrent').style.display = type === 'progress' ? '' : 'none';
+  document.getElementById('fieldMax').style.display     = type === 'progress' ? '' : 'none';
+}
+
+function adjustTracker(tid, delta) {
+  fetch(`/c/calendar/tracker/${tid}/adjust`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `delta=${delta}`
+  }).then(() => window.location.reload());
+}
+</script>
+{% endblock %}

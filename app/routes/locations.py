@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
-from app.data import list_entities, get_entity, save_entity, delete_entity, slugify, render_wiki_html
+from app.data import list_entities, get_entity, save_entity, delete_entity, slugify, render_wiki_html, apply_wiki_html
 
 locations = Blueprint('locations', __name__, url_prefix='/c/locations')
 
@@ -14,6 +14,11 @@ def require_campaign():
 @locations.route('/')
 def index():
     all_locs = list_entities(campaign(), 'locations')
+    all_npcs = list_entities(campaign(), 'npcs')
+    npc_map  = {n['name']: n['_slug'] for n in all_npcs}
+    loc_map  = {l['name']: l['_slug'] for l in all_locs}
+    for loc in all_locs:
+        loc['_body_html'] = apply_wiki_html(loc.get('_body', ''), npc_map, loc_map)
     regions = sorted(set(l.get('region', '') for l in all_locs if l.get('region')))
     types = sorted(set(l.get('type', '') for l in all_locs if l.get('type')))
     return render_template('locations.html', locations=all_locs, campaign=campaign(),

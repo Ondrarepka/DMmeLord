@@ -4,7 +4,7 @@ disposition: neutral
 faction: Církevní misie
 last_meeting: ''
 last_meeting_summary: ''
-location: Trnový Újezd
+location: trnovy-ujezd
 name: Bratr Jáchym
 role: Mnich v rotundě
 tags:

@@ -1,0 +1,462 @@
+{
+  "items": [
+    {
+      "id": "bread",
+      "name": "Bochník chleba",
+      "category": "Potraviny",
+      "price_gros": 0.1,
+      "unit": "ks"
+    },
+    {
+      "id": "cheese",
+      "name": "Kus sýra",
+      "category": "Potraviny",
+      "price_gros": 0.2,
+      "unit": "ks"
+    },
+    {
+      "id": "eggs",
+      "name": "Vejce (10 ks)",
+      "category": "Potraviny",
+      "price_gros": 0.12,
+      "unit": "10 ks"
+    },
+    {
+      "id": "chicken",
+      "name": "Slepice",
+      "category": "Potraviny",
+      "price_gros": 0.5,
+      "unit": "ks"
+    },
+    {
+      "id": "pork_kg",
+      "name": "Vepřové maso",
+      "category": "Potraviny",
+      "price_gros": 0.4,
+      "unit": "kg"
+    },
+    {
+      "id": "beef_kg",
+      "name": "Hovězí maso",
+      "category": "Potraviny",
+      "price_gros": 0.6,
+      "unit": "kg"
+    },
+    {
+      "id": "fish_kg",
+      "name": "Ryba",
+      "category": "Potraviny",
+      "price_gros": 0.3,
+      "unit": "kg"
+    },
+    {
+      "id": "salt_kg",
+      "name": "Sůl",
+      "category": "Potraviny",
+      "price_gros": 0.8,
+      "unit": "kg"
+    },
+    {
+      "id": "honey_kg",
+      "name": "Med",
+      "category": "Potraviny",
+      "price_gros": 1.0,
+      "unit": "kg"
+    },
+    {
+      "id": "flour_kg",
+      "name": "Mouka",
+      "category": "Potraviny",
+      "price_gros": 0.15,
+      "unit": "kg"
+    },
+    {
+      "id": "spices",
+      "name": "Koření (malé množství)",
+      "category": "Potraviny",
+      "price_gros": 2.0,
+      "unit": "ks"
+    },
+    {
+      "id": "lard",
+      "name": "Sádlo",
+      "category": "Potraviny",
+      "price_gros": 0.25,
+      "unit": "kg"
+    },
+    {
+      "id": "ale",
+      "name": "Džbán piva",
+      "category": "Nápoje",
+      "price_gros": 0.08,
+      "unit": "džbán"
+    },
+    {
+      "id": "wine",
+      "name": "Džbán vína",
+      "category": "Nápoje",
+      "price_gros": 0.3,
+      "unit": "džbán"
+    },
+    {
+      "id": "mead",
+      "name": "Medovina",
+      "category": "Nápoje",
+      "price_gros": 0.25,
+      "unit": "džbán"
+    },
+    {
+      "id": "barrel_ale",
+      "name": "Soudek piva",
+      "category": "Nápoje",
+      "price_gros": 3.0,
+      "unit": "soudek"
+    },
+    {
+      "id": "shirt",
+      "name": "Lněná košile",
+      "category": "Oblečení",
+      "price_gros": 1.5,
+      "unit": "ks"
+    },
+    {
+      "id": "boots",
+      "name": "Kožené boty",
+      "category": "Oblečení",
+      "price_gros": 3.0,
+      "unit": "pár"
+    },
+    {
+      "id": "cloak",
+      "name": "Plášť",
+      "category": "Oblečení",
+      "price_gros": 4.0,
+      "unit": "ks"
+    },
+    {
+      "id": "coat",
+      "name": "Vlněný kabátec",
+      "category": "Oblečení",
+      "price_gros": 6.0,
+      "unit": "ks"
+    },
+    {
+      "id": "gloves",
+      "name": "Rukavice",
+      "category": "Oblečení",
+      "price_gros": 1.0,
+      "unit": "pár"
+    },
+    {
+      "id": "belt",
+      "name": "Kožený opasek",
+      "category": "Oblečení",
+      "price_gros": 0.8,
+      "unit": "ks"
+    },
+    {
+      "id": "cup_wood",
+      "name": "Dřevěný hrnek",
+      "category": "Nádobí & nástroje",
+      "price_gros": 0.1,
+      "unit": "ks"
+    },
+    {
+      "id": "pot_clay",
+      "name": "Hliněný hrnec",
+      "category": "Nádobí & nástroje",
+      "price_gros": 0.3,
+      "unit": "ks"
+    },
+    {
+      "id": "knife",
+      "name": "Železný nůž",
+      "category": "Nádobí & nástroje",
+      "price_gros": 1.5,
+      "unit": "ks"
+    },
+    {
+      "id": "axe_tool",
+      "name": "Sekera (pracovní)",
+      "category": "Nádobí & nástroje",
+      "price_gros": 3.0,
+      "unit": "ks"
+    },
+    {
+      "id": "shovel",
+      "name": "Lopata",
+      "category": "Nádobí & nástroje",
+      "price_gros": 1.5,
+      "unit": "ks"
+    },
+    {
+      "id": "rope",
+      "name": "Lano (10 m)",
+      "category": "Nádobí & nástroje",
+      "price_gros": 0.4,
+      "unit": "10 m"
+    },
+    {
+      "id": "candle",
+      "name": "Svíčka (10 ks)",
+      "category": "Nádobí & nástroje",
+      "price_gros": 0.2,
+      "unit": "10 ks"
+    },
+    {
+      "id": "lantern",
+      "name": "Lucerna",
+      "category": "Nádobí & nástroje",
+      "price_gros": 2.0,
+      "unit": "ks"
+    },
+    {
+      "id": "table",
+      "name": "Stůl",
+      "category": "Nábytek",
+      "price_gros": 5.0,
+      "unit": "ks"
+    },
+    {
+      "id": "bench",
+      "name": "Lavice",
+      "category": "Nábytek",
+      "price_gros": 2.0,
+      "unit": "ks"
+    },
+    {
+      "id": "chest",
+      "name": "Truhla",
+      "category": "Nábytek",
+      "price_gros": 4.0,
+      "unit": "ks"
+    },
+    {
+      "id": "barrel",
+      "name": "Barely",
+      "category": "Nábytek",
+      "price_gros": 2.5,
+      "unit": "ks"
+    },
+    {
+      "id": "bag",
+      "name": "Vak cestovní",
+      "category": "Nábytek",
+      "price_gros": 0.8,
+      "unit": "ks"
+    },
+    {
+      "id": "club",
+      "name": "Obušek / kyj",
+      "category": "Zbraně",
+      "price_gros": 0.3,
+      "unit": "ks"
+    },
+    {
+      "id": "dagger",
+      "name": "Lovecký nůž / dýka",
+      "category": "Zbraně",
+      "price_gros": 2.0,
+      "unit": "ks"
+    },
+    {
+      "id": "spear",
+      "name": "Kopí",
+      "category": "Zbraně",
+      "price_gros": 4.0,
+      "unit": "ks"
+    },
+    {
+      "id": "sword",
+      "name": "Meč prostý",
+      "category": "Zbraně",
+      "price_gros": 20.0,
+      "unit": "ks"
+    },
+    {
+      "id": "sword_kn",
+      "name": "Meč rytířský",
+      "category": "Zbraně",
+      "price_gros": 60.0,
+      "unit": "ks"
+    },
+    {
+      "id": "axe_war",
+      "name": "Bojová sekera",
+      "category": "Zbraně",
+      "price_gros": 12.0,
+      "unit": "ks"
+    },
+    {
+      "id": "bow",
+      "name": "Luk",
+      "category": "Zbraně",
+      "price_gros": 6.0,
+      "unit": "ks"
+    },
+    {
+      "id": "arrows",
+      "name": "Toulec šípů (20 ks)",
+      "category": "Zbraně",
+      "price_gros": 2.0,
+      "unit": "toulec"
+    },
+    {
+      "id": "armor_lth",
+      "name": "Kožená zbroj",
+      "category": "Zbroj",
+      "price_gros": 8.0,
+      "unit": "ks"
+    },
+    {
+      "id": "chain_sh",
+      "name": "Kroužková košile",
+      "category": "Zbroj",
+      "price_gros": 40.0,
+      "unit": "ks"
+    },
+    {
+      "id": "chain_full",
+      "name": "Plná kroužková zbroj",
+      "category": "Zbroj",
+      "price_gros": 100.0,
+      "unit": "ks"
+    },
+    {
+      "id": "helm",
+      "name": "Železná přilba",
+      "category": "Zbroj",
+      "price_gros": 15.0,
+      "unit": "ks"
+    },
+    {
+      "id": "shield_wd",
+      "name": "Dřevěný štít",
+      "category": "Zbroj",
+      "price_gros": 2.0,
+      "unit": "ks"
+    },
+    {
+      "id": "shield_ir",
+      "name": "Okovaný štít",
+      "category": "Zbroj",
+      "price_gros": 8.0,
+      "unit": "ks"
+    },
+    {
+      "id": "horse_dr",
+      "name": "Tažný kůň",
+      "category": "Zvířata",
+      "price_gros": 80.0,
+      "unit": "ks"
+    },
+    {
+      "id": "horse_rd",
+      "name": "Jezdecký kůň",
+      "category": "Zvířata",
+      "price_gros": 150.0,
+      "unit": "ks"
+    },
+    {
+      "id": "cow",
+      "name": "Kráva",
+      "category": "Zvířata",
+      "price_gros": 25.0,
+      "unit": "ks"
+    },
+    {
+      "id": "sheep",
+      "name": "Ovce",
+      "category": "Zvířata",
+      "price_gros": 5.0,
+      "unit": "ks"
+    },
+    {
+      "id": "pig",
+      "name": "Prase",
+      "category": "Zvířata",
+      "price_gros": 8.0,
+      "unit": "ks"
+    },
+    {
+      "id": "dog",
+      "name": "Pes hlídací",
+      "category": "Zvířata",
+      "price_gros": 3.0,
+      "unit": "ks"
+    },
+    {
+      "id": "inn_barn",
+      "name": "Nocleh ve stodole",
+      "category": "Služby",
+      "price_gros": 0.05,
+      "unit": "noc"
+    },
+    {
+      "id": "inn_room",
+      "name": "Nocleh v hostinci",
+      "category": "Služby",
+      "price_gros": 0.3,
+      "unit": "noc"
+    },
+    {
+      "id": "bath",
+      "name": "Koupel",
+      "category": "Služby",
+      "price_gros": 0.1,
+      "unit": "ks"
+    },
+    {
+      "id": "laborer",
+      "name": "Námezdní dělník",
+      "category": "Služby",
+      "price_gros": 0.2,
+      "unit": "den"
+    },
+    {
+      "id": "messenger",
+      "name": "Posel",
+      "category": "Služby",
+      "price_gros": 0.5,
+      "unit": "den"
+    },
+    {
+      "id": "healer",
+      "name": "Léčitel (základní péče)",
+      "category": "Služby",
+      "price_gros": 1.0,
+      "unit": "ošetření"
+    },
+    {
+      "id": "blacksmith",
+      "name": "Kovář (hodina práce)",
+      "category": "Služby",
+      "price_gros": 0.5,
+      "unit": "hod"
+    }
+  ],
+  "availability": {
+    "bread": {
+      "bojanuv-habr": {
+        "tier": "plentiful",
+        "multiplier": null
+      },
+      "belici": {
+        "tier": "plentiful",
+        "multiplier": null
+      },
+      "havrani-skala": {
+        "tier": "plentiful",
+        "multiplier": null
+      },
+      "severni-brana": {
+        "tier": "plentiful",
+        "multiplier": null
+      },
+      "mrtve-mocaly": {
+        "tier": "rare",
+        "multiplier": null
+      }
+    }
+  }
+}

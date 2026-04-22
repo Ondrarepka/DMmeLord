@@ -4,7 +4,7 @@ disposition: neutral
 faction: Starověrci (Kruh Volchvů)
 last_meeting: ''
 last_meeting_summary: ''
-location: Černý hvozd
+location: silva-nigra
 name: Učedník Lesan
 role: Správce Krvavého Dubu
 tags:

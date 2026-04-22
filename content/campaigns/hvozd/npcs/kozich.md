@@ -4,7 +4,7 @@ disposition: neutral
 faction: Cech Kupců a Řemeslníků
 last_meeting: ''
 last_meeting_summary: ''
-location: Trnový Újezd
+location: trnovy-ujezd
 name: Kožich
 role: Koželužník — Trnový Újezd
 tags:

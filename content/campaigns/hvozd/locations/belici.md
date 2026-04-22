@@ -1,5 +1,5 @@
 ---
-name: Trhová osada "Bělicí"
+name: Bělicí
 region: Jih (cca 2 dny jízdy po proudu Běsice)
 tags:
 - obchod

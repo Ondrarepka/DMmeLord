@@ -21,7 +21,8 @@
     <a href="{{ url_for('npcs.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('npcs.') %}active{% endif %}">NPCs</a>
     <a href="{{ url_for('locations.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('locations.') %}active{% endif %}">Locations</a>
     <a href="{{ url_for('sessions.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('sessions.') %}active{% endif %}">Sessions</a>
-    <a href="{{ url_for('campaigns.economy') }}" class="nav-link {% if request.endpoint == 'campaigns.economy' %}active{% endif %}">Economy</a>
+    <a href="{{ url_for('calendar.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('calendar.') %}active{% endif %}">Calendar</a>
+    <a href="{{ url_for('economy.index') }}" class="nav-link {% if request.endpoint and request.endpoint.startswith('economy.') %}active{% endif %}">Economy</a>
   </nav>
   <div class="topbar-right">
     <!-- Campaign switcher -->

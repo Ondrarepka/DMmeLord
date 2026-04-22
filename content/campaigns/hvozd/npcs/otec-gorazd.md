@@ -1,11 +1,13 @@
 ---
-agreements: []
+agreements:
+- deadline_days: 0
+  text: Žádné kurvy v Hladovém vlkovi
 disposition: hostile
 faction: Církevní misie
-last_meeting: ''
+last_meeting: 14. 3. 912
 last_meeting_summary: Chce po nich, aby hospoda byla bez kurev
-location: Trnový Újezd
-name: Otec Gorazd
+location: trnovy-ujezd
+name: Gorazd
 role: Kněz — Církvení misie
 tags:
 - kněz
@@ -24,11 +26,11 @@ Není hloupý – ví, že přímá konfrontace s Libuší ho zabije. Hraje dlou
 
 ## Vztahy
 
-- **Vědma Libuše** – úhlavní nepřítel, chce ji zničit
-- **Mstislav** – tlačí na něj, aby zničil Krvavý Dub
-- **Kastelán Bernard** – spojenec, sdílí cíl christianizace
-- **Bratr Jáchym** – jeho asistent v rotundě (tajně si dopisuje s Opatem Silvestrem)
-- **Sestra Anežka** – je milosrdnější než Gorazd, občas s ním nesouhlasí
+- [[Libuše]] – úhlavní nepřítel, chce ji zničit
+- [[Mstislav]] – tlačí na něj, aby zničil Krvavý Dub
+- [[Bernard z Auerspergu]] – spojenec, sdílí cíl christianizace
+- [[Bratr Jáchym]] – jeho asistent v rotundě (tajně si dopisuje s Opatem Silvestrem)
+- [[Sestra Anežka]] – je milosrdnější než Gorazd, občas s ním nesouhlasí
 
 ## Zápletky
 

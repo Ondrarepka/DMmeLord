@@ -1,12 +1,12 @@
 ---
 agreements: []
 disposition: neutral
-faction: Starověrci (Kruh Volchvů)
+faction: Starověrci
 last_meeting: ''
 last_meeting_summary: ''
-location: Černý hvozd
-name: Baba Jaga / Vědma Libuše
-role: Strážkyně rovnováhy — Kruh Volchvů
+location: mrtve-mocaly
+name: Libuše
+role: Perunova velekněžka
 tags:
 - vědma
 - klíčová postava
@@ -15,20 +15,20 @@ tags:
 - nebezpečná
 ---
 
-**Věk:** neznámý (vypadá na 80) | **Tělo:** 2 | **Duše:** 8 | **Vliv:** 7
+**Věk:** neznámý (vypadá na 35) | **Tělo:** 3 | **Duše:** 8 | **Vliv:** 7
 
-Žije v chatrči na kuřích nožkách (v DrD2 interpretováno jako chýše na kůlech v bažině). Je strážkyní rovnováhy mezi světem lidí a světem běsů. Není zlá, ale její morálka je nelidská.
+Žija jako kněžka v [[Trnový Újezd]] ještě jako malá, ale zpřísňující se dohled církve ji zahnal do ústraní. Teď je na cestách (hlavně po močálech a Hvozdu)
 
 ## Osobnost
 
-Pomůže, pokud zaplatíš cenu — vlastní krev, vzpomínku, nebo službu pro Běsa. Nikdy nelže, ale nikdy neřekne celou pravdu. Má smysl pro humor, který mnozí považují za krutost. Uzavřela tajné dohody s Mstislavem — ví, čím ho drží.
+Pomůže, pokud zaplatíš cenu — vlastní krev, suroviny, nebo službu pro Běsa. Nikdy nelže, ale nikdy neřekne celou pravdu. Má smysl pro humor, který mnozí považují za krutost. Uzavřela tajné dohody s Mstislavem — ví, čím ho drží.
 
 ## Vztahy
 
-- **Lesan** – učedník, pečuje o posvátné obětiště
-- **Otec Gorazd** – úhlavní nepřítel
-- **Mstislav** – tajná dohoda (obsah neznámý)
-- **Stařena Doubravka** – žačka ve Vlčím Dole
+- [[Lesan]] – učedník, pečuje o posvátné obětiště
+- Otec [[Gorazd]] – úhlavní nepřítel
+- [[Mstislav]] – tajná dohoda (obsah neznámý)
+- [[Stařena Doubravka]] – bývalá učitelka, teď žije u Vlčího Dolu
 
 ## Cena za pomoc
 

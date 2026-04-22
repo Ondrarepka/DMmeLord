@@ -1,8 +1,12 @@
 ---
 name: Místa moci a tajemství
-type: Přehled
 region: Celý region
-tags: [magie, rituály, nebezpečí, moc]
+tags:
+- magie
+- rituály
+- nebezpečí
+- moc
+type: Přehled
 ---
 
 ## Kámen smíření (Západ, 2 hodiny — u Bojanova hamru)

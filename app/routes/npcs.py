@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, jsonify
-from app.data import list_entities, get_entity, save_entity, delete_entity, slugify, DISPOSITIONS, render_wiki_html
+from app.data import list_entities, get_entity, save_entity, delete_entity, slugify, DISPOSITIONS, render_wiki_html, apply_wiki_html, get_campaign_config
 
 npcs = Blueprint('npcs', __name__, url_prefix='/c/npcs')
 
@@ -15,12 +15,18 @@ def require_campaign():
 def index():
     all_npcs = list_entities(campaign(), 'npcs')
     factions = sorted(set(n.get('faction', '') for n in all_npcs if n.get('faction')))
-    # Source of truth: actual location files, not NPC metadata
     all_locs = list_entities(campaign(), 'locations')
-    location_names = sorted(l['name'] for l in all_locs)
+    loc_map  = {l['_slug']: l['name'] for l in all_locs}
+    npc_name_map = {n['name']: n['_slug'] for n in all_npcs}
+    loc_name_map = {l['name']: l['_slug'] for l in all_locs}
+    for npc in all_npcs:
+        npc['_body_html'] = apply_wiki_html(npc.get('_body', ''), npc_name_map, loc_name_map)
+    locations_list = sorted(all_locs, key=lambda l: l['name'])
+    ingame = get_campaign_config(campaign()).get('ingame', {'day': 1, 'month': 1, 'year': 912})
     return render_template('npcs.html', npcs=all_npcs, campaign=campaign(),
                            dispositions=DISPOSITIONS, factions=factions,
-                           location_names=location_names)
+                           loc_map=loc_map, locations_list=locations_list,
+                           ingame=ingame)
 
 @npcs.route('/<slug>')
 def detail(slug):
@@ -28,14 +34,16 @@ def detail(slug):
     if not npc:
         return redirect(url_for('npcs.index'))
     all_locs = list_entities(campaign(), 'locations')
-    location_names = sorted(l['name'] for l in all_locs)
     all_npcs = list_entities(campaign(), 'npcs')
+    locations_list = sorted(all_locs, key=lambda l: l['name'])
     factions = sorted(set(n.get('faction', '') for n in all_npcs if n.get('faction')))
     npc['_body_html'] = render_wiki_html(campaign(), npc.get('_body', ''))
+    ingame = get_campaign_config(campaign()).get('ingame', {'day': 1, 'month': 1, 'year': 912})
     return render_template('npc_detail.html', npc=npc,
                            dispositions=DISPOSITIONS,
-                           location_names=location_names,
-                           factions=factions)
+                           locations_list=locations_list,
+                           factions=factions,
+                           ingame=ingame)
 
 
 @npcs.route('/new', methods=['POST'])

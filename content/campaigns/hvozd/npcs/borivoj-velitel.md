@@ -4,7 +4,7 @@ disposition: neutral
 faction: Vladykův dvůr
 last_meeting: ''
 last_meeting_summary: ''
-location: Trnový Újezd
+location: trnovy-ujezd
 name: Velitel Bořivoj
 role: Velitel brány hradiště
 tags:

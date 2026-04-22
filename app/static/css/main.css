@@ -612,6 +612,28 @@ p  { color: var(--subtext1); margin-bottom: 8px; }
   align-items: start;
 }
 
+/* ── GROUP TOGGLE ── */
+.group-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.group-btn {
+  background: var(--surface0);
+  color: var(--subtext0);
+  border: 1px solid var(--surface1);
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  margin: 0;
+}
+.group-btn:first-of-type { border-radius: 6px 0 0 6px; }
+.group-btn:last-of-type  { border-radius: 0 6px 6px 0; }
+.group-btn + .group-btn  { border-left: none; }
+.group-btn:hover         { background: var(--surface1); color: var(--text); }
+.group-btn.active        { background: var(--mauve); color: var(--base); border-color: var(--mauve); font-weight: 600; }
+
 /* ── FACTION GROUP HEADERS ── */
 .faction-group-header {
   grid-column: 1 / -1;
@@ -824,3 +846,376 @@ p  { color: var(--subtext1); margin-bottom: 8px; }
   font-weight: 500;
 }
 .doom-npc-link:hover { color: var(--mauve); }
+
+/* ── CALENDAR PAGE ── */
+.cal-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.cal-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--overlay1);
+  margin-bottom: 10px;
+}
+.cal-date-card { min-width: 200px; text-align: center; }
+.cal-date-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+.cal-day  { font-size: 52px; font-weight: 700; color: var(--mauve); line-height: 1; }
+.cal-month { font-size: 18px; font-weight: 500; color: var(--text); text-transform: capitalize; }
+.cal-year  { font-size: 13px; color: var(--subtext0); }
+.cal-advance-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+.cal-advance-input {
+  width: 64px;
+  text-align: center;
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  color: var(--text);
+  padding: 6px 8px;
+  border-radius: var(--r);
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* session log */
+.cal-sessions-card { display: flex; flex-direction: column; gap: 12px; }
+.session-list { display: flex; flex-direction: column; gap: 4px; min-height: 32px; }
+.session-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 8px;
+  background: var(--mantle);
+  border-radius: var(--r);
+}
+.session-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--blue);
+  white-space: nowrap;
+}
+.session-notes { flex: 1; font-size: 12px; color: var(--subtext0); }
+.session-add-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid var(--surface0);
+}
+
+/* deadline list */
+.deadline-list { display: flex; flex-direction: column; gap: 6px; }
+.deadline-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  background: var(--mantle);
+  border-radius: var(--r);
+}
+.deadline-npc  { font-weight: 600; font-size: 13px; color: var(--lavender); white-space: nowrap; }
+.deadline-text { flex: 1; color: var(--subtext1); font-size: 13px; }
+
+/* tracker grid */
+.tracker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.tracker-card {
+  background: var(--mantle);
+  border: 1px solid var(--surface0);
+  border-radius: var(--r);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tracker-header { display: flex; align-items: center; gap: 8px; }
+.tracker-name   { font-weight: 600; flex: 1; font-size: 13px; }
+.tracker-type-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 99px;
+  letter-spacing: 0.5px;
+}
+.type-countdown { background: rgba(137,180,250,0.15); color: var(--blue); }
+.type-progress  { background: rgba(166,227,161,0.15); color: var(--green); }
+.type-counter   { background: rgba(203,166,247,0.15); color: var(--mauve); }
+.tracker-value  { font-size: 36px; font-weight: 700; color: var(--text); line-height: 1; }
+.tracker-value .tracker-unit { font-size: 14px; color: var(--subtext0); margin-left: 2px; }
+.tracker-urgent  { color: var(--red) !important; }
+.tracker-warning { color: var(--yellow) !important; }
+.tracker-progress-label { font-size: 24px; font-weight: 700; color: var(--text); }
+.tracker-progress-bar   { height: 8px; background: var(--surface0); border-radius: 99px; overflow: hidden; }
+.tracker-progress-fill  { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.3s; }
+.tracker-controls       { display: flex; gap: 4px; flex-wrap: wrap; }
+
+/* ── ECONOMY PAGE ── */
+.econ-converter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.conv-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.conv-field { display: flex; flex-direction: column; gap: 4px; }
+.conv-field input {
+  width: 160px;
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: var(--r);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+}
+.conv-sep { font-size: 20px; color: var(--overlay1); padding-top: 20px; }
+.conv-result {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--mauve);
+  padding-top: 20px;
+}
+
+/* category block */
+.econ-category { margin-bottom: 24px; }
+.econ-cat-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--overlay1);
+  padding: 6px 0 6px;
+  border-bottom: 1px solid var(--surface0);
+  margin-bottom: 4px;
+}
+
+/* table layout */
+.econ-table { display: flex; flex-direction: column; }
+.econ-thead, .econ-row-main {
+  display: grid;
+  grid-template-columns: 1fr 80px 90px 70px 48px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+}
+.econ-thead {
+  font-size: 11px;
+  color: var(--overlay1);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--surface0);
+  margin-bottom: 2px;
+}
+.econ-item { border-radius: var(--r); overflow: hidden; }
+.econ-row-main {
+  cursor: pointer;
+  border-radius: var(--r);
+  transition: background 0.1s;
+}
+.econ-row-main:hover { background: var(--surface0); }
+.econ-row-main.open { background: var(--surface0); }
+.econ-unit  { color: var(--subtext0); font-size: 12px; }
+.econ-czk   { color: var(--subtext0); font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+.price-gros { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--yellow); }
+.econ-unset { color: var(--overlay0); }
+
+/* availability panel */
+.avail-panel {
+  background: var(--mantle);
+  border-left: 2px solid var(--surface0);
+  margin: 0 0 4px 10px;
+  padding: 12px 14px;
+  border-radius: 0 0 var(--r) var(--r);
+}
+.avail-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--overlay1);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.avail-hint { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--overlay0); }
+.avail-grid { display: flex; flex-direction: column; gap: 4px; }
+.avail-thead { font-size: 11px; color: var(--overlay0); padding: 2px 0 6px; border-bottom: 1px solid var(--surface0); }
+.avail-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 160px 80px;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 4px;
+  border-radius: var(--r);
+}
+.avail-row:hover { background: var(--surface0); }
+.avail-loc { font-size: 13px; font-weight: 500; }
+.avail-tiers { display: flex; gap: 4px; flex-wrap: wrap; }
+.avail-price { font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+.avail-price em { color: var(--subtext0); font-style: normal; }
+
+/* tier buttons */
+.tier-btn {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  opacity: 0.5;
+  background: transparent;
+  transition: opacity 0.1s, background 0.1s;
+  color: inherit;
+  font-family: inherit;
+}
+.tier-btn:hover { opacity: 0.8; }
+.tier-btn.active { opacity: 1; border-color: currentColor; }
+
+.tier-abundant  { color: var(--green);   }
+.tier-plentiful { color: var(--teal);    }
+.tier-scarce    { color: var(--yellow);  }
+.tier-rare      { color: var(--peach);   }
+.tier-extreme   { color: var(--red);     }
+.tier-clear     { color: var(--overlay1);}
+
+.tier-abundant.active  { background: rgba(166,227,161,0.1); }
+.tier-plentiful.active { background: rgba(148,226,213,0.1); }
+.tier-scarce.active    { background: rgba(249,226,175,0.1); }
+.tier-rare.active      { background: rgba(250,179,135,0.1); }
+.tier-extreme.active   { background: rgba(243,139,168,0.1); }
+
+/* custom multiplier input */
+.avail-mult-input {
+  width: 70px;
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  color: var(--text);
+  padding: 4px 6px;
+  border-radius: var(--r);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.editable-price {
+  cursor: text;
+  border-bottom: 1px dashed var(--overlay0);
+  padding-bottom: 1px;
+}
+.editable-price:hover { border-bottom-color: var(--yellow); }
+
+/* ── MOON PHASE ── */
+.cal-moon-card { display: flex; flex-direction: column; gap: 10px; min-width: 180px; }
+.moon-display  { display: flex; align-items: center; gap: 14px; }
+.moon-emoji    { font-size: 40px; line-height: 1; }
+.moon-info     { display: flex; flex-direction: column; gap: 2px; }
+.moon-name     { font-size: 14px; font-weight: 600; color: var(--text); }
+.moon-detail   { font-size: 12px; color: var(--subtext0); }
+.moon-full-soon { font-size: 12px; color: var(--subtext0); }
+.moon-full-soon.urgent  { color: var(--red);    font-weight: 600; }
+.moon-full-soon.warning { color: var(--yellow); font-weight: 600; }
+
+/* ── CALENDAR EVENTS ── */
+.event-list { display: flex; flex-direction: column; gap: 4px; }
+.event-row  {
+  display: grid;
+  grid-template-columns: 24px 110px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: var(--base);
+  border-radius: var(--r);
+}
+.event-row:hover { background: var(--surface0); }
+.event-emoji { font-size: 15px; text-align: center; }
+.event-date  {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.real-date   { color: var(--blue); }
+.ingame-date { color: var(--mauve); }
+.event-title { font-size: 13px; color: var(--text); }
+.event-type-badge {
+  font-size: 11px;
+  color: var(--overlay1);
+  white-space: nowrap;
+}
+
+.event-row-auto { opacity: 0.55; }
+.event-row-auto:hover { opacity: 0.8; background: transparent; }
+.event-auto-badge { color: var(--overlay0); font-style: italic; }
+
+/* ── EDIT ICON BUTTON ── */
+.body-view-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.body-view-row .prose { flex: 1; }
+.edit-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.3;
+  padding: 2px 4px;
+  border-radius: var(--r);
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+  line-height: 1.6;
+}
+.edit-icon-btn:hover { opacity: 1; background: var(--surface0); }
+
+/* ── FICTIONAL DATE INPUTS ── */
+.fictional-date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.fdate-day   { width: 42px; }
+.fdate-month { width: 42px; }
+.fdate-year  { width: 62px; }
+.fdate-day, .fdate-month, .fdate-year {
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  color: var(--text);
+  padding: 4px 5px;
+  border-radius: var(--r);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-align: center;
+}
+.fdate-day:focus, .fdate-month:focus, .fdate-year:focus {
+  outline: none;
+  border-color: var(--mauve);
+}
+.fdate-sep   { color: var(--overlay0); font-size: 12px; }
+.fdate-today { font-size: 11px; padding: 3px 7px; margin-left: 4px; }
+
+.relation-static { font-size: 13px; color: var(--subtext1); }

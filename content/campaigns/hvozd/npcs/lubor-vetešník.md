@@ -2,9 +2,9 @@
 agreements: []
 disposition: neutral
 faction: Cech Kupců a Řemeslníků
-last_meeting: ''
-last_meeting_summary: ''
-location: Bělicí
+last_meeting: 2. 3. 912
+last_meeting_summary: Nabídl hostinskému že by mohl přeprodávat "hot" zboží
+location: belici
 name: Lubor
 role: Vetešník — Bělicí
 tags:

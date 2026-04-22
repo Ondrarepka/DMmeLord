@@ -23,9 +23,9 @@
       <div class="field-group">
         <label>Location</label>
         <select name="location">
-          <option value="">— select —</option>
-          {% for l in location_names %}
-          <option value="{{ l }}">{{ l }}</option>
+          <option value="">— unassigned —</option>
+          {% for loc in locations_list %}
+          <option value="{{ loc._slug }}">{{ loc.name }}</option>
           {% endfor %}
         </select>
       </div>
@@ -61,8 +61,8 @@
   <input type="text" id="searchInput" placeholder="Search by name…" oninput="applyFilters()">
   <select id="locationFilter" onchange="applyFilters()">
     <option value="">All locations</option>
-    {% for l in location_names %}
-    <option value="{{ l }}">{{ l }}</option>
+    {% for loc in locations_list %}
+    <option value="{{ loc._slug }}">{{ loc.name }}</option>
     {% endfor %}
   </select>
   <select id="factionFilter" onchange="applyFilters()">
@@ -78,10 +78,12 @@
     {% endfor %}
   </select>
   <button class="btn-ghost btn-sm" onclick="clearFilters()">✕ Clear</button>
-  <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--subtext0);cursor:pointer;margin-left:8px;">
-    <input type="checkbox" id="groupByLocation" onchange="applyFilters()" checked style="accent-color:var(--mauve);">
-    Group by location
-  </label>
+  <div class="group-toggle" style="margin-left:8px;">
+    <span style="font-size:11px;color:var(--subtext0);margin-right:4px;">Group:</span>
+    <button class="group-btn" data-group="none" onclick="setGroup('none')">None</button>
+    <button class="group-btn active" data-group="location" onclick="setGroup('location')">Location</button>
+    <button class="group-btn" data-group="faction" onclick="setGroup('faction')">Faction</button>
+  </div>
   <span class="filter-count" id="filterCount">{{ npcs|length }} NPCs</span>
 </div>
 
@@ -138,13 +140,7 @@
     <div class="relation-row">
       <div class="relation-field">
         <label>Location</label>
-        <select class="relation-select"
-                onchange="updateField('{{ npc._slug }}', 'location', this.value); this.closest('.npc-card').dataset.location=this.value; applyFilters();">
-          <option value="">—</option>
-          {% for l in location_names %}
-          <option value="{{ l }}" {% if npc.location == l %}selected{% endif %}>{{ l }}</option>
-          {% endfor %}
-        </select>
+        <span class="relation-static">{{ loc_map.get(npc.location, '—') if npc.location else '—' }}</span>
       </div>
       <div class="relation-field">
         <label>Disposition</label>
@@ -157,15 +153,30 @@
       </div>
       <div class="relation-field" style="flex:2;">
         <label>Last meeting</label>
-        <input type="date" class="relation-input"
-               value="{{ npc.last_meeting or '' }}"
-               onchange="updateField('{{ npc._slug }}', 'last_meeting', this.value)">
+        <div class="fictional-date-inputs" id="lm-{{ npc._slug }}">
+          {% set lm = npc.last_meeting or '' %}
+          {% set lm_parts = lm.split('. ') if lm else [] %}
+          <input type="number" class="fdate-day" min="1" max="31" placeholder="d"
+                 value="{{ lm_parts[0] if lm_parts|length >= 1 else '' }}"
+                 onchange="saveFictionalDate('{{ npc._slug }}')">
+          <span class="fdate-sep">.</span>
+          <input type="number" class="fdate-month" min="1" max="12" placeholder="m"
+                 value="{{ lm_parts[1] if lm_parts|length >= 2 else '' }}"
+                 onchange="saveFictionalDate('{{ npc._slug }}')">
+          <span class="fdate-sep">.</span>
+          <input type="number" class="fdate-year" min="1" placeholder="r"
+                 value="{{ lm_parts[2] if lm_parts|length >= 3 else '' }}"
+                 onchange="saveFictionalDate('{{ npc._slug }}')">
+          <button class="btn-ghost btn-sm fdate-today" type="button"
+                  onclick="setIngameToday('{{ npc._slug }}')"
+                  title="Set to current in-game date">Dnes</button>
+        </div>
       </div>
     </div>
     <div class="relation-field" style="margin-top:8px;">
       <label>Last meeting summary</label>
       <div class="editable-block" data-slug="{{ npc._slug }}" data-field="last_meeting_summary">
-        <div class="editable-view">{{ npc.last_meeting_summary or '<em class="empty">Nothing recorded yet. Click to add.</em>' }}</div>
+        <div class="editable-view">{% if npc.last_meeting_summary %}{{ npc.last_meeting_summary }}{% else %}<em class="empty">Ještě nepotkali.</em>{% endif %}</div>
         <textarea class="editable-edit" style="display:none;">{{ npc.last_meeting_summary or '' }}</textarea>
         <div class="editable-controls" style="display:none;">
           <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
@@ -219,14 +230,17 @@
   <div class="npc-body" id="body-{{ npc._slug }}" style="display:none;">
     <div class="section-divider"></div>
     <div class="editable-block" data-slug="{{ npc._slug }}" data-field="body">
-      <div class="editable-view prose">
-        {% if npc._body %}{{ npc._body_html | safe }}
-        {% else %}<em class="empty">No notes yet. Click to add.</em>{% endif %}
+      <div class="body-view-row">
+        <div class="editable-view prose" id="nbview-{{ npc._slug }}">
+          {% if npc._body %}{{ npc._body_html | safe }}
+          {% else %}<em class="empty">No notes yet.</em>{% endif %}
+        </div>
+        <button class="edit-icon-btn" onclick="startNpcBodyEdit('{{ npc._slug }}')" title="Edit notes">✒️</button>
       </div>
-      <textarea class="editable-edit" style="display:none;">{{ npc._body or '' }}</textarea>
-      <div class="editable-controls" style="display:none;">
+      <textarea class="editable-edit" id="nbedit-{{ npc._slug }}" style="display:none;">{{ npc._body or '' }}</textarea>
+      <div class="editable-controls" id="nbctrl-{{ npc._slug }}" style="display:none;">
         <button class="btn-primary btn-sm" onclick="saveBlock(this)">Save</button>
-        <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+        <button class="btn-ghost btn-sm" onclick="cancelNpcBlock('{{ npc._slug }}')">Cancel</button>
       </div>
     </div>
   </div>
@@ -252,6 +266,8 @@
 {% block scripts %}
 <script>
 const totalNpcs = {{ npcs|length }};
+const locNames = {{ loc_map | tojson }};
+const INGAME = {{ ingame | tojson }};
 
 function toggleNewForm() {
   const f = document.getElementById('newNpcForm');
@@ -268,14 +284,24 @@ function toggleAgreementForm(slug) {
   f.style.display = f.style.display === 'none' ? 'block' : 'none';
 }
 
+// ── Grouping toggle ──
+let currentGroup = 'location';
+
+function setGroup(mode) {
+  currentGroup = mode;
+  document.querySelectorAll('.group-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.group === mode);
+  });
+  applyFilters();
+}
+
 // ── Filtering + Grouping ──
 function applyFilters() {
-  const search     = document.getElementById('searchInput').value.toLowerCase();
-  const locFilter  = document.getElementById('locationFilter').value;
-  const faction    = document.getElementById('factionFilter').value;
-  const disposition= document.getElementById('dispositionFilter').value;
-  const grouped    = document.getElementById('groupByLocation').checked;
-  const grid       = document.getElementById('npcGrid');
+  const search      = document.getElementById('searchInput').value.toLowerCase();
+  const locFilter   = document.getElementById('locationFilter').value;
+  const faction     = document.getElementById('factionFilter').value;
+  const disposition = document.getElementById('dispositionFilter').value;
+  const grid        = document.getElementById('npcGrid');
 
   // Remove old group headers
   grid.querySelectorAll('.faction-group-header').forEach(h => h.remove());
@@ -283,32 +309,40 @@ function applyFilters() {
   let visible = 0;
   const cards = Array.from(document.querySelectorAll('.npc-card'));
 
-  // Sort cards by location when grouping is on
-  if (grouped) {
+  // Sort cards by the active group key
+  if (currentGroup === 'location') {
     cards.sort((a, b) => (a.dataset.location || '').localeCompare(b.dataset.location || '', 'cs'));
-    cards.forEach(c => grid.appendChild(c));
+  } else if (currentGroup === 'faction') {
+    cards.sort((a, b) => (a.dataset.faction || '').localeCompare(b.dataset.faction || '', 'cs'));
   }
+  if (currentGroup !== 'none') cards.forEach(c => grid.appendChild(c));
 
   cards.forEach(card => {
-    const nameMatch = !search     || card.dataset.name.includes(search);
-    const locMatch  = !locFilter  || card.dataset.location === locFilter;
-    const facMatch  = !faction    || card.dataset.faction === faction;
-    const dispMatch = !disposition|| card.dataset.disposition === disposition;
+    const nameMatch = !search      || card.dataset.name.includes(search);
+    const locMatch  = !locFilter   || card.dataset.location === locFilter;
+    const facMatch  = !faction     || card.dataset.faction === faction;
+    const dispMatch = !disposition || card.dataset.disposition === disposition;
     const show = nameMatch && locMatch && facMatch && dispMatch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
 
-  if (grouped) {
+  if (currentGroup !== 'none') {
     const seen = new Set();
     cards.forEach(card => {
       if (card.style.display === 'none') return;
-      const loc = card.dataset.location || 'Ostatní';
-      if (!seen.has(loc)) {
-        seen.add(loc);
+      const key = currentGroup === 'location'
+        ? (card.dataset.location || '')
+        : (card.dataset.faction || '');
+      if (!seen.has(key)) {
+        seen.add(key);
         const header = document.createElement('div');
         header.className = 'faction-group-header';
-        header.textContent = loc;
+        if (currentGroup === 'location') {
+          header.textContent = locNames[key] || key || 'Ostatní';
+        } else {
+          header.textContent = key || 'Bez frakce';
+        }
         grid.insertBefore(header, card);
       }
     });
@@ -327,6 +361,25 @@ function clearFilters() {
 }
 
 document.addEventListener('DOMContentLoaded', applyFilters);
+
+// ── Fictional date helpers ──
+function saveFictionalDate(slug) {
+  const wrap = document.getElementById('lm-' + slug);
+  const d = wrap.querySelector('.fdate-day').value.trim();
+  const m = wrap.querySelector('.fdate-month').value.trim();
+  const y = wrap.querySelector('.fdate-year').value.trim();
+  if (!d && !m && !y) { updateField(slug, 'last_meeting', ''); return; }
+  const val = `${d || '?'}. ${m || '?'}. ${y || '?'}`;
+  updateField(slug, 'last_meeting', val);
+}
+
+function setIngameToday(slug) {
+  const wrap = document.getElementById('lm-' + slug);
+  wrap.querySelector('.fdate-day').value   = INGAME.day;
+  wrap.querySelector('.fdate-month').value = INGAME.month;
+  wrap.querySelector('.fdate-year').value  = INGAME.year;
+  saveFictionalDate(slug);
+}
 
 // ── Field update ──
 function updateField(slug, field, value) {
@@ -360,8 +413,8 @@ document.querySelectorAll('.editable-text').forEach(el => {
   });
 });
 
-// ── Click-to-edit multiline ──
-document.querySelectorAll('.editable-block').forEach(block => {
+// ── Click-to-edit multiline (last_meeting_summary only) ──
+document.querySelectorAll('.editable-block[data-field="last_meeting_summary"]').forEach(block => {
   const view = block.querySelector('.editable-view');
   const edit = block.querySelector('.editable-edit');
   const controls = block.querySelector('.editable-controls');
@@ -373,6 +426,19 @@ document.querySelectorAll('.editable-block').forEach(block => {
     edit.focus();
   });
 });
+
+function startNpcBodyEdit(slug) {
+  document.getElementById('nbview-' + slug).style.display = 'none';
+  document.getElementById('nbedit-' + slug).style.display = 'block';
+  document.getElementById('nbctrl-' + slug).style.display = 'flex';
+  document.getElementById('nbedit-' + slug).focus();
+}
+
+function cancelNpcBlock(slug) {
+  document.getElementById('nbview-' + slug).style.display = '';
+  document.getElementById('nbedit-' + slug).style.display = 'none';
+  document.getElementById('nbctrl-' + slug).style.display = 'none';
+}
 
 function saveBlock(btn) {
   const block = btn.closest('.editable-block');

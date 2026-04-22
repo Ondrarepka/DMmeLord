@@ -4,7 +4,7 @@ disposition: neutral
 faction: Cech Kupců a Řemeslníků
 last_meeting: ''
 last_meeting_summary: ''
-location: Mrtvé močály
+location: mrtve-mocaly
 name: Jantarový Jan
 role: Hledač jantaru — Delta Běsice / Mrtvé močály
 tags:

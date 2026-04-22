@@ -4,7 +4,7 @@ disposition: complicated
 faction: Vladykův dvůr
 last_meeting: ''
 last_meeting_summary: ''
-location: Trnový Újezd
+location: trnovy-ujezd
 name: Radim — syn Vladyky
 role: Dědic vladykovství
 tags:

@@ -98,17 +98,20 @@
   </div>
   {% endif %}
 
-  <!-- Body (always visible, click to edit) -->
+  <!-- Body -->
   <div class="loc-body" style="margin-top:12px; padding-top:10px; border-top:1px solid var(--surface0);">
     <div class="editable-block" data-slug="{{ loc._slug }}" data-field="body">
-      <div class="editable-view prose">
-        {% if loc._body %}{{ loc._body_html | safe }}
-        {% else %}<em class="empty">No notes yet. Click to add.</em>{% endif %}
+      <div class="body-view-row">
+        <div class="editable-view prose" id="view-{{ loc._slug }}">
+          {% if loc._body %}{{ loc._body_html | safe }}
+          {% else %}<em class="empty">Žádné poznámky.</em>{% endif %}
+        </div>
+        <button class="edit-icon-btn" onclick="startBodyEdit('{{ loc._slug }}')" title="Upravit">✒️</button>
       </div>
-      <textarea class="editable-edit" style="display:none; min-height:120px;">{{ loc._body or '' }}</textarea>
-      <div class="editable-controls" style="display:none;">
-        <button class="btn-primary btn-sm" onclick="saveLocBlock(this)">Save</button>
-        <button class="btn-ghost btn-sm" onclick="cancelBlock(this)">Cancel</button>
+      <textarea class="editable-edit" id="edit-{{ loc._slug }}" style="display:none; min-height:120px;">{{ loc._body or '' }}</textarea>
+      <div class="editable-controls" id="ctrl-{{ loc._slug }}" style="display:none;">
+        <button class="btn-primary btn-sm" onclick="saveLocBlock(this)">Uložit</button>
+        <button class="btn-ghost btn-sm" onclick="cancelLocBlock('{{ loc._slug }}')">Zrušit</button>
       </div>
     </div>
   </div>
@@ -190,17 +193,12 @@ document.querySelectorAll('.editable-text').forEach(el => {
   });
 });
 
-// click-to-edit body
-document.querySelectorAll('.editable-block').forEach(block => {
-  const view = block.querySelector('.editable-view');
-  view.style.cursor = 'pointer';
-  view.addEventListener('click', () => {
-    view.style.display = 'none';
-    block.querySelector('.editable-edit').style.display = 'block';
-    block.querySelector('.editable-controls').style.display = 'flex';
-    block.querySelector('.editable-edit').focus();
-  });
-});
+function startBodyEdit(slug) {
+  document.getElementById('view-' + slug).style.display = 'none';
+  document.getElementById('edit-' + slug).style.display = 'block';
+  document.getElementById('ctrl-' + slug).style.display = 'flex';
+  document.getElementById('edit-' + slug).focus();
+}
 
 function saveLocBlock(btn) {
   const block = btn.closest('.editable-block');
@@ -213,11 +211,10 @@ function saveLocBlock(btn) {
   }).then(() => window.location.reload());
 }
 
-function cancelBlock(btn) {
-  const block = btn.closest('.editable-block');
-  block.querySelector('.editable-view').style.display = 'block';
-  block.querySelector('.editable-edit').style.display = 'none';
-  btn.closest('.editable-controls').style.display = 'none';
+function cancelLocBlock(slug) {
+  document.getElementById('view-' + slug).style.display = '';
+  document.getElementById('edit-' + slug).style.display = 'none';
+  document.getElementById('ctrl-' + slug).style.display = 'none';
 }
 
 function confirmDelete(slug, name) {

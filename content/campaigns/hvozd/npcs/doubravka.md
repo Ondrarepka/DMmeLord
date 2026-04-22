@@ -4,7 +4,7 @@ disposition: neutral
 faction: Starověrci (Kruh Volchvů)
 last_meeting: ''
 last_meeting_summary: ''
-location: Vlčí Důl
+location: vlci-dul
 name: Stařena Doubravka
 role: Kořenářka — Vlčí Důl
 tags:
@@ -14,7 +14,7 @@ tags:
 - Veles
 ---
 
-Vesnická kořenářka, která potají vede rituály k Velesovi, aby zajistila zdraví dobytka během moru. Tajná spojka mezi horníky a Kruhem Volchvů.
+Bydlí v chatrči v kopcích na JZ od Vlčího dolu, která potají vede rituály k Velesovi, aby zajistila zdraví dobytka během moru. Tajná spojka mezi horníky a Kruhem Volchvů.
 
 ## Osobnost
 
@@ -22,9 +22,9 @@ Stará, ale bystrá. Hraje roli neškodné babičky před cizinci. Ve skutečnos
 
 ## Vztahy
 
-- **Libuše** – přímá žačka
-- **Sestra Anežka** – neformální rivalita, ale vzájemný respekt (obě léčí)
-- **Poutník Metoděj** – on ji sleduje, ona jeho
+- [[Libuše]] – přímá žačka
+- [[Sestra Anežka]] – neformální rivalita, ale vzájemný respekt (obě léčí)
+- [[Poutník Metoděj]] – on ji sleduje, ona jeho
 
 ## Praktické využití
 

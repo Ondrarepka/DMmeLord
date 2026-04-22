@@ -1,4 +1,271 @@
 {% extends "base.html" %}
+{% block title %}Economy — {{ campaign }}{% endblock %}
+
 {% block content %}
-<h1>Coming soon.</h1>
+<div class="page-header">
+  <h1>Economy</h1>
+  <button class="btn-primary btn-sm" onclick="toggleAddForm()">+ Add item</button>
+</div>
+
+<!-- ── Converter ── -->
+<div class="card econ-converter">
+  <div class="cal-label">Převodník cen</div>
+  <div class="conv-row">
+    <div class="conv-field">
+      <label>CZK</label>
+      <input type="number" id="czk" placeholder="0" min="0" step="0.01" oninput="convFromCzk(this.value)">
+    </div>
+    <div class="conv-sep">⇄</div>
+    <div class="conv-field">
+      <label>Groše</label>
+      <input type="number" id="gros_inp" placeholder="0" min="0" step="0.0001" oninput="convFromGros(this.value)">
+    </div>
+    <div class="conv-result" id="convResult"></div>
+  </div>
+</div>
+
+<!-- ── Add item form ── -->
+<div class="card" id="addItemForm" style="display:none; margin-bottom:12px;">
+  <form method="POST" action="{{ url_for('economy.item_add') }}">
+    <div class="field-row">
+      <div class="field-group" style="flex:3;">
+        <label>Název</label>
+        <input type="text" name="name" required placeholder="Název zboží">
+      </div>
+      <div class="field-group">
+        <label>Kategorie</label>
+        <select name="category">
+          {% for cat in ['Potraviny','Nápoje','Oblečení','Nádobí & nástroje','Nábytek','Zbraně','Zbroj','Zvířata','Služby'] %}
+          <option value="{{ cat }}">{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Cena (groše)</label>
+        <input type="number" name="price_gros" step="0.001" min="0" placeholder="0.000">
+      </div>
+      <div class="field-group">
+        <label>Jednotka</label>
+        <input type="text" name="unit" placeholder="ks, kg, den…" value="ks">
+      </div>
+    </div>
+    <div class="form-actions" style="margin-top:10px;">
+      <button type="submit" class="btn-primary">Přidat</button>
+      <button type="button" class="btn-ghost" onclick="toggleAddForm()">Zrušit</button>
+    </div>
+  </form>
+</div>
+
+<!-- ── Item list ── -->
+{% for category, items in grouped.items() %}
+<div class="econ-category">
+  <div class="econ-cat-header">{{ category }}</div>
+  <div class="econ-table">
+    <div class="econ-thead">
+      <span class="col-name">Položka</span>
+      <span class="col-unit">Jednotka</span>
+      <span class="col-price">Groše</span>
+      <span class="col-czk">CZK</span>
+      <span class="col-actions"></span>
+    </div>
+    {% for item in items %}
+    <div class="econ-item" id="row-{{ item.id }}">
+      <div class="econ-row-main" onclick="toggleAvailability('{{ item.id }}')">
+        <span class="col-name">{{ item.name }}</span>
+        <span class="col-unit econ-unit">{{ item.unit }}</span>
+        <span class="col-price" onclick="event.stopPropagation()">
+          <span class="price-gros editable-price" id="pg-{{ item.id }}"
+                title="Klikni pro úpravu ceny"
+                onclick="editPrice('{{ item.id }}', this)">{{ item.price_gros }}</span>
+        </span>
+        <span class="col-czk econ-czk" id="czk-{{ item.id }}">{{ (item.price_gros * gros)|round|int }}</span>
+        <span class="col-actions" onclick="event.stopPropagation()">
+          <form method="POST" action="{{ url_for('economy.item_delete', item_id=item.id) }}" style="display:inline; margin:0;">
+            <button type="submit" class="btn-ghost btn-sm btn-danger">✕</button>
+          </form>
+        </span>
+      </div>
+
+      <!-- Availability panel -->
+      <div class="avail-panel" id="avail-{{ item.id }}" style="display:none;">
+        <div class="avail-header">Dostupnost podle lokace
+          <span class="avail-hint">Klikni na kategorii — přepíše výchozí cenu</span>
+        </div>
+        {% if locations %}
+        <div class="avail-grid">
+          <div class="avail-row avail-thead">
+            <span class="avail-loc">Lokace</span>
+            <span>Dostupnost</span>
+            <span>Cena</span>
+            <span>Vlastní ×</span>
+          </div>
+          {% for loc in locations %}
+          {% set loc_avail = availability.get(item.id, {}).get(loc._slug, {}) %}
+          {% set cur_tier = loc_avail.get('tier', '') %}
+          {% set cur_mult = loc_avail.get('multiplier', None) %}
+          <div class="avail-row" id="avail-row-{{ item.id }}-{{ loc._slug }}">
+            <span class="avail-loc">{{ loc.name }}</span>
+            <div class="avail-tiers">
+              {% for tier_key, tier_info in tiers.items() %}
+              <button class="tier-btn {{ tier_info.css }} {% if cur_tier == tier_key %}active{% endif %}"
+                      data-tier="{{ tier_key }}"
+                      onclick="setTier('{{ item.id }}', '{{ loc._slug }}', '{{ tier_key }}', this)"
+                      title="{{ tier_info.label }} (×{{ tier_info.multiplier }})">
+                {{ tier_info.label }}
+              </button>
+              {% endfor %}
+              <button class="tier-btn tier-clear {% if not cur_tier %}active{% endif %}"
+                      data-tier=""
+                      onclick="setTier('{{ item.id }}', '{{ loc._slug }}', '', this)"
+                      title="Bez záznamu">—</button>
+            </div>
+            <span class="avail-price" id="avp-{{ item.id }}-{{ loc._slug }}">
+              {% if cur_tier %}
+                {% set mult = (cur_mult if cur_mult else tiers[cur_tier].multiplier)|float %}
+                <span class="{{ tiers[cur_tier].css }}">
+                  {{ '%.4g'|format(item.price_gros * mult) }} g
+                  <em>({{ (item.price_gros * mult * gros)|round|int }} Kč)</em>
+                </span>
+              {% else %}<span class="econ-unset">—</span>{% endif %}
+            </span>
+            <span class="avail-mult-wrap">
+              <input type="number" class="avail-mult-input" step="0.1" min="0.1"
+                     placeholder="×"
+                     value="{{ cur_mult or '' }}"
+                     id="mult-{{ item.id }}-{{ loc._slug }}"
+                     onchange="setMultiplier('{{ item.id }}', '{{ loc._slug }}', this.value)"
+                     title="Vlastní multiplikátor — přepíše výchozí hodnotu kategorie">
+            </span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-state" style="padding:8px 0; margin:0;">Žádné lokace. Nejdřív vytvoř lokace na stránce Locations.</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const GROS = {{ gros }};
+const TIERS = {{ tiers | tojson }};
+
+// ── Converter ──
+function convFromCzk(val) {
+  const v = parseFloat(val);
+  document.getElementById('gros_inp').value = isNaN(v) ? '' : (v / GROS).toFixed(4);
+  showConvResult();
+}
+function convFromGros(val) {
+  const v = parseFloat(val);
+  document.getElementById('czk').value = isNaN(v) ? '' : (v * GROS).toFixed(2);
+  showConvResult();
+}
+function showConvResult() {
+  const g = parseFloat(document.getElementById('gros_inp').value);
+  const res = document.getElementById('convResult');
+  if (!g) { res.textContent = ''; return; }
+  res.textContent = g.toFixed(4) + ' g = ' + (g * GROS).toFixed(0) + ' Kč';
+}
+
+// ── Add form ──
+function toggleAddForm() {
+  const f = document.getElementById('addItemForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+// ── Expand availability ──
+function toggleAvailability(itemId) {
+  const panel = document.getElementById('avail-' + itemId);
+  const isOpen = panel.style.display !== 'none';
+  document.querySelectorAll('.avail-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.econ-row-main').forEach(r => r.classList.remove('open'));
+  if (!isOpen) {
+    panel.style.display = 'block';
+    document.querySelector('#row-' + itemId + ' .econ-row-main').classList.add('open');
+  }
+}
+
+// ── Availability tier ──
+function setTier(itemId, locSlug, tier, btn) {
+  const multInput = document.getElementById(`mult-${itemId}-${locSlug}`);
+  const mult = multInput ? multInput.value : '';
+  _saveAvailability(itemId, locSlug, tier, mult);
+  const row = document.getElementById(`avail-row-${itemId}-${locSlug}`);
+  row.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  _updateAvailPrice(itemId, locSlug, tier, mult ? parseFloat(mult) : null);
+}
+
+function setMultiplier(itemId, locSlug, mult) {
+  const row = document.getElementById(`avail-row-${itemId}-${locSlug}`);
+  const activeBtn = row.querySelector('.tier-btn.active[data-tier]:not([data-tier=""])');
+  const tier = activeBtn ? activeBtn.dataset.tier : '';
+  _saveAvailability(itemId, locSlug, tier, mult);
+  _updateAvailPrice(itemId, locSlug, tier, mult ? parseFloat(mult) : null);
+}
+
+function _saveAvailability(itemId, locSlug, tier, mult) {
+  fetch(`/c/economy/availability/${itemId}/${locSlug}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `tier=${encodeURIComponent(tier)}&multiplier=${encodeURIComponent(mult || '')}`
+  });
+}
+
+// ── Inline price edit ──
+function editPrice(itemId, el) {
+  if (el.querySelector('input')) return; // already editing
+  const current = parseFloat(el.textContent);
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.step = '0.001';
+  input.min = '0';
+  input.value = current;
+  input.className = 'price-edit-input';
+  input.style.cssText = 'width:80px;font-family:inherit;font-size:inherit;background:var(--surface0);border:1px solid var(--mauve);color:var(--yellow);padding:2px 6px;border-radius:4px;';
+  el.textContent = '';
+  el.appendChild(input);
+  input.focus();
+  input.select();
+
+  const save = () => {
+    const val = parseFloat(input.value);
+    if (isNaN(val) || val < 0) { el.textContent = current; return; }
+    fetch(`/c/economy/item/${itemId}/price`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `price_gros=${val}`
+    });
+    el.textContent = val;
+    // update CZK column
+    const czkEl = document.getElementById('czk-' + itemId);
+    if (czkEl) czkEl.textContent = Math.round(val * GROS);
+  };
+
+  input.addEventListener('blur', save);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') input.blur();
+    if (e.key === 'Escape') { el.textContent = current; }
+  });
+}
+
+function _updateAvailPrice(itemId, locSlug, tier, customMult) {
+  const priceEl = document.getElementById(`avp-${itemId}-${locSlug}`);
+  const basePriceEl = document.getElementById(`pg-${itemId}`);
+  if (!priceEl || !basePriceEl) return;
+  const base = parseFloat(basePriceEl.textContent);
+  if (!tier) { priceEl.innerHTML = '<span class="econ-unset">—</span>'; return; }
+  const mult = customMult || (TIERS[tier] ? TIERS[tier].multiplier : 1);
+  const price = base * mult;
+  const css = TIERS[tier] ? TIERS[tier].css : '';
+  priceEl.innerHTML = `<span class="${css}">${parseFloat(price.toPrecision(4))} g <em>(${Math.round(price * GROS)} Kč)</em></span>`;
+}
+</script>
 {% endblock %}

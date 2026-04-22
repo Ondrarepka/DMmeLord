@@ -1,8 +1,13 @@
 ---
 name: Kastelánství "Severní brána"
-type: Kamenná pevnost
 region: Sever (cca 3 dny jízdy)
-tags: [Říše, Bernard, kamenná pevnost, daně, inkvizice]
+tags:
+- Říše
+- Bernard
+- kamenná pevnost
+- daně
+- inkvizice
+type: Kamenná pevnost
 ---
 
 Kamenná pevnost a rostoucí město pod přímou správou Říše.
@@ -18,3 +23,9 @@ Mstislav mu formálně podléhá, ale Bernard ho pohrdá jako „zpola pohanský
 - Místo, kam se posílají stížnosti na vladyku
 - Sídlo církevního soudu
 - Bernard tajně skupuje stříbro — proč?
+
+## Proč sem jít
+
+- **Nejlepší knihovna v regionu** — studium magie skrze církevní optiku
+- **Bezpečné útočiště** — Mstislav na klášter nemůže (ochrana biskupa)
+- **Léky a alchymistické přípravky**

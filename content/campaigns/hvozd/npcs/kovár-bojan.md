@@ -2,10 +2,10 @@
 agreements: []
 disposition: neutral
 faction: Cech Kupců a Řemeslníků
-last_meeting: ''
-last_meeting_summary: ''
-location: Bojanův habr
-name: Kovář Bojan
+last_meeting: 12. 3. 912
+last_meeting_summary: Hrozil slávkovi, že nemá kovat jen tak bez licence
+location: bojanuv-habr
+name: Bojan
 role: Mistr kovář — Bojanův habr
 tags:
 - kovář
@@ -14,7 +14,7 @@ tags:
 - zbraně
 ---
 
-**Věk:** 40 | **Tělo:** 7 | **Duše:** 4 | **Vliv:** 3
+**Věk:** 40 | **Tělo:** 7 | **Duše:** 4 | **Vliv:** 5
 
 Mistr kovář, který umí zpracovat nejen bahenní rudu, ale i vzácnou ocel. Je neutrální — prodává zbraně tomu, kdo zaplatí. Má strach z Běsů, protože jeden mu kdysi zabil ženu.
 

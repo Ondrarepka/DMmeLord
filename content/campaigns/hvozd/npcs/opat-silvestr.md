@@ -2,9 +2,9 @@
 agreements: []
 disposition: neutral
 faction: Opatství
-last_meeting: ''
-last_meeting_summary: ''
-location: Opatství Svatá Maří
+last_meeting: 15. 3. 912
+last_meeting_summary: Avarské duo napadlo jeho učně v lese cestou na vykopávky
+location: opatství-svata-mary
 name: Opat Silvestr
 role: Opat kláštera Svatá Maří v lesích
 tags:
