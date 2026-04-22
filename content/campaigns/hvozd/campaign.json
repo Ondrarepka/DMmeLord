@@ -1,0 +1,19 @@
+{
+  "ingame": {
+    "year": 912,
+    "month": 3,
+    "day": 16
+  },
+  "ingame_events": [
+    {
+      "id": "ff2743d3",
+      "day": 15,
+      "month": 3,
+      "year": 912,
+      "type": "custom",
+      "title": "Blood Moon"
+    }
+  ],
+  "real_events": [],
+  "trackers": []
+}

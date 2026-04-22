@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — {{ campaign }}{% endblock %}
+
+{% block content %}
+<div class="page-header" style="margin-bottom:16px;">
+  <h1>{{ title }}</h1>
+  <button class="btn-ghost btn-sm" id="editBtn" onclick="startEdit()">✒️ Upravit</button>
+</div>
+
+<!-- Sub-nav -->
+<div class="lore-subnav">
+  {% for s, label in pages.items() %}
+  <a href="{{ url_for('lore.page', slug=s) }}"
+     class="lore-tab {% if s == slug %}active{% endif %}">{{ label }}</a>
+  {% endfor %}
+</div>
+
+<!-- View mode -->
+<div class="card lore-body" id="loreView">
+  {% if html %}
+    <div class="prose lore-prose">{{ html | safe }}</div>
+  {% else %}
+    <em class="empty">Žádný obsah. Klikni na Upravit.</em>
+  {% endif %}
+</div>
+
+<!-- Edit mode -->
+<div id="loreEdit" style="display:none;">
+  <textarea id="loreTextarea" style="
+    width:100%; min-height:70vh;
+    background:var(--mantle); color:var(--text);
+    border:1px solid var(--surface1); border-radius:var(--r);
+    padding:16px; font-family:'JetBrains Mono',monospace;
+    font-size:13px; line-height:1.6; resize:vertical;
+  ">{{ content }}</textarea>
+  <div style="margin-top:10px; display:flex; gap:8px;">
+    <button class="btn-primary" onclick="saveEdit()">Uložit</button>
+    <button class="btn-ghost" onclick="cancelEdit()">Zrušit</button>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const slug = '{{ slug }}';
+
+function startEdit() {
+  document.getElementById('loreView').style.display = 'none';
+  document.getElementById('loreEdit').style.display = 'block';
+  document.getElementById('editBtn').style.display = 'none';
+  document.getElementById('loreTextarea').focus();
+}
+
+function cancelEdit() {
+  document.getElementById('loreView').style.display = 'block';
+  document.getElementById('loreEdit').style.display = 'none';
+  document.getElementById('editBtn').style.display = '';
+}
+
+function saveEdit() {
+  const content = document.getElementById('loreTextarea').value;
+  fetch(`/c/lore/${slug}/save`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `content=${encodeURIComponent(content)}`
+  }).then(() => window.location.reload());
+}
+</script>
+{% endblock %}

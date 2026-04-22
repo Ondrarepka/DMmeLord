@@ -1345,3 +1345,33 @@ p  { color: var(--subtext1); margin-bottom: 8px; }
 }
 .pin-remove:hover { color: var(--red); }
 .map-hint { font-style: italic; }
+
+/* ── LORE ── */
+.lore-subnav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.lore-tab {
+  padding: 5px 14px;
+  border-radius: var(--r);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--subtext0);
+  text-decoration: none;
+  background: var(--surface0);
+  border: 1px solid var(--surface1);
+  transition: background 0.15s, color 0.15s;
+}
+.lore-tab:hover { background: var(--surface1); color: var(--text); }
+.lore-tab.active { background: var(--mauve); color: var(--base); border-color: var(--mauve); font-weight: 600; }
+.lore-body { padding: 20px 24px; }
+.lore-prose { max-width: 800px; }
+.lore-prose table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+.lore-prose th { background: var(--surface0); color: var(--subtext1); text-align: left; padding: 8px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; }
+.lore-prose td { padding: 8px 12px; border-bottom: 1px solid var(--surface0); vertical-align: top; }
+.lore-prose tr:last-child td { border-bottom: none; }
+.lore-prose blockquote { border-left: 3px solid var(--mauve); padding: 8px 16px; margin: 16px 0; background: var(--surface0); border-radius: 0 var(--r) var(--r) 0; color: var(--subtext1); font-style: italic; }
+.lore-prose h2 { margin-top: 28px; margin-bottom: 10px; color: var(--lavender); font-size: 16px; text-transform: none; letter-spacing: 0; }
+.lore-prose h3 { margin-top: 18px; margin-bottom: 6px; color: var(--peach); font-size: 13px; text-transform: none; letter-spacing: 0; }
+.lore-prose hr { border: none; border-top: 1px solid var(--surface0); margin: 20px 0; }

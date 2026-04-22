@@ -433,6 +433,13 @@
       "category": "Služby",
       "price_gros": 0.5,
       "unit": "hod"
+    },
+    {
+      "id": "145354c8",
+      "name": "železo",
+      "category": "Nádobí & nástroje",
+      "price_gros": 1.0,
+      "unit": "surovina"
     }
   ],
   "availability": {

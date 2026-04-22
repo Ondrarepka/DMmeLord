@@ -19,6 +19,7 @@ TIERS = {
 CATEGORIES = [
     'Potraviny', 'Nápoje', 'Oblečení', 'Nádobí & nástroje',
     'Nábytek', 'Zbraně', 'Zbroj', 'Zvířata', 'Služby',
+    'Materiály', 'Spotřební', 'Magie & byliny',
 ]
 
 DEFAULT_ITEMS = [
@@ -93,6 +94,62 @@ DEFAULT_ITEMS = [
     {'id':'messenger','name':'Posel',                  'category':'Služby',             'price_gros':0.50,  'unit':'den'},
     {'id':'healer',   'name':'Léčitel (základní péče)','category':'Služby',             'price_gros':1.00,  'unit':'ošetření'},
     {'id':'blacksmith','name':'Kovář (hodina práce)', 'category':'Služby',              'price_gros':0.50,  'unit':'hod'},
+
+    # Materiály pro výrobu
+    {'id':'iron_bog',   'name':'Bahenní železo (surové)', 'category':'Materiály',        'price_gros':0.80,  'unit':'kg'},
+    {'id':'iron_bar',   'name':'Železná tyč (zpracovaná)','category':'Materiály',        'price_gros':2.00,  'unit':'kg'},
+    {'id':'steel_bar',  'name':'Ocelový ingot',           'category':'Materiály',        'price_gros':15.00, 'unit':'kg'},
+    {'id':'wood_log',   'name':'Kláda (dubová)',          'category':'Materiály',        'price_gros':0.20,  'unit':'ks'},
+    {'id':'wood_plank', 'name':'Fošna (opracovaná)',      'category':'Materiály',        'price_gros':0.50,  'unit':'ks'},
+    {'id':'charcoal',   'name':'Dřevěné uhlí',            'category':'Materiály',        'price_gros':0.30,  'unit':'kg'},
+    {'id':'leather_raw','name':'Syrová kůže',             'category':'Materiály',        'price_gros':0.60,  'unit':'ks'},
+    {'id':'leather_tnd','name':'Vyčiněná kůže',           'category':'Materiály',        'price_gros':1.50,  'unit':'ks'},
+    {'id':'fur_squirl', 'name':'Veverčí kůžka (1 kuna)',  'category':'Materiály',        'price_gros':0.05,  'unit':'ks'},
+    {'id':'fur_sorochk','name':'Sorochok (40 kožek)',     'category':'Materiály',        'price_gros':2.00,  'unit':'svazek'},
+    {'id':'flax',       'name':'Len (svazek)',             'category':'Materiály',        'price_gros':0.20,  'unit':'svazek'},
+    {'id':'linen',      'name':'Lněná látka',              'category':'Materiály',        'price_gros':0.80,  'unit':'loket'},
+    {'id':'wool',       'name':'Vlna (střižená)',          'category':'Materiály',        'price_gros':0.40,  'unit':'kg'},
+    {'id':'clay',       'name':'Hrnčířská hlína',          'category':'Materiály',        'price_gros':0.05,  'unit':'kg'},
+    {'id':'amber_raw',  'name':'Jantar (surový kus)',      'category':'Materiály',        'price_gros':5.00,  'unit':'ks'},
+    {'id':'amber_polsh','name':'Jantar (broušený)',        'category':'Materiály',        'price_gros':15.00, 'unit':'ks'},
+    {'id':'pitch',      'name':'Smůla / dehet',            'category':'Materiály',        'price_gros':0.15,  'unit':'kg'},
+    {'id':'wax',        'name':'Včelí vosk',               'category':'Materiály',        'price_gros':1.20,  'unit':'kg'},
+    {'id':'bone',       'name':'Kosti (zpracované)',       'category':'Materiály',        'price_gros':0.10,  'unit':'kg'},
+
+    # Spotřební materiál
+    {'id':'torch',      'name':'Pochodeň',                 'category':'Spotřební',        'price_gros':0.03,  'unit':'ks'},
+    {'id':'torch_10',   'name':'Pochodně (10 ks)',         'category':'Spotřební',        'price_gros':0.25,  'unit':'10 ks'},
+    {'id':'oil_lamp',   'name':'Lampový olej',             'category':'Spotřební',        'price_gros':0.20,  'unit':'džbánek'},
+    {'id':'tinder',     'name':'Troud a křesadlo',         'category':'Spotřební',        'price_gros':0.30,  'unit':'sada'},
+    {'id':'arrow_iron', 'name':'Šípy železné (10 ks)',     'category':'Spotřební',        'price_gros':1.00,  'unit':'10 ks'},
+    {'id':'arrow_bone', 'name':'Šípy kostěné (10 ks)',     'category':'Spotřební',        'price_gros':0.30,  'unit':'10 ks'},
+    {'id':'bandage',    'name':'Obvazový hadr',            'category':'Spotřební',        'price_gros':0.05,  'unit':'ks'},
+    {'id':'salve',      'name':'Základní mast',            'category':'Spotřební',        'price_gros':0.40,  'unit':'nádobka'},
+    {'id':'rations',    'name':'Cestovní zásoby (1 den)',  'category':'Spotřební',        'price_gros':0.15,  'unit':'den/os'},
+    {'id':'fodder',     'name':'Krmivo pro koně (1 den)', 'category':'Spotřební',        'price_gros':0.10,  'unit':'den'},
+    {'id':'soap',       'name':'Louh / mýdlo',             'category':'Spotřební',        'price_gros':0.08,  'unit':'ks'},
+    {'id':'quill',      'name':'Pero a inkoust',           'category':'Spotřební',        'price_gros':0.50,  'unit':'sada'},
+    {'id':'parchment',  'name':'Pergamen (list)',          'category':'Spotřební',        'price_gros':1.00,  'unit':'list'},
+    {'id':'string_bow', 'name':'Tětivy (5 ks)',            'category':'Spotřební',        'price_gros':0.50,  'unit':'5 ks'},
+    {'id':'poison_weak','name':'Jed slabý (omráčení)',    'category':'Spotřební',        'price_gros':8.00,  'unit':'dávka'},
+
+    # Magické propriety
+    {'id':'herb_peat',  'name':'Rašelinový dráp',         'category':'Magie & byliny',   'price_gros':3.00,  'unit':'svazek'},
+    {'id':'herb_oak',   'name':'Dubové slzy (míza)',       'category':'Magie & byliny',   'price_gros':8.00,  'unit':'nádobka'},
+    {'id':'herb_coal',  'name':'Uhelný květ',              'category':'Magie & byliny',   'price_gros':5.00,  'unit':'svazek'},
+    {'id':'herb_wrmwd', 'name':'Stříbrný pelyněk',        'category':'Magie & byliny',   'price_gros':4.00,  'unit':'svazek'},
+    {'id':'herb_mistl', 'name':'Mohylové jmelí',           'category':'Magie & byliny',   'price_gros':12.00, 'unit':'svazek'},
+    {'id':'herb_moss',  'name':'Vrbový jantarián',         'category':'Magie & byliny',   'price_gros':6.00,  'unit':'nádobka'},
+    {'id':'skull_anim', 'name':'Zvířecí lebka (rituál)',  'category':'Magie & byliny',   'price_gros':2.00,  'unit':'ks'},
+    {'id':'blood_vial', 'name':'Krev (dávka — zvířecí)',  'category':'Magie & byliny',   'price_gros':1.50,  'unit':'vial'},
+    {'id':'iron_avar',  'name':'Avarský kov (úlomek)',    'category':'Magie & byliny',   'price_gros':20.00, 'unit':'ks'},
+    {'id':'runestone',  'name':'Runový kámen (prostý)',   'category':'Magie & byliny',   'price_gros':10.00, 'unit':'ks'},
+    {'id':'charm_bone', 'name':'Kostěný amulet',          'category':'Magie & byliny',   'price_gros':5.00,  'unit':'ks'},
+    {'id':'incense',    'name':'Kadidlo (kouř pro rituál)','category':'Magie & byliny',  'price_gros':3.00,  'unit':'ks'},
+    {'id':'candle_blk', 'name':'Černá svíčka (rituální)', 'category':'Magie & byliny',   'price_gros':1.50,  'unit':'ks'},
+    {'id':'water_dead', 'name':'Voda z Mrtvého pramene',  'category':'Magie & byliny',   'price_gros':25.00, 'unit':'nádobka'},
+    {'id':'wolf_tooth', 'name':'Vlčí tesák',              'category':'Magie & byliny',   'price_gros':4.00,  'unit':'ks'},
+    {'id':'draugr_frag','name':'Úlomek Draugrovy výzbroje','category':'Magie & byliny',  'price_gros':40.00, 'unit':'ks'},
 ]
 
 
@@ -106,7 +163,12 @@ def get_economy(camp):
     path = _econ_path(camp)
     if not os.path.exists(path):
         return {'items': [dict(i) for i in DEFAULT_ITEMS], 'availability': {}}
-    return json.load(open(path, encoding='utf-8'))
+    data = json.load(open(path, encoding='utf-8'))
+    existing_ids = {item['id'] for item in data.get('items', [])}
+    for default in DEFAULT_ITEMS:
+        if default['id'] not in existing_ids:
+            data.setdefault('items', []).append(dict(default))
+    return data
 
 def save_economy(camp, data):
     path = _econ_path(camp)
